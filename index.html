@@ -1,22 +1,284 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Activo | Planificaciones</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><link rel="stylesheet" href="style.css"></head><body>
-<header>
-  <div class="head">
-    <div class="brand">
-      <img src="logo-activo.jpeg" alt="Logo Activo" class="logo-activo">
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
 
-      <div>
-        <b>ACTIVO FUNCIONAL TRAINING</b>
-        <small>Planificaciones personalizadas</small>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>Activo | Planificaciones</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <header>
+    <div class="head">
+
+      <div class="brand">
+        <img
+          src="logo-activo.jpeg"
+          alt="Logo de Activo Funcional Training"
+          class="logo-activo"
+        >
+
+        <div class="brand-text">
+          <b>ACTIVO FUNCIONAL TRAINING</b>
+          <small>Planificaciones personalizadas</small>
+        </div>
       </div>
+
+      <button id="adminTop">
+        Panel del profesor
+      </button>
+
+    </div>
+  </header>
+
+  <main>
+
+    <section id="public">
+
+      <div class="card">
+        <h2>Buscá tu planificación</h2>
+
+        <input
+          id="search"
+          placeholder="Nombre o apellido"
+        >
+
+        <div id="results"></div>
+      </div>
+
+      <div
+        id="publicPlan"
+        class="card hidden"
+      ></div>
+
+    </section>
+
+    <section
+      id="admin"
+      class="hidden"
+    >
+
+      <div class="card bar">
+
+        <div>
+          <h2>Panel del profesor</h2>
+          <small id="email"></small>
+        </div>
+
+        <div>
+          <button id="libraryBtn">
+            Biblioteca
+          </button>
+
+          <button
+            id="logout"
+            class="danger"
+          >
+            Cerrar sesión
+          </button>
+        </div>
+
+      </div>
+
+      <div id="msg"></div>
+
+      <div class="grid">
+
+        <div class="card">
+
+          <h3>Clientes</h3>
+
+          <label>Nombre</label>
+          <input id="name">
+
+          <label>Objetivo</label>
+          <input id="goal">
+
+          <label>Observaciones privadas</label>
+          <textarea id="notes"></textarea>
+
+          <label>
+            <input
+              id="active"
+              type="checkbox"
+              checked
+            >
+            Activo y visible
+          </label>
+
+          <div class="row">
+
+            <button id="saveClient">
+              Guardar cliente
+            </button>
+
+            <button
+              id="cancel"
+              class="hidden"
+            >
+              Cancelar
+            </button>
+
+          </div>
+
+          <input
+            id="editId"
+            type="hidden"
+          >
+
+          <div id="clients"></div>
+
+        </div>
+
+        <div class="card">
+
+          <div id="empty">
+            Seleccioná un cliente.
+          </div>
+
+          <div
+            id="planner"
+            class="hidden"
+          >
+
+            <h2 id="clientTitle"></h2>
+            <small id="clientGoal"></small>
+
+            <div
+              id="days"
+              class="days"
+            ></div>
+
+            <div id="exerciseList"></div>
+
+            <div class="row">
+
+              <button id="manual">
+                Agregar manual
+              </button>
+
+              <button id="fromLib">
+                Elegir de biblioteca
+              </button>
+
+              <button
+                id="saveDay"
+                class="success"
+              >
+                Guardar este día
+              </button>
+
+              <button id="preview">
+                Ver como cliente
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <div
+    id="loginModal"
+    class="modal hidden"
+  >
+
+    <div class="box">
+
+      <h2>Panel del profesor</h2>
+
+      <label>Correo</label>
+
+      <input
+        id="loginEmail"
+        value="cquerci22@gmail.com"
+      >
+
+      <label>Contraseña</label>
+
+      <input
+        id="loginPass"
+        type="password"
+      >
+
+      <div
+        id="loginErr"
+        class="error hidden"
+      ></div>
+
+      <div class="row">
+
+        <button id="login">
+          Ingresar
+        </button>
+
+        <button id="closeLogin">
+          Cancelar
+        </button>
+
+      </div>
+
     </div>
 
-    <button id="adminTop">Panel del profesor</button>
   </div>
-</header>
-<main>
-<section id="public"><div class="card"><h2>Buscá tu planificación</h2><input id="search" placeholder="Nombre o apellido"><div id="results"></div></div><div id="publicPlan" class="card hidden"></div></section>
-<section id="admin" class="hidden"><div class="card bar"><div><h2>Panel del profesor</h2><small id="email"></small></div><div><button id="libraryBtn">Biblioteca</button><button id="logout" class="danger">Cerrar sesión</button></div></div><div id="msg"></div><div class="grid"><div class="card"><h3>Clientes</h3><label>Nombre</label><input id="name"><label>Objetivo</label><input id="goal"><label>Observaciones privadas</label><textarea id="notes"></textarea><label><input id="active" type="checkbox" checked> Activo y visible</label><div class="row"><button id="saveClient">Guardar cliente</button><button id="cancel" class="hidden">Cancelar</button></div><input id="editId" type="hidden"><div id="clients"></div></div><div class="card"><div id="empty">Seleccioná un cliente.</div><div id="planner" class="hidden"><h2 id="clientTitle"></h2><small id="clientGoal"></small><div id="days" class="days"></div><div id="exerciseList"></div><div class="row"><button id="manual">Agregar manual</button><button id="fromLib">Elegir de biblioteca</button><button id="saveDay" class="success">Guardar este día</button><button id="preview">Ver como cliente</button></div></div></div></div></section>
-</main>
-<div id="loginModal" class="modal hidden"><div class="box"><h2>Panel del profesor</h2><label>Correo</label><input id="loginEmail" value="cquerci22@gmail.com"><label>Contraseña</label><input id="loginPass" type="password"><div id="loginErr" class="error hidden"></div><div class="row"><button id="login">Ingresar</button><button id="closeLogin">Cancelar</button></div></div></div>
-<div id="libraryModal" class="modal hidden"><div class="box wide"><div class="bar"><h2>Biblioteca de ejercicios</h2><button id="closeLib">Cerrar</button></div><div class="row"><input id="libSearch" placeholder="Buscar ejercicio"><select id="libCat"><option value="">Todas las categorías</option></select></div><div id="library" class="library"></div></div></div>
-<script src="app.js"></script></body></html>
+
+  <div
+    id="libraryModal"
+    class="modal hidden"
+  >
+
+    <div class="box wide">
+
+      <div class="bar">
+
+        <h2>Biblioteca de ejercicios</h2>
+
+        <button id="closeLib">
+          Cerrar
+        </button>
+
+      </div>
+
+      <div class="row">
+
+        <input
+          id="libSearch"
+          placeholder="Buscar ejercicio"
+        >
+
+        <select id="libCat">
+          <option value="">
+            Todas las categorías
+          </option>
+        </select>
+
+      </div>
+
+      <div
+        id="library"
+        class="library"
+      ></div>
+
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+
+</body>
+</html>
