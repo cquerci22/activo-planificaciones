@@ -3,7 +3,7 @@ const KEY = 'sb_publishable_Lndqkrn26vuQDmwx72SqNA_ihZ-ZBLe';
 
 const sb = supabase.createClient(URL, KEY);
 
-const D = [
+const DAYS = [
   'Lunes',
   'Martes',
   'Miércoles',
@@ -11,7 +11,7 @@ const D = [
   'Viernes'
 ];
 
-const L = [
+const EXERCISE_LIBRARY = [
   ['Sentadilla libre', 'Tren inferior', '4', '8-10', '90 s'],
   ['Sentadilla goblet', 'Tren inferior', '3', '10-12', '60 s'],
   ['Prensa de piernas', 'Tren inferior', '4', '10-12', '90 s'],
@@ -48,39 +48,44 @@ const L = [
 ];
 
 let clients = [];
-let sel = null;
-let day = 'Lunes';
-let draft = [];
-let planId = null;
+let selectedClientId = null;
+let selectedDay = 'Lunes';
+let draftExercises = [];
+let currentPlanId = null;
 
 const $ = id => document.getElementById(id);
 
-const esc = value =>
-  String(value || '').replace(/[&<>"']/g, character => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#039;'
-  })[character]);
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, character => {
+    const characters = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#039;'
+    };
 
-function note(text, type = 'ok') {
-  $('msg').innerHTML = `<div class="${type}">${esc(text)}</div>`;
+    return characters[character];
+  });
+}
+
+function showMessage(text, type = 'ok') {
+  $('msg').innerHTML = `<div class="${type}">${escapeHtml(text)}</div>`;
 
   setTimeout(() => {
     $('msg').innerHTML = '';
   }, 3000);
 }
 
-async function publicMode() {
+async function showPublicMode() {
   $('admin').classList.add('hidden');
   $('public').classList.remove('hidden');
   $('adminTop').textContent = 'Panel del profesor';
 
-  await loadPublic();
+  await loadPublicClients();
 }
 
-async function adminMode() {
+async function showAdminMode() {
   const {
     data: { session }
   } = await sb.auth.getSession();
@@ -98,23 +103,26 @@ async function adminMode() {
   await loadClients();
 }
 
-$('adminTop').onclick = () => {
-  if (!$('admin').classList.contains('hidden')) {
-    publicMode();
+$('adminTop').onclick = async () => {
+  const adminIsVisible = !$('admin').classList.contains('hidden');
+
+  if (adminIsVisible) {
+    await showPublicMode();
   } else {
-    adminMode();
+    await showAdminMode();
   }
 };
 
 $('closeLogin').onclick = () => {
   $('loginModal').classList.add('hidden');
+  $('loginErr').classList.add('hidden');
 };
 
 $('login').onclick = async () => {
-  $('loginErr').classList.add('hidden');
-
   const email = $('loginEmail').value.trim();
   const password = $('loginPass').value;
+
+  $('loginErr').classList.add('hidden');
 
   if (!email || !password) {
     $('loginErr').textContent = 'Ingresá el correo y la contraseña.';
@@ -134,12 +142,14 @@ $('login').onclick = async () => {
   }
 
   $('loginModal').classList.add('hidden');
-  await adminMode();
+  $('loginPass').value = '';
+
+  await showAdminMode();
 };
 
 $('logout').onclick = async () => {
   await sb.auth.signOut();
-  await publicMode();
+  await showPublicMode();
 };
 
 async function loadClients() {
@@ -149,7 +159,7 @@ async function loadClients() {
     .order('name');
 
   if (error) {
-    note(error.message, 'error');
+    showMessage(error.message, 'error');
     return;
   }
 
@@ -165,7 +175,8 @@ function renderClients() {
   container.innerHTML = '';
 
   if (!clients.length) {
-    container.innerHTML = '<small>No hay clientes.</small>';
+    container.innerHTML = '<small>No hay clientes cargados.</small>';
+    return;
   }
 
   clients.forEach(client => {
@@ -175,9 +186,9 @@ function renderClients() {
 
     item.innerHTML = `
       <div>
-        <b>${esc(client.name)}</b>
+        <b>${escapeHtml(client.name)}</b>
         <small>
-          ${esc(client.goal || '')}
+          ${escapeHtml(client.goal || '')}
           ·
           ${client.active ? 'Activo' : 'Inactivo'}
         </small>
@@ -191,10 +202,10 @@ function renderClients() {
     `;
 
     item.querySelector('.open').onclick = async () => {
-      sel = client.id;
-      day = 'Lunes';
+      selectedClientId = client.id;
+      selectedDay = 'Lunes';
 
-      await loadDay();
+      await loadSelectedDay();
       renderPlanner();
     };
 
@@ -203,7 +214,7 @@ function renderClients() {
     };
 
     item.querySelector('.del').onclick = () => {
-      delClient(client);
+      deleteClient(client);
     };
 
     container.appendChild(item);
@@ -217,38 +228,46 @@ async function editClient(client) {
   $('editId').value = client.id;
   $('cancel').classList.remove('hidden');
 
-  const { data } = await sb
+  const { data, error } = await sb
     .from('client_private_notes')
     .select('notes')
     .eq('client_id', client.id)
     .maybeSingle();
+
+  if (error) {
+    $('notes').value = '';
+    return;
+  }
 
   $('notes').value = data?.notes || '';
 }
 
 $('saveClient').onclick = async () => {
   const name = $('name').value.trim();
+  const goal = $('goal').value.trim();
+  const active = $('active').checked;
+  const notes = $('notes').value.trim();
 
   if (!name) {
     alert('Ingresá el nombre del alumno.');
     return;
   }
 
-  let id = $('editId').value;
+  let clientId = $('editId').value;
 
-  if (id) {
+  if (clientId) {
     const { error } = await sb
       .from('clients')
       .update({
         name,
-        goal: $('goal').value.trim(),
-        active: $('active').checked,
+        goal,
+        active,
         updated_at: new Date().toISOString()
       })
-      .eq('id', id);
+      .eq('id', clientId);
 
     if (error) {
-      note(error.message, 'error');
+      showMessage(error.message, 'error');
       return;
     }
   } else {
@@ -256,49 +275,50 @@ $('saveClient').onclick = async () => {
       .from('clients')
       .insert({
         name,
-        goal: $('goal').value.trim(),
-        active: $('active').checked
+        goal,
+        active
       })
       .select()
       .single();
 
     if (error) {
-      note(error.message, 'error');
+      showMessage(error.message, 'error');
       return;
     }
 
-    id = data.id;
-    sel = id;
+    clientId = data.id;
+    selectedClientId = clientId;
   }
 
-  const notes = $('notes').value.trim();
-
-  const { data: oldNote } = await sb
+  const { data: oldNote, error: noteSearchError } = await sb
     .from('client_private_notes')
     .select('id')
-    .eq('client_id', id)
+    .eq('client_id', clientId)
     .maybeSingle();
 
-  if (oldNote) {
-    await sb
-      .from('client_private_notes')
-      .update({ notes })
-      .eq('id', oldNote.id);
-  } else if (notes) {
-    await sb
-      .from('client_private_notes')
-      .insert({
-        client_id: id,
-        notes
-      });
+  if (!noteSearchError) {
+    if (oldNote) {
+      await sb
+        .from('client_private_notes')
+        .update({ notes })
+        .eq('id', oldNote.id);
+    } else if (notes) {
+      await sb
+        .from('client_private_notes')
+        .insert({
+          client_id: clientId,
+          notes
+        });
+    }
   }
 
-  clearForm();
+  clearClientForm();
   await loadClients();
-  note('Cliente guardado.');
+
+  showMessage('Cliente guardado correctamente.');
 };
 
-function clearForm() {
+function clearClientForm() {
   $('name').value = '';
   $('goal').value = '';
   $('notes').value = '';
@@ -307,12 +327,12 @@ function clearForm() {
   $('cancel').classList.add('hidden');
 }
 
-$('cancel').onclick = clearForm;
+$('cancel').onclick = clearClientForm;
 
-async function delClient(client) {
-  const confirmation = confirm(`¿Eliminar a ${client.name}?`);
+async function deleteClient(client) {
+  const confirmed = confirm(`¿Eliminar a ${client.name}?`);
 
-  if (!confirmation) {
+  if (!confirmed) {
     return;
   }
 
@@ -322,34 +342,37 @@ async function delClient(client) {
     .eq('id', client.id);
 
   if (error) {
-    note(error.message, 'error');
+    showMessage(error.message, 'error');
     return;
   }
 
-  if (sel === client.id) {
-    sel = null;
+  if (selectedClientId === client.id) {
+    selectedClientId = null;
+    draftExercises = [];
+    currentPlanId = null;
   }
 
   await loadClients();
+  showMessage('Cliente eliminado.');
 }
 
-async function loadDay() {
-  draft = [];
-  planId = null;
+async function loadSelectedDay() {
+  draftExercises = [];
+  currentPlanId = null;
 
-  if (!sel) {
+  if (!selectedClientId) {
     return;
   }
 
   const { data: plan, error } = await sb
     .from('workout_plans')
     .select('*')
-    .eq('client_id', sel)
-    .eq('day_of_week', day)
+    .eq('client_id', selectedClientId)
+    .eq('day_of_week', selectedDay)
     .maybeSingle();
 
   if (error) {
-    note(error.message, 'error');
+    showMessage(error.message, 'error');
     return;
   }
 
@@ -357,20 +380,20 @@ async function loadDay() {
     return;
   }
 
-  planId = plan.id;
+  currentPlanId = plan.id;
 
-  const { data: exercises, error: exerciseError } = await sb
+  const { data: exercises, error: exercisesError } = await sb
     .from('plan_exercises')
     .select('*')
     .eq('plan_id', plan.id)
     .order('exercise_order');
 
-  if (exerciseError) {
-    note(exerciseError.message, 'error');
+  if (exercisesError) {
+    showMessage(exercisesError.message, 'error');
     return;
   }
 
-  draft = (exercises || []).map(exercise => ({
+  draftExercises = (exercises || []).map(exercise => ({
     name: exercise.exercise_name,
     sets: exercise.sets || '',
     reps: exercise.reps || '',
@@ -381,7 +404,9 @@ async function loadDay() {
 }
 
 function renderPlanner() {
-  const client = clients.find(item => item.id === sel);
+  const client = clients.find(
+    item => item.id === selectedClientId
+  );
 
   $('empty').classList.toggle('hidden', Boolean(client));
   $('planner').classList.toggle('hidden', !client);
@@ -397,16 +422,17 @@ function renderPlanner() {
 
   daysContainer.innerHTML = '';
 
-  D.forEach(dayName => {
+  DAYS.forEach(dayName => {
     const button = document.createElement('button');
 
     button.textContent = dayName;
-    button.className = `day ${dayName === day ? 'active' : ''}`;
+    button.className =
+      `day ${dayName === selectedDay ? 'active' : ''}`;
 
     button.onclick = async () => {
-      day = dayName;
+      selectedDay = dayName;
 
-      await loadDay();
+      await loadSelectedDay();
       renderPlanner();
     };
 
@@ -421,11 +447,12 @@ function renderExercises() {
 
   container.innerHTML = '';
 
-  if (!draft.length) {
+  if (!draftExercises.length) {
     container.innerHTML = '<small>Sin ejercicios.</small>';
+    return;
   }
 
-  draft.forEach((exercise, index) => {
+  draftExercises.forEach((exercise, index) => {
     const item = document.createElement('div');
 
     item.className = 'exercise';
@@ -439,44 +466,45 @@ function renderExercises() {
       <div class="cols">
         <div>
           <label>Ejercicio</label>
-          <input class="name" value="${esc(exercise.name)}">
+          <input class="name" value="${escapeHtml(exercise.name)}">
         </div>
 
         <div>
           <label>Series</label>
-          <input class="sets" value="${esc(exercise.sets)}">
+          <input class="sets" value="${escapeHtml(exercise.sets)}">
         </div>
 
         <div>
           <label>Repeticiones</label>
-          <input class="reps" value="${esc(exercise.reps)}">
+          <input class="reps" value="${escapeHtml(exercise.reps)}">
         </div>
 
         <div>
           <label>Carga</label>
-          <input class="load" value="${esc(exercise.load)}">
+          <input class="load" value="${escapeHtml(exercise.load)}">
         </div>
 
         <div>
           <label>Descanso</label>
-          <input class="rest" value="${esc(exercise.rest)}">
+          <input class="rest" value="${escapeHtml(exercise.rest)}">
         </div>
 
         <div>
           <label>Observaciones</label>
-          <input class="notes" value="${esc(exercise.notes)}">
+          <input class="notes" value="${escapeHtml(exercise.notes)}">
         </div>
       </div>
     `;
 
-    ['name', 'sets', 'reps', 'load', 'rest', 'notes'].forEach(field => {
-      item.querySelector(`.${field}`).oninput = function () {
-        exercise[field] = this.value;
-      };
-    });
+    ['name', 'sets', 'reps', 'load', 'rest', 'notes']
+      .forEach(field => {
+        item.querySelector(`.${field}`).oninput = function () {
+          exercise[field] = this.value;
+        };
+      });
 
     item.querySelector('.rm').onclick = () => {
-      draft.splice(index, 1);
+      draftExercises.splice(index, 1);
       renderExercises();
     };
 
@@ -485,7 +513,7 @@ function renderExercises() {
 }
 
 $('manual').onclick = () => {
-  draft.push({
+  draftExercises.push({
     name: '',
     sets: '',
     reps: '',
@@ -498,43 +526,43 @@ $('manual').onclick = () => {
 };
 
 $('saveDay').onclick = async () => {
-  if (!sel) {
+  if (!selectedClientId) {
     alert('Seleccioná un alumno.');
     return;
   }
 
-  if (!planId) {
+  if (!currentPlanId) {
     const { data, error } = await sb
       .from('workout_plans')
       .insert({
-        client_id: sel,
-        day_of_week: day,
-        title: `Planificación ${day}`
+        client_id: selectedClientId,
+        day_of_week: selectedDay,
+        title: `Planificación ${selectedDay}`
       })
       .select()
       .single();
 
     if (error) {
-      note(error.message, 'error');
+      showMessage(error.message, 'error');
       return;
     }
 
-    planId = data.id;
+    currentPlanId = data.id;
   }
 
   const { error: deleteError } = await sb
     .from('plan_exercises')
     .delete()
-    .eq('plan_id', planId);
+    .eq('plan_id', currentPlanId);
 
   if (deleteError) {
-    note(deleteError.message, 'error');
+    showMessage(deleteError.message, 'error');
     return;
   }
 
-  if (draft.length) {
-    const rows = draft.map((exercise, index) => ({
-      plan_id: planId,
+  if (draftExercises.length) {
+    const rows = draftExercises.map((exercise, index) => ({
+      plan_id: currentPlanId,
       exercise_name: exercise.name || 'Ejercicio',
       sets: exercise.sets,
       reps: exercise.reps,
@@ -549,58 +577,62 @@ $('saveDay').onclick = async () => {
       .insert(rows);
 
     if (error) {
-      note(error.message, 'error');
+      showMessage(error.message, 'error');
       return;
     }
   }
 
-  note(`${day} guardado.`);
+  showMessage(`${selectedDay} guardado correctamente.`);
 };
 
-function openLib() {
-  if (!sel) {
+function openLibrary() {
+  if (!selectedClientId) {
     alert('Seleccioná un cliente.');
     return;
   }
 
   $('libraryModal').classList.remove('hidden');
-  renderLib();
+  renderLibrary();
 }
 
-$('libraryBtn').onclick = openLib;
-$('fromLib').onclick = openLib;
+$('libraryBtn').onclick = openLibrary;
+$('fromLib').onclick = openLibrary;
 
 $('closeLib').onclick = () => {
   $('libraryModal').classList.add('hidden');
 };
 
-const categories = [...new Set(L.map(exercise => exercise[1]))];
+const categories = [
+  ...new Set(EXERCISE_LIBRARY.map(exercise => exercise[1]))
+];
 
 categories.forEach(category => {
   $('libCat').insertAdjacentHTML(
     'beforeend',
-    `<option>${category}</option>`
+    `<option value="${escapeHtml(category)}">${escapeHtml(category)}</option>`
   );
 });
 
-$('libSearch').oninput = renderLib;
-$('libCat').onchange = renderLib;
+$('libSearch').oninput = renderLibrary;
+$('libCat').onchange = renderLibrary;
 
-function renderLib() {
+function renderLibrary() {
   const search = $('libSearch').value.toLowerCase();
   const category = $('libCat').value;
   const container = $('library');
 
   container.innerHTML = '';
 
-  L
+  EXERCISE_LIBRARY
     .filter(exercise => {
-      const categoryMatch = !category || exercise[1] === category;
-      const searchMatch =
+      const categoryMatches =
+        !category || exercise[1] === category;
+
+      const searchMatches =
         !search ||
         exercise.join(' ').toLowerCase().includes(search);
 
-      return categoryMatch && searchMatch;
+      return categoryMatches && searchMatches;
     })
     .forEach(exercise => {
       const item = document.createElement('div');
@@ -608,24 +640,24 @@ function renderLib() {
       item.className = 'lib';
 
       item.innerHTML = `
-        <b>${esc(exercise[0])}</b>
-        <small>${esc(exercise[1])}</small>
+        <b>${escapeHtml(exercise[0])}</b>
+        <small>${escapeHtml(exercise[1])}</small>
 
         <p>
           <small>
-            ${exercise[2]} series
+            ${escapeHtml(exercise[2])} series
             ·
-            ${exercise[3]}
+            ${escapeHtml(exercise[3])}
             ·
-            descanso ${exercise[4] || '-'}
+            descanso ${escapeHtml(exercise[4] || '-')}
           </small>
         </p>
 
-        <button>Agregar a ${day}</button>
+        <button>Agregar a ${escapeHtml(selectedDay)}</button>
       `;
 
       item.querySelector('button').onclick = () => {
-        draft.push({
+        draftExercises.push({
           name: exercise[0],
           sets: exercise[2],
           reps: exercise[3],
@@ -643,14 +675,14 @@ function renderLib() {
     });
 }
 
-async function loadPublic() {
+async function loadPublicClients() {
   const { data, error } = await sb
     .from('clients')
     .select('id,name,goal')
     .eq('active', true)
     .order('name');
 
-  window.pub = data || [];
+  window.publicClients = data || [];
 
   if (error) {
     $('results').innerHTML =
@@ -658,21 +690,26 @@ async function loadPublic() {
     return;
   }
 
-  renderResults();
+  renderPublicResults();
 }
 
-function renderResults() {
-  const search = $('search').value.toLowerCase();
+function renderPublicResults() {
+  const search = $('search').value.toLowerCase().trim();
   const container = $('results');
 
   container.innerHTML = '';
 
-  const results = (window.pub || []).filter(client =>
-    !search || client.name.toLowerCase().includes(search)
+  const results = (window.publicClients || []).filter(client =>
+    !search ||
+    client.name.toLowerCase().includes(search)
   );
 
-  if (!results.length && search) {
-    container.innerHTML = '<small>No se encontró ningún alumno.</small>';
+  if (!results.length) {
+    if (search) {
+      container.innerHTML =
+        '<small>No se encontró ningún alumno.</small>';
+    }
+
     return;
   }
 
@@ -682,27 +719,27 @@ function renderResults() {
     button.className = 'public-result';
 
     button.innerHTML = `
-      <b>${esc(client.name)}</b>
-      <small>${esc(client.goal || '')}</small>
+      <b>${escapeHtml(client.name)}</b>
+      <small>${escapeHtml(client.goal || '')}</small>
     `;
 
     button.onclick = () => {
-      showPublic(client);
+      showPublicPlan(client);
     };
 
     container.appendChild(button);
   });
 }
 
-$('search').oninput = renderResults;
+$('search').oninput = renderPublicResults;
 
-async function showPublic(client) {
-  const { data: plans, error: planError } = await sb
+async function showPublicPlan(client) {
+  const { data: plans, error: plansError } = await sb
     .from('workout_plans')
     .select('id,day_of_week')
     .eq('client_id', client.id);
 
-  if (planError) {
+  if (plansError) {
     $('publicPlan').innerHTML =
       '<div class="error">No se pudo cargar la planificación.</div>';
     $('publicPlan').classList.remove('hidden');
@@ -731,42 +768,46 @@ async function showPublic(client) {
   }
 
   let html = `
-    <h2>${esc(client.name)}</h2>
-    <small>${esc(client.goal || '')}</small>
+    <h2>${escapeHtml(client.name)}</h2>
+    <small>${escapeHtml(client.goal || '')}</small>
   `;
 
-  D.forEach(dayName => {
+  DAYS.forEach(dayName => {
     const plan = (plans || []).find(
       item => item.day_of_week === dayName
     );
 
     const dayExercises = plan
-      ? exercises.filter(exercise => exercise.plan_id === plan.id)
+      ? exercises.filter(
+          exercise => exercise.plan_id === plan.id
+        )
       : [];
 
     html += `
       <div class="plan-day">
-        <h3>${dayName}</h3>
+        <h3>${escapeHtml(dayName)}</h3>
     `;
 
     if (dayExercises.length) {
-      html += dayExercises.map(exercise => `
-        <div class="public-ex">
-          <b>${esc(exercise.exercise_name)}</b>
+      html += dayExercises
+        .map(exercise => `
+          <div class="public-ex">
+            <b>${escapeHtml(exercise.exercise_name)}</b>
 
-          <small>
-            ${esc(exercise.sets || '-')} series
-            ·
-            ${esc(exercise.reps || '-')}
-            ·
-            carga ${esc(exercise.load || '-')}
-            ·
-            descanso ${esc(exercise.rest || '-')}
-          </small>
+            <small>
+              ${escapeHtml(exercise.sets || '-')} series
+              ·
+              ${escapeHtml(exercise.reps || '-')}
+              ·
+              carga ${escapeHtml(exercise.load || '-')}
+              ·
+              descanso ${escapeHtml(exercise.rest || '-')}
+            </small>
 
-          <div>${esc(exercise.notes || '')}</div>
-        </div>
-      `).join('');
+            <div>${escapeHtml(exercise.notes || '')}</div>
+          </div>
+        `)
+        .join('');
     } else {
       html += '<small>Sin ejercicios.</small>';
     }
@@ -776,18 +817,25 @@ async function showPublic(client) {
 
   $('publicPlan').innerHTML = html;
   $('publicPlan').classList.remove('hidden');
+
+  window.scrollTo({
+    top: $('publicPlan').offsetTop - 20,
+    behavior: 'smooth'
+  });
 }
 
 $('preview').onclick = async () => {
-  const client = clients.find(item => item.id === sel);
+  const client = clients.find(
+    item => item.id === selectedClientId
+  );
 
   if (!client) {
     alert('Seleccioná un alumno.');
     return;
   }
 
-  await publicMode();
-  await showPublic(client);
+  await showPublicMode();
+  await showPublicPlan(client);
 };
 
-loadPublic();
+loadPublicClients();
