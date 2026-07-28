@@ -20,12 +20,7 @@ body {
 }
 
 header {
-  background: linear-gradient(
-    135deg,
-    var(--a),
-    var(--b)
-  );
-
+  background: linear-gradient(135deg, var(--a), var(--b));
   color: #ffffff;
   padding: 14px 16px;
 }
@@ -53,11 +48,11 @@ main {
 }
 
 .logo-activo {
-  width: 210px;
-  height: 105px;
+  width: 130px;
+  height: 70px;
   object-fit: contain;
   display: block;
-  border-radius: 12px;
+  border-radius: 10px;
 }
 
 .brand-text {
@@ -239,12 +234,7 @@ label input[type="checkbox"] {
 
 .library {
   display: grid;
-  grid-template-columns:
-    repeat(
-      auto-fill,
-      minmax(220px, 1fr)
-    );
-
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 10px;
 }
 
@@ -277,7 +267,6 @@ small {
 }
 
 @media (max-width: 760px) {
-
   .grid,
   .cols {
     grid-template-columns: 1fr;
@@ -305,8 +294,8 @@ small {
   }
 
   .logo-activo {
-    width: min(310px, 92vw);
-    height: 145px;
+    width: 170px;
+    height: 90px;
   }
 
   .brand-text b {
