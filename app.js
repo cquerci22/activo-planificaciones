@@ -8,73 +8,47 @@ const DAYS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
 const EXERCISE_LIBRARY = [
   ['Sentadilla libre', 'Tren inferior', '4', '8-10', '90 s'],
   ['Sentadilla goblet', 'Tren inferior', '3', '10-12', '60 s'],
-  ['Prensa de piernas', 'Tren inferior', '4', '10-12', '90 s'],
-  ['Peso muerto rumano', 'Tren inferior', '4', '8-10', '90 s'],
-  ['Hip thrust', 'Tren inferior', '4', '10-12', '75 s'],
-  ['Zancadas', 'Tren inferior', '3', '10 por pierna', '60 s'],
-  ['Sentadilla búlgara', 'Tren inferior', '3', '8-10 por pierna', '75 s'],
-  ['Press de banca', 'Tren superior', '4', '8-10', '90 s'],
-  ['Remo con barra', 'Tren superior', '4', '8-10', '90 s'],
-  ['Jalón al pecho', 'Tren superior', '4', '10-12', '75 s'],
-  ['Press militar', 'Tren superior', '4', '8-10', '90 s'],
-  ['Elevaciones laterales', 'Tren superior', '3', '12-15', '45 s'],
-  ['Curl de bíceps', 'Tren superior', '3', '10-12', '45 s'],
-  ['Tríceps en polea', 'Tren superior', '3', '12-15', '45 s'],
-  ['Plancha frontal', 'Core', '3', '30-45 s', '45 s'],
-  ['Plancha lateral', 'Core', '3', '25-40 s', '45 s'],
-  ['Dead bug', 'Core', '3', '10 por lado', '45 s'],
-  ['Pallof press', 'Core', '3', '10-12 por lado', '45 s'],
-  ['Burpees', 'Funcional', '4', '8-12', '45 s'],
-  ['Kettlebell swing', 'Funcional', '4', '15', '45 s'],
-  ['Battle ropes', 'Funcional', '4', '30 s', '30 s'],
-  ['Farmer walk', 'Funcional', '4', '20-30 m', '60 s'],
-  ['Step up al cajón', 'Funcional', '3', '10 por pierna', '60 s'],
-  ['Box jump', 'Funcional', '4', '5-8', '75 s'],
-  ['Thruster', 'Funcional', '4', '8-10', '75 s'],
-  ['Caminata en cinta', 'Cardio', '1', '15-30 min', ''],
-  ['Bicicleta fija', 'Cardio', '1', '15-30 min', ''],
-  ['Remo ergómetro', 'Cardio', '5', '1 min', '1 min'],
-  ['Soga', 'Cardio', '5', '1 min', '30 s'],
-  ['Movilidad de tobillo', 'Movilidad', '2', '10 por lado', ''],
-  ['Rotación torácica', 'Movilidad', '2', '8 por lado', ''],
-  ['Flexores de cadera', 'Movilidad', '2', '30 s por lado', ''],
-  ['Cat-cow', 'Movilidad', '2', '10', '']
-  // TREN INFERIOR
-  ['Peso muerto convencional', 'Tren inferior', '4', '6-8', '120 s'],
-  ['Peso muerto sumo', 'Tren inferior', '4', '6-10', '120 s'],
-  ['Peso muerto con trap bar', 'Tren inferior', '4', '6-8', '120 s'],
-  ['Peso muerto a una pierna', 'Tren inferior', '3', '8-10 por pierna', '75 s'],
-  ['Buenos días con barra', 'Tren inferior', '3', '10-12', '75 s'],
   ['Sentadilla frontal', 'Tren inferior', '4', '6-10', '120 s'],
   ['Sentadilla sumo con mancuerna', 'Tren inferior', '3', '10-15', '60 s'],
   ['Sentadilla a cajón', 'Tren inferior', '4', '8-10', '90 s'],
   ['Sentadilla Hack', 'Tren inferior', '4', '8-12', '90 s'],
   ['Sentadilla en multipower', 'Tren inferior', '4', '8-12', '90 s'],
+  ['Prensa de piernas', 'Tren inferior', '4', '10-12', '90 s'],
   ['Prensa inclinada unilateral', 'Tren inferior', '3', '10-12 por pierna', '75 s'],
+  ['Peso muerto convencional', 'Tren inferior', '4', '6-8', '120 s'],
+  ['Peso muerto sumo', 'Tren inferior', '4', '6-10', '120 s'],
+  ['Peso muerto con trap bar', 'Tren inferior', '4', '6-8', '120 s'],
+  ['Peso muerto rumano', 'Tren inferior', '4', '8-10', '90 s'],
+  ['Peso muerto a una pierna', 'Tren inferior', '3', '8-10 por pierna', '75 s'],
+  ['Buenos días con barra', 'Tren inferior', '3', '10-12', '75 s'],
+  ['Hip thrust', 'Tren inferior', '4', '10-12', '75 s'],
+  ['Hip thrust unilateral', 'Tren inferior', '3', '10-12 por pierna', '75 s'],
+  ['Puente de glúteos', 'Tren inferior', '4', '12-15', '60 s'],
+  ['Zancadas', 'Tren inferior', '3', '10 por pierna', '60 s'],
+  ['Zancada hacia atrás', 'Tren inferior', '3', '10 por pierna', '60 s'],
+  ['Zancada lateral', 'Tren inferior', '3', '10 por lado', '60 s'],
+  ['Zancadas caminando', 'Tren inferior', '3', '12 pasos por pierna', '75 s'],
+  ['Sentadilla búlgara', 'Tren inferior', '3', '8-10 por pierna', '75 s'],
+  ['Subida al banco', 'Tren inferior', '3', '10 por pierna', '60 s'],
+  ['Subida al banco con rodilla arriba', 'Tren inferior', '3', '10 por pierna', '60 s'],
   ['Extensión de cuádriceps', 'Tren inferior', '3', '12-15', '60 s'],
   ['Extensión de cuádriceps unilateral', 'Tren inferior', '3', '10-15 por pierna', '60 s'],
   ['Curl femoral acostado', 'Tren inferior', '3', '10-15', '60 s'],
   ['Curl femoral sentado', 'Tren inferior', '3', '10-15', '60 s'],
   ['Curl femoral unilateral', 'Tren inferior', '3', '10-12 por pierna', '60 s'],
-  ['Puente de glúteos', 'Tren inferior', '4', '12-15', '60 s'],
-  ['Hip thrust unilateral', 'Tren inferior', '3', '10-12 por pierna', '75 s'],
   ['Patada de glúteos en polea', 'Tren inferior', '3', '12-15 por pierna', '45 s'],
   ['Abducción de cadera en máquina', 'Tren inferior', '3', '15-20', '45 s'],
   ['Aducción de cadera en máquina', 'Tren inferior', '3', '15-20', '45 s'],
-  ['Zancada hacia atrás', 'Tren inferior', '3', '10 por pierna', '60 s'],
-  ['Zancada lateral', 'Tren inferior', '3', '10 por lado', '60 s'],
-  ['Zancadas caminando', 'Tren inferior', '3', '12 pasos por pierna', '75 s'],
-  ['Subida al banco con rodilla arriba', 'Tren inferior', '3', '10 por pierna', '60 s'],
+  ['Caminata lateral con minibanda', 'Tren inferior', '3', '12 pasos por lado', '45 s'],
+  ['Monster walk con minibanda', 'Tren inferior', '3', '12 pasos por dirección', '45 s'],
   ['Elevación de talones de pie', 'Tren inferior', '4', '15-20', '45 s'],
   ['Elevación de talones sentado', 'Tren inferior', '4', '15-20', '45 s'],
   ['Elevación de talón unilateral', 'Tren inferior', '3', '12-15 por pierna', '45 s'],
-  ['Caminata lateral con minibanda', 'Tren inferior', '3', '12 pasos por lado', '45 s'],
-  ['Monster walk con minibanda', 'Tren inferior', '3', '12 pasos hacia cada dirección', '45 s'],
 
-  // PECHO
+  ['Press de banca', 'Tren superior', '4', '8-10', '90 s'],
+  ['Press plano con mancuernas', 'Tren superior', '4', '8-12', '75 s'],
   ['Press inclinado con barra', 'Tren superior', '4', '8-10', '90 s'],
   ['Press inclinado con mancuernas', 'Tren superior', '4', '8-12', '75 s'],
-  ['Press plano con mancuernas', 'Tren superior', '4', '8-12', '75 s'],
   ['Press declinado con barra', 'Tren superior', '4', '8-10', '90 s'],
   ['Press de pecho en máquina', 'Tren superior', '3', '10-12', '75 s'],
   ['Aperturas con mancuernas', 'Tren superior', '3', '12-15', '60 s'],
@@ -86,14 +60,15 @@ const EXERCISE_LIBRARY = [
   ['Flexiones inclinadas', 'Tren superior', '3', '10-15', '60 s'],
   ['Flexiones con manos cerradas', 'Tren superior', '3', '8-15', '60 s'],
 
-  // ESPALDA
   ['Dominadas pronas', 'Tren superior', '4', '6-10', '90 s'],
   ['Dominadas supinas', 'Tren superior', '4', '6-10', '90 s'],
   ['Dominadas asistidas', 'Tren superior', '4', '8-12', '75 s'],
+  ['Jalón al pecho', 'Tren superior', '4', '10-12', '75 s'],
   ['Jalón al pecho agarre cerrado', 'Tren superior', '4', '10-12', '75 s'],
   ['Jalón al pecho agarre supino', 'Tren superior', '4', '10-12', '75 s'],
   ['Jalón unilateral en polea', 'Tren superior', '3', '10-12 por lado', '60 s'],
   ['Pullover en polea', 'Tren superior', '3', '12-15', '60 s'],
+  ['Remo con barra', 'Tren superior', '4', '8-10', '90 s'],
   ['Remo con mancuerna unilateral', 'Tren superior', '4', '8-12 por lado', '75 s'],
   ['Remo en máquina', 'Tren superior', '4', '10-12', '75 s'],
   ['Remo sentado en polea', 'Tren superior', '4', '10-12', '75 s'],
@@ -103,19 +78,20 @@ const EXERCISE_LIBRARY = [
   ['Face pull', 'Tren superior', '3', '12-15', '45 s'],
   ['Encogimientos con mancuernas', 'Tren superior', '3', '12-15', '60 s'],
 
-  // HOMBROS
-  ['Press Arnold', 'Tren superior', '4', '8-12', '75 s'],
+  ['Press militar', 'Tren superior', '4', '8-10', '90 s'],
   ['Press militar con mancuernas', 'Tren superior', '4', '8-12', '75 s'],
+  ['Press Arnold', 'Tren superior', '4', '8-12', '75 s'],
   ['Press de hombros en máquina', 'Tren superior', '3', '10-12', '75 s'],
+  ['Elevaciones laterales', 'Tren superior', '3', '12-15', '45 s'],
+  ['Elevación lateral unilateral en polea', 'Tren superior', '3', '12-15 por lado', '45 s'],
   ['Elevación frontal con mancuernas', 'Tren superior', '3', '12-15', '45 s'],
   ['Elevación frontal con disco', 'Tren superior', '3', '12-15', '45 s'],
-  ['Elevación lateral unilateral en polea', 'Tren superior', '3', '12-15 por lado', '45 s'],
   ['Pájaros con mancuernas', 'Tren superior', '3', '12-15', '45 s'],
   ['Pájaros en máquina', 'Tren superior', '3', '12-15', '45 s'],
   ['Remo al mentón con barra', 'Tren superior', '3', '10-12', '60 s'],
   ['Rotación externa con banda', 'Tren superior', '3', '12-15 por lado', '45 s'],
 
-  // BÍCEPS
+  ['Curl de bíceps', 'Tren superior', '3', '10-12', '45 s'],
   ['Curl con barra recta', 'Tren superior', '3', '8-12', '60 s'],
   ['Curl con barra Z', 'Tren superior', '3', '8-12', '60 s'],
   ['Curl alternado con mancuernas', 'Tren superior', '3', '10-12 por brazo', '45 s'],
@@ -126,7 +102,7 @@ const EXERCISE_LIBRARY = [
   ['Curl en polea baja', 'Tren superior', '3', '12-15', '45 s'],
   ['Curl Bayesian en polea', 'Tren superior', '3', '10-15 por brazo', '45 s'],
 
-  // TRÍCEPS
+  ['Tríceps en polea', 'Tren superior', '3', '12-15', '45 s'],
   ['Fondos en paralelas', 'Tren superior', '4', '6-12', '90 s'],
   ['Fondos asistidos', 'Tren superior', '3', '8-15', '75 s'],
   ['Press francés con barra Z', 'Tren superior', '3', '8-12', '60 s'],
@@ -137,7 +113,16 @@ const EXERCISE_LIBRARY = [
   ['Patada de tríceps con mancuerna', 'Tren superior', '3', '12-15 por brazo', '45 s'],
   ['Press de banca agarre cerrado', 'Tren superior', '4', '8-10', '90 s'],
 
-  // CORE
+  ['Plancha frontal', 'Core', '3', '30-45 s', '45 s'],
+  ['Plancha lateral', 'Core', '3', '25-40 s', '45 s'],
+  ['Plancha con apoyo de antebrazos', 'Core', '3', '30-60 s', '45 s'],
+  ['Plancha con toque de hombros', 'Core', '3', '10-15 por lado', '45 s'],
+  ['Plancha con desplazamiento lateral', 'Core', '3', '8-10 por lado', '45 s'],
+  ['Plancha Copenhagen', 'Core', '3', '20-30 s por lado', '60 s'],
+  ['Dead bug', 'Core', '3', '10 por lado', '45 s'],
+  ['Bird dog', 'Core', '3', '10 por lado', '45 s'],
+  ['Pallof press', 'Core', '3', '10-12 por lado', '45 s'],
+  ['Pallof press de rodillas', 'Core', '3', '10-12 por lado', '45 s'],
   ['Crunch abdominal', 'Core', '3', '15-20', '45 s'],
   ['Crunch en polea alta', 'Core', '3', '12-15', '45 s'],
   ['Crunch en máquina', 'Core', '3', '12-20', '45 s'],
@@ -145,22 +130,27 @@ const EXERCISE_LIBRARY = [
   ['Elevación de rodillas colgado', 'Core', '3', '8-15', '60 s'],
   ['Elevación de piernas colgado', 'Core', '3', '8-12', '60 s'],
   ['Rueda abdominal', 'Core', '3', '8-12', '60 s'],
-  ['Bird dog', 'Core', '3', '10 por lado', '45 s'],
   ['Hollow hold', 'Core', '3', '20-40 s', '45 s'],
   ['Superman', 'Core', '3', '12-15', '45 s'],
   ['Russian twist', 'Core', '3', '16-20 totales', '45 s'],
   ['Mountain climbers', 'Core', '4', '30-40 s', '30 s'],
-  ['Plancha con apoyo de antebrazos', 'Core', '3', '30-60 s', '45 s'],
-  ['Plancha con toque de hombros', 'Core', '3', '10-15 por lado', '45 s'],
-  ['Plancha con desplazamiento lateral', 'Core', '3', '8-10 por lado', '45 s'],
-  ['Plancha Copenhagen', 'Core', '3', '20-30 s por lado', '60 s'],
-  ['Pallof press de rodillas', 'Core', '3', '10-12 por lado', '45 s'],
   ['Caminata del granjero unilateral', 'Core', '3', '20-30 m por lado', '60 s'],
 
-  // FUNCIONAL
+  ['Burpees', 'Funcional', '4', '8-12', '45 s'],
+  ['Kettlebell swing', 'Funcional', '4', '15', '45 s'],
   ['Clean con kettlebell', 'Funcional', '4', '8 por brazo', '60 s'],
   ['Snatch con kettlebell', 'Funcional', '4', '6-8 por brazo', '75 s'],
   ['Turkish get up', 'Funcional', '3', '3-5 por lado', '90 s'],
+  ['Battle ropes', 'Funcional', '4', '30 s', '30 s'],
+  ['Farmer walk', 'Funcional', '4', '20-30 m', '60 s'],
+  ['Carga de granjero', 'Funcional', '4', '20-40 m', '60 s'],
+  ['Step up al cajón', 'Funcional', '3', '10 por pierna', '60 s'],
+  ['Box jump', 'Funcional', '4', '5-8', '75 s'],
+  ['Salto al cajón con descenso controlado', 'Funcional', '4', '5-8', '75 s'],
+  ['Salto horizontal', 'Funcional', '4', '5-6', '75 s'],
+  ['Salto lateral sobre línea', 'Funcional', '4', '20-30 s', '30 s'],
+  ['Thruster', 'Funcional', '4', '8-10', '75 s'],
+  ['Thruster con mancuernas', 'Funcional', '4', '8-12', '75 s'],
   ['Devil press', 'Funcional', '4', '8-10', '75 s'],
   ['Wall ball', 'Funcional', '4', '12-15', '45 s'],
   ['Lanzamiento de balón medicinal al suelo', 'Funcional', '4', '10-15', '45 s'],
@@ -169,42 +159,43 @@ const EXERCISE_LIBRARY = [
   ['Arrastre de trineo', 'Funcional', '5', '15-25 m', '75 s'],
   ['Gateo de oso', 'Funcional', '4', '15-20 m', '45 s'],
   ['Gateo lateral', 'Funcional', '3', '10-15 m por lado', '45 s'],
-  ['Salto al cajón con descenso controlado', 'Funcional', '4', '5-8', '75 s'],
-  ['Salto horizontal', 'Funcional', '4', '5-6', '75 s'],
-  ['Salto lateral sobre línea', 'Funcional', '4', '20-30 s', '30 s'],
   ['Estocada con rotación de balón', 'Funcional', '3', '10 por lado', '60 s'],
-  ['Thruster con mancuernas', 'Funcional', '4', '8-12', '75 s'],
   ['Renegade row', 'Funcional', '3', '8-10 por lado', '75 s'],
   ['Man maker', 'Funcional', '4', '6-8', '90 s'],
   ['Sandbag clean', 'Funcional', '4', '8-10', '75 s'],
-  ['Carga de granjero', 'Funcional', '4', '20-40 m', '60 s'],
 
-  // CARDIO
+  ['Caminata en cinta', 'Cardio', '1', '15-30 min', ''],
   ['Cinta caminata con inclinación', 'Cardio', '1', '15-30 min', ''],
   ['Cinta intervalos de carrera', 'Cardio', '8', '30 s rápido', '60 s suave'],
+  ['Bicicleta fija', 'Cardio', '1', '15-30 min', ''],
   ['Bicicleta intervalos', 'Cardio', '10', '30 s intenso', '60 s suave'],
   ['Air bike intervalos', 'Cardio', '10', '20 s intenso', '40 s suave'],
+  ['Remo ergómetro', 'Cardio', '5', '1 min', '1 min'],
   ['Remo intervalos cortos', 'Cardio', '10', '30 s intenso', '30 s suave'],
   ['Remo intervalos largos', 'Cardio', '5', '2 min intenso', '1 min suave'],
+  ['Soga', 'Cardio', '5', '1 min', '30 s'],
   ['Soga doble salto', 'Cardio', '5', '30-45 s', '30 s'],
   ['Soga salto alternado', 'Cardio', '5', '1 min', '30 s'],
   ['Escalador en máquina', 'Cardio', '1', '10-20 min', ''],
   ['Circuito aeróbico continuo', 'Cardio', '1', '20-30 min', ''],
 
-  // MOVILIDAD
+  ['Movilidad de tobillo', 'Movilidad', '2', '10 por lado', ''],
+  ['Movilidad de tobillo contra pared', 'Movilidad', '2', '10 por lado', ''],
   ['Movilidad de cadera 90-90', 'Movilidad', '2', '8 por lado', ''],
   ['Rotación interna de cadera', 'Movilidad', '2', '10 por lado', ''],
   ['Rotación externa de cadera', 'Movilidad', '2', '10 por lado', ''],
+  ['Flexores de cadera', 'Movilidad', '2', '30 s por lado', ''],
   ['Estiramiento de glúteos', 'Movilidad', '2', '30 s por lado', ''],
   ['Estiramiento de isquiotibiales', 'Movilidad', '2', '30 s por lado', ''],
   ['Estiramiento de cuádriceps', 'Movilidad', '2', '30 s por lado', ''],
   ['Estiramiento de aductores', 'Movilidad', '2', '30 s por lado', ''],
-  ['Movilidad de tobillo contra pared', 'Movilidad', '2', '10 por lado', ''],
   ['Movilidad de hombros con banda', 'Movilidad', '2', '12-15', ''],
   ['Dislocaciones de hombro con banda', 'Movilidad', '2', '10-12', ''],
   ['Rotación externa de hombro con banda', 'Movilidad', '2', '12 por lado', ''],
+  ['Rotación torácica', 'Movilidad', '2', '8 por lado', ''],
   ['Rotación torácica en cuadrupedia', 'Movilidad', '2', '8 por lado', ''],
   ['Extensión torácica sobre foam roller', 'Movilidad', '2', '8-10', ''],
+  ['Cat-cow', 'Movilidad', '2', '10', ''],
   ['Postura del niño', 'Movilidad', '2', '30-45 s', ''],
   ['Perro boca abajo', 'Movilidad', '2', '30-45 s', ''],
   ['Estocada con rotación torácica', 'Movilidad', '2', '6-8 por lado', ''],
@@ -232,13 +223,11 @@ function escapeHtml(value) {
 function showMessage(text, type = 'ok') {
   const msg = $('msg');
 
-  if (!msg) {
-    return;
-  }
+  if (!msg) return;
 
   msg.innerHTML = `<div class="${type}">${escapeHtml(text)}</div>`;
 
-  window.setTimeout(() => {
+  setTimeout(() => {
     msg.innerHTML = '';
   }, 3000);
 }
@@ -286,7 +275,6 @@ async function loadClients() {
   }
 
   clients = data || [];
-
   renderClients();
   renderPlanner();
 }
@@ -447,9 +435,7 @@ async function saveClient() {
 async function deleteClient(client) {
   const confirmed = confirm(`¿Eliminar a ${client.name}?`);
 
-  if (!confirmed) {
-    return;
-  }
+  if (!confirmed) return;
 
   const { error } = await sb
     .from('clients')
@@ -468,7 +454,6 @@ async function deleteClient(client) {
   }
 
   await loadClients();
-
   showMessage('Cliente eliminado.');
 }
 
@@ -476,9 +461,7 @@ async function loadSelectedDay() {
   draftExercises = [];
   currentPlanId = null;
 
-  if (!selectedClientId) {
-    return;
-  }
+  if (!selectedClientId) return;
 
   const { data: plan, error } = await sb
     .from('workout_plans')
@@ -492,9 +475,7 @@ async function loadSelectedDay() {
     return;
   }
 
-  if (!plan) {
-    return;
-  }
+  if (!plan) return;
 
   currentPlanId = plan.id;
 
@@ -525,9 +506,7 @@ function renderPlanner() {
   $('empty').classList.toggle('hidden', Boolean(client));
   $('planner').classList.toggle('hidden', !client);
 
-  if (!client) {
-    return;
-  }
+  if (!client) return;
 
   $('clientTitle').textContent = client.name;
   $('clientGoal').textContent = client.goal || '';
@@ -540,8 +519,7 @@ function renderPlanner() {
     const button = document.createElement('button');
 
     button.textContent = dayName;
-    button.className =
-      `day ${dayName === selectedDay ? 'active' : ''}`;
+    button.className = `day ${dayName === selectedDay ? 'active' : ''}`;
 
     button.addEventListener('click', async () => {
       selectedDay = dayName;
@@ -610,14 +588,13 @@ function renderExercises() {
       </div>
     `;
 
-    ['name', 'sets', 'reps', 'load', 'rest', 'notes']
-      .forEach(field => {
-        item
-          .querySelector(`.${field}`)
-          .addEventListener('input', event => {
-            exercise[field] = event.target.value;
-          });
-      });
+    ['name', 'sets', 'reps', 'load', 'rest', 'notes'].forEach(field => {
+      item
+        .querySelector(`.${field}`)
+        .addEventListener('input', event => {
+          exercise[field] = event.target.value;
+        });
+    });
 
     item.querySelector('.rm').addEventListener('click', () => {
       draftExercises.splice(index, 1);
@@ -695,7 +672,6 @@ function openLibrary() {
   }
 
   $('libraryModal').classList.remove('hidden');
-
   renderLibrary();
 }
 
@@ -987,7 +963,6 @@ function bindEvents() {
   });
 
   $('saveClient').addEventListener('click', saveClient);
-
   $('cancel').addEventListener('click', clearClientForm);
 
   $('manual').addEventListener('click', () => {
@@ -1003,39 +978,17 @@ function bindEvents() {
     renderExercises();
   });
 
-  $('saveDay').addEventListener(
-    'click',
-    saveSelectedDay
-  );
-
-  $('libraryBtn').addEventListener(
-    'click',
-    openLibrary
-  );
-
-  $('fromLib').addEventListener(
-    'click',
-    openLibrary
-  );
+  $('saveDay').addEventListener('click', saveSelectedDay);
+  $('libraryBtn').addEventListener('click', openLibrary);
+  $('fromLib').addEventListener('click', openLibrary);
 
   $('closeLib').addEventListener('click', () => {
     $('libraryModal').classList.add('hidden');
   });
 
-  $('libSearch').addEventListener(
-    'input',
-    renderLibrary
-  );
-
-  $('libCat').addEventListener(
-    'change',
-    renderLibrary
-  );
-
-  $('search').addEventListener(
-    'input',
-    renderPublicResults
-  );
+  $('libSearch').addEventListener('input', renderLibrary);
+  $('libCat').addEventListener('change', renderLibrary);
+  $('search').addEventListener('input', renderPublicResults);
 
   $('preview').addEventListener('click', async () => {
     const client = clients.find(
