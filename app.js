@@ -348,7 +348,7 @@ async function editClient(client) {
   }
 
   if (client.created_by !== userData.user.id) {
-    showMessage('No tenés permiso para editar este alumno.', 'error');
+        showMessage('No tenés permiso para editar este alumno.', 'error');
     return;
   }
 
@@ -357,7 +357,8 @@ async function editClient(client) {
   $('active').checked = Boolean(client.active);
   $('editId').value = client.id;
   $('cancel').classList.remove('hidden');
-    const { data, error } = await sb
+
+  const { data, error } = await sb
     .from('client_private_notes')
     .select('notes')
     .eq('client_id', client.id)
@@ -774,17 +775,39 @@ function renderLibrary() {
     });
 }
 async function loadPublicClients() {
+  const params = new URLSearchParams(window.location.search);
+  const profe = (params.get('profe') || '').toLowerCase().trim();
+
+  const PROFESSORS = {
+    cristian: '5d1005e9-ca80-49db-9ed6-8309ac9c16fd',
+    jero: 'b03b6b12-46f1-44b5-842e-3931fe4ea875',
+    nico: '873b7f5e-fa25-4451-a03f-26ee20af5b7d',
+    rodri: '1f51bcf5-8092-436f-bbd2-09c35b1990b1'
+  };
+
+  const professorId = PROFESSORS[profe];
+
+  if (!professorId) {
+    window.publicClients = [];
+
+    $('results').innerHTML =
+      '<div class="error">Este enlace no corresponde a ningún profesor.</div>';
+
+    return;
+  }
+
   const { data, error } = await sb
     .from('clients')
     .select('id,name,goal')
     .eq('active', true)
+    .eq('created_by', professorId)
     .order('name');
 
   window.publicClients = data || [];
 
   if (error) {
     $('results').innerHTML =
-      '<div class="error">No se pudieron cargar los clientes.</div>';
+      '<div class="error">No se pudieron cargar los alumnos.</div>';
 
     return;
   }
