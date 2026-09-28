@@ -264,9 +264,17 @@ async function showAdminMode() {
 }
 
 async function loadClients() {
+  const { data: userData, error: userError } = await sb.auth.getUser();
+
+  if (userError || !userData.user) {
+    showMessage('No se pudo identificar al profesor.', 'error');
+    return;
+  }
+
   const { data, error } = await sb
     .from('clients')
     .select('*')
+    .eq('created_by', userData.user.id)
     .order('name');
 
   if (error) {
@@ -332,13 +340,24 @@ function renderClients() {
 }
 
 async function editClient(client) {
+  const { data: userData, error: userError } = await sb.auth.getUser();
+
+  if (userError || !userData.user) {
+    showMessage('No se pudo identificar al profesor.', 'error');
+    return;
+  }
+
+  if (client.created_by !== userData.user.id) {
+    showMessage('No tenés permiso para editar este alumno.', 'error');
+    return;
+  }
+
   $('name').value = client.name || '';
   $('goal').value = client.goal || '';
   $('active').checked = Boolean(client.active);
   $('editId').value = client.id;
   $('cancel').classList.remove('hidden');
-
-  const { data, error } = await sb
+    const { data, error } = await sb
     .from('client_private_notes')
     .select('notes')
     .eq('client_id', client.id)
@@ -367,6 +386,15 @@ async function saveClient() {
     return;
   }
 
+  const { data: userData, error: userError } = await sb.auth.getUser();
+
+  if (userError || !userData.user) {
+    showMessage('No se pudo identificar al profesor.', 'error');
+    return;
+  }
+
+  const professorId = userData.user.id;
+
   let clientId = $('editId').value;
 
   if (clientId) {
@@ -378,7 +406,8 @@ async function saveClient() {
         active,
         updated_at: new Date().toISOString()
       })
-      .eq('id', clientId);
+      .eq('id', clientId)
+      .eq('created_by', professorId);
 
     if (error) {
       showMessage(error.message, 'error');
@@ -390,7 +419,8 @@ async function saveClient() {
       .insert({
         name,
         goal,
-        active
+        active,
+        created_by: professorId
       })
       .select()
       .single();
@@ -437,10 +467,18 @@ async function deleteClient(client) {
 
   if (!confirmed) return;
 
+  const { data: userData, error: userError } = await sb.auth.getUser();
+
+  if (userError || !userData.user) {
+    showMessage('No se pudo identificar al profesor.', 'error');
+    return;
+  }
+
   const { error } = await sb
     .from('clients')
     .delete()
-    .eq('id', client.id);
+    .eq('id', client.id)
+    .eq('created_by', userData.user.id);
 
   if (error) {
     showMessage(error.message, 'error');
@@ -735,7 +773,6 @@ function renderLibrary() {
       container.appendChild(item);
     });
 }
-
 async function loadPublicClients() {
   const { data, error } = await sb
     .from('clients')
