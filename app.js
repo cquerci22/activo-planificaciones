@@ -1073,3 +1073,231 @@ async function startApp() {
 }
 
 document.addEventListener('DOMContentLoaded', startApp);
+/* ========================================
+   CRONÓMETRO DE DESCANSO
+======================================== */
+
+let restTimerSeconds = 90;
+let restTimerInitialSeconds = 90;
+let restTimerInterval = null;
+let restTimerRunning = false;
+
+function formatRestTimer(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+
+  return (
+    String(minutes).padStart(2, '0') +
+    ':' +
+    String(remainingSeconds).padStart(2, '0')
+  );
+}
+
+function updateRestTimerDisplay() {
+  const display = document.getElementById('timerDisplay');
+
+  if (!display) return;
+
+  display.textContent = formatRestTimer(restTimerSeconds);
+}
+
+function setRestTimer(seconds) {
+  clearInterval(restTimerInterval);
+
+  restTimerInterval = null;
+  restTimerRunning = false;
+
+  restTimerSeconds = seconds;
+  restTimerInitialSeconds = seconds;
+
+  updateRestTimerDisplay();
+
+  const timer = document.querySelector('.rest-timer');
+
+  if (timer) {
+    timer.classList.remove('finished');
+  }
+
+  const status = document.getElementById('timerStatus');
+
+  if (status) {
+    status.textContent = 'Listo para iniciar';
+  }
+
+  document.querySelectorAll('.timer-preset').forEach(button => {
+    button.classList.toggle(
+      'active',
+      Number(button.dataset.seconds) === seconds
+    );
+  });
+}
+
+function startRestTimer() {
+  if (restTimerRunning) return;
+
+  if (restTimerSeconds <= 0) {
+    restTimerSeconds = restTimerInitialSeconds;
+  }
+
+  restTimerRunning = true;
+
+  const timer = document.querySelector('.rest-timer');
+
+  if (timer) {
+    timer.classList.remove('finished');
+  }
+
+  const status = document.getElementById('timerStatus');
+
+  if (status) {
+    status.textContent = 'Descanso en curso...';
+  }
+
+  restTimerInterval = setInterval(() => {
+    restTimerSeconds--;
+
+    updateRestTimerDisplay();
+
+    if (restTimerSeconds <= 0) {
+      finishRestTimer();
+    }
+  }, 1000);
+}
+
+function pauseRestTimer() {
+  clearInterval(restTimerInterval);
+
+  restTimerInterval = null;
+  restTimerRunning = false;
+
+  const status = document.getElementById('timerStatus');
+
+  if (status && restTimerSeconds > 0) {
+    status.textContent = 'Cronómetro pausado';
+  }
+}
+
+function resetRestTimer() {
+  clearInterval(restTimerInterval);
+
+  restTimerInterval = null;
+  restTimerRunning = false;
+
+  restTimerSeconds = restTimerInitialSeconds;
+
+  updateRestTimerDisplay();
+
+  const timer = document.querySelector('.rest-timer');
+
+  if (timer) {
+    timer.classList.remove('finished');
+  }
+
+  const status = document.getElementById('timerStatus');
+
+  if (status) {
+    status.textContent = 'Listo para iniciar';
+  }
+}
+
+function finishRestTimer() {
+  clearInterval(restTimerInterval);
+
+  restTimerInterval = null;
+  restTimerRunning = false;
+  restTimerSeconds = 0;
+
+  updateRestTimerDisplay();
+
+  const timer = document.querySelector('.rest-timer');
+
+  if (timer) {
+    timer.classList.add('finished');
+  }
+
+  const status = document.getElementById('timerStatus');
+
+  if (status) {
+    status.textContent = '🔥 ¡Descanso terminado!';
+  }
+
+  if ('vibrate' in navigator) {
+    navigator.vibrate([250, 150, 250, 150, 400]);
+  }
+
+  playRestTimerSound();
+}
+
+function playRestTimerSound() {
+  try {
+    const AudioContext =
+      window.AudioContext || window.webkitAudioContext;
+
+    if (!AudioContext) return;
+
+    const audioContext = new AudioContext();
+
+    const beep = (startTime, frequency) => {
+      const oscillator = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+
+      oscillator.connect(gain);
+      gain.connect(audioContext.destination);
+
+      oscillator.frequency.value = frequency;
+      oscillator.type = 'sine';
+
+      gain.gain.setValueAtTime(
+        0.18,
+        audioContext.currentTime + startTime
+      );
+
+      gain.gain.exponentialRampToValueAtTime(
+        0.001,
+        audioContext.currentTime + startTime + 0.25
+      );
+
+      oscillator.start(
+        audioContext.currentTime + startTime
+      );
+
+      oscillator.stop(
+        audioContext.currentTime + startTime + 0.25
+      );
+    };
+
+    beep(0, 750);
+    beep(0.35, 850);
+    beep(0.70, 1000);
+
+  } catch (error) {
+    console.log('No se pudo reproducir el aviso del cronómetro.');
+  }
+}
+
+function initializeRestTimer() {
+  const startButton = document.getElementById('timerStart');
+  const pauseButton = document.getElementById('timerPause');
+  const resetButton = document.getElementById('timerReset');
+
+  if (!startButton || !pauseButton || !resetButton) {
+    return;
+  }
+
+  document.querySelectorAll('.timer-preset').forEach(button => {
+    button.addEventListener('click', () => {
+      setRestTimer(Number(button.dataset.seconds));
+    });
+  });
+
+  startButton.addEventListener('click', startRestTimer);
+  pauseButton.addEventListener('click', pauseRestTimer);
+  resetButton.addEventListener('click', resetRestTimer);
+
+  updateRestTimerDisplay();
+}
+
+document.addEventListener(
+  'DOMContentLoaded',
+  initializeRestTimer
+);
