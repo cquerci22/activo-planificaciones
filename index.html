@@ -153,6 +153,95 @@
             <h2 id="clientTitle"></h2>
             <small id="clientGoal"></small>
 
+            <!-- CRONÓMETRO DE DESCANSO -->
+            <div class="rest-timer">
+
+              <div class="timer-header">
+                <div>
+                  <h3>⏱ Cronómetro de descanso</h3>
+                  <small>Controlá el tiempo entre series</small>
+                </div>
+              </div>
+
+              <div
+                id="timerDisplay"
+                class="timer-display"
+              >
+                01:30
+              </div>
+
+              <div class="timer-presets">
+
+                <button
+                  type="button"
+                  class="timer-preset"
+                  data-seconds="30"
+                >
+                  30 s
+                </button>
+
+                <button
+                  type="button"
+                  class="timer-preset"
+                  data-seconds="60"
+                >
+                  60 s
+                </button>
+
+                <button
+                  type="button"
+                  class="timer-preset active"
+                  data-seconds="90"
+                >
+                  90 s
+                </button>
+
+                <button
+                  type="button"
+                  class="timer-preset"
+                  data-seconds="120"
+                >
+                  2 min
+                </button>
+
+              </div>
+
+              <div class="timer-controls">
+
+                <button
+                  type="button"
+                  id="timerStart"
+                  class="timer-start"
+                >
+                  ▶ Iniciar
+                </button>
+
+                <button
+                  type="button"
+                  id="timerPause"
+                >
+                  ⏸ Pausar
+                </button>
+
+                <button
+                  type="button"
+                  id="timerReset"
+                >
+                  ↻ Reiniciar
+                </button>
+
+              </div>
+
+              <div
+                id="timerStatus"
+                class="timer-status"
+              >
+                Listo para iniciar
+              </div>
+
+            </div>
+            <!-- FIN CRONÓMETRO -->
+
             <div
               id="days"
               class="days"
