@@ -266,7 +266,133 @@ small {
   color: var(--g);
 }
 
+
+/* ========================================
+   CRONÓMETRO DE DESCANSO
+======================================== */
+
+.rest-timer {
+  margin: 18px 0;
+  padding: 18px;
+  border-radius: 16px;
+  background: linear-gradient(
+    135deg,
+    #071b36,
+    var(--a)
+  );
+  color: #ffffff;
+  box-shadow: 0 8px 25px #0b3b7830;
+}
+
+.timer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.timer-header h3 {
+  margin: 0;
+  color: #ffffff;
+}
+
+.timer-header small {
+  display: block;
+  margin-top: 4px;
+  color: #ffffff;
+  opacity: 0.75;
+}
+
+.timer-display {
+  text-align: center;
+  font-size: 58px;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: 3px;
+  margin: 22px 0;
+  color: #ffffff;
+}
+
+.timer-presets {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.timer-preset {
+  background: #ffffff18;
+  color: #ffffff;
+  border: 1px solid #ffffff35;
+}
+
+.timer-preset:hover {
+  background: #ffffff25;
+}
+
+.timer-preset.active {
+  background: var(--r);
+  color: #ffffff;
+  border-color: var(--r);
+}
+
+.timer-controls {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 8px;
+}
+
+.timer-controls button {
+  min-height: 44px;
+}
+
+.timer-start {
+  background: #168a4f;
+  color: #ffffff;
+}
+
+.timer-status {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  opacity: 0.85;
+}
+
+.rest-timer.finished {
+  background: linear-gradient(
+    135deg,
+    #9f1820,
+    var(--r)
+  );
+}
+
+.rest-timer.finished .timer-display {
+  animation: timerPulse 0.6s ease-in-out 3;
+}
+
+@keyframes timerPulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.08);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+/* ========================================
+   CELULAR
+======================================== */
+
 @media (max-width: 760px) {
+
   .grid,
   .cols {
     grid-template-columns: 1fr;
@@ -305,5 +431,26 @@ small {
   #adminTop {
     width: 100%;
     margin-top: 8px;
+  }
+
+  .rest-timer {
+    padding: 15px;
+  }
+
+  .timer-display {
+    font-size: 52px;
+    margin: 20px 0;
+  }
+
+  .timer-presets {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .timer-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .timer-controls button {
+    width: 100%;
   }
 }
