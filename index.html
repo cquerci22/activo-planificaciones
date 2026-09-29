@@ -42,9 +42,14 @@
 
   <main>
 
+    <!-- =========================================
+         VISTA PÚBLICA / ALUMNOS
+    ========================================== -->
+
     <section id="public">
 
       <div class="card">
+
         <h2>Buscá tu planificación</h2>
 
         <input
@@ -53,14 +58,130 @@
         >
 
         <div id="results"></div>
+
       </div>
+
 
       <div
         id="publicPlan"
         class="card hidden"
       ></div>
 
+
+      <!-- CRONÓMETRO PARA LOS ALUMNOS -->
+
+      <div
+        id="studentTimer"
+        class="card rest-timer hidden"
+      >
+
+        <div class="timer-header">
+
+          <div>
+
+            <h3>
+              ⏱ Cronómetro de descanso
+            </h3>
+
+            <small>
+              Controlá tu descanso entre series
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <div
+          id="timerDisplay"
+          class="timer-display"
+        >
+          01:30
+        </div>
+
+
+        <div class="timer-presets">
+
+          <button
+            type="button"
+            class="timer-preset"
+            data-seconds="30"
+          >
+            30 s
+          </button>
+
+          <button
+            type="button"
+            class="timer-preset"
+            data-seconds="60"
+          >
+            60 s
+          </button>
+
+          <button
+            type="button"
+            class="timer-preset active"
+            data-seconds="90"
+          >
+            90 s
+          </button>
+
+          <button
+            type="button"
+            class="timer-preset"
+            data-seconds="120"
+          >
+            2 min
+          </button>
+
+        </div>
+
+
+        <div class="timer-controls">
+
+          <button
+            type="button"
+            id="timerStart"
+            class="timer-start"
+          >
+            ▶ Iniciar
+          </button>
+
+          <button
+            type="button"
+            id="timerPause"
+          >
+            ⏸ Pausar
+          </button>
+
+          <button
+            type="button"
+            id="timerReset"
+          >
+            ↻ Reiniciar
+          </button>
+
+        </div>
+
+
+        <div
+          id="timerStatus"
+          class="timer-status"
+        >
+          Listo para iniciar
+        </div>
+
+      </div>
+
+      <!-- FIN CRONÓMETRO -->
+
+
     </section>
+
+
+    <!-- =========================================
+         PANEL DEL PROFESOR
+    ========================================== -->
 
     <section
       id="admin"
@@ -70,11 +191,18 @@
       <div class="card bar">
 
         <div>
-          <h2>Panel del profesor</h2>
+
+          <h2>
+            Panel del profesor
+          </h2>
+
           <small id="email"></small>
+
         </div>
 
+
         <div>
+
           <button id="libraryBtn">
             Biblioteca
           </button>
@@ -85,35 +213,57 @@
           >
             Cerrar sesión
           </button>
+
         </div>
 
       </div>
 
+
       <div id="msg"></div>
 
+
       <div class="grid">
+
+
+        <!-- CLIENTES -->
 
         <div class="card">
 
           <h3>Clientes</h3>
 
-          <label>Nombre</label>
+          <label>
+            Nombre
+          </label>
+
           <input id="name">
 
-          <label>Objetivo</label>
-          <input id="goal">
-
-          <label>Observaciones privadas</label>
-          <textarea id="notes"></textarea>
 
           <label>
+            Objetivo
+          </label>
+
+          <input id="goal">
+
+
+          <label>
+            Observaciones privadas
+          </label>
+
+          <textarea id="notes"></textarea>
+
+
+          <label>
+
             <input
               id="active"
               type="checkbox"
               checked
             >
+
             Activo y visible
+
           </label>
+
 
           <div class="row">
 
@@ -130,14 +280,19 @@
 
           </div>
 
+
           <input
             id="editId"
             type="hidden"
           >
 
+
           <div id="clients"></div>
 
         </div>
+
+
+        <!-- PLANIFICADOR -->
 
         <div class="card">
 
@@ -145,109 +300,25 @@
             Seleccioná un cliente.
           </div>
 
+
           <div
             id="planner"
             class="hidden"
           >
 
             <h2 id="clientTitle"></h2>
+
             <small id="clientGoal"></small>
 
-            <!-- CRONÓMETRO DE DESCANSO -->
-            <div class="rest-timer">
-
-              <div class="timer-header">
-                <div>
-                  <h3>⏱ Cronómetro de descanso</h3>
-                  <small>Controlá el tiempo entre series</small>
-                </div>
-              </div>
-
-              <div
-                id="timerDisplay"
-                class="timer-display"
-              >
-                01:30
-              </div>
-
-              <div class="timer-presets">
-
-                <button
-                  type="button"
-                  class="timer-preset"
-                  data-seconds="30"
-                >
-                  30 s
-                </button>
-
-                <button
-                  type="button"
-                  class="timer-preset"
-                  data-seconds="60"
-                >
-                  60 s
-                </button>
-
-                <button
-                  type="button"
-                  class="timer-preset active"
-                  data-seconds="90"
-                >
-                  90 s
-                </button>
-
-                <button
-                  type="button"
-                  class="timer-preset"
-                  data-seconds="120"
-                >
-                  2 min
-                </button>
-
-              </div>
-
-              <div class="timer-controls">
-
-                <button
-                  type="button"
-                  id="timerStart"
-                  class="timer-start"
-                >
-                  ▶ Iniciar
-                </button>
-
-                <button
-                  type="button"
-                  id="timerPause"
-                >
-                  ⏸ Pausar
-                </button>
-
-                <button
-                  type="button"
-                  id="timerReset"
-                >
-                  ↻ Reiniciar
-                </button>
-
-              </div>
-
-              <div
-                id="timerStatus"
-                class="timer-status"
-              >
-                Listo para iniciar
-              </div>
-
-            </div>
-            <!-- FIN CRONÓMETRO -->
 
             <div
               id="days"
               class="days"
             ></div>
 
+
             <div id="exerciseList"></div>
+
 
             <div class="row">
 
@@ -255,9 +326,11 @@
                 Agregar manual
               </button>
 
+
               <button id="fromLib">
                 Elegir de biblioteca
               </button>
+
 
               <button
                 id="saveDay"
@@ -265,6 +338,7 @@
               >
                 Guardar este día
               </button>
+
 
               <button id="preview">
                 Ver como cliente
@@ -282,6 +356,11 @@
 
   </main>
 
+
+  <!-- =========================================
+       LOGIN
+  ========================================== -->
+
   <div
     id="loginModal"
     class="modal hidden"
@@ -289,26 +368,38 @@
 
     <div class="box">
 
-      <h2>Panel del profesor</h2>
+      <h2>
+        Panel del profesor
+      </h2>
 
-      <label>Correo</label>
+
+      <label>
+        Correo
+      </label>
+
 
       <input
         id="loginEmail"
         value="cquerci22@gmail.com"
       >
 
-      <label>Contraseña</label>
+
+      <label>
+        Contraseña
+      </label>
+
 
       <input
         id="loginPass"
         type="password"
       >
 
+
       <div
         id="loginErr"
         class="error hidden"
       ></div>
+
 
       <div class="row">
 
@@ -326,6 +417,11 @@
 
   </div>
 
+
+  <!-- =========================================
+       BIBLIOTECA
+  ========================================== -->
+
   <div
     id="libraryModal"
     class="modal hidden"
@@ -335,13 +431,16 @@
 
       <div class="bar">
 
-        <h2>Biblioteca de ejercicios</h2>
+        <h2>
+          Biblioteca de ejercicios
+        </h2>
 
         <button id="closeLib">
           Cerrar
         </button>
 
       </div>
+
 
       <div class="row">
 
@@ -350,13 +449,17 @@
           placeholder="Buscar ejercicio"
         >
 
+
         <select id="libCat">
+
           <option value="">
             Todas las categorías
           </option>
+
         </select>
 
       </div>
+
 
       <div
         id="library"
@@ -366,6 +469,7 @@
     </div>
 
   </div>
+
 
   <script src="app.js"></script>
 
