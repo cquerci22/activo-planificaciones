@@ -348,7 +348,7 @@ async function editClient(client) {
   }
 
   if (client.created_by !== userData.user.id) {
-        showMessage('No tenés permiso para editar este alumno.', 'error');
+    showMessage('No tenés permiso para editar este alumno.', 'error');
     return;
   }
 
@@ -366,7 +366,6 @@ async function editClient(client) {
 
   $('notes').value = error ? '' : (data?.notes || '');
 }
-
 function clearClientForm() {
   $('name').value = '';
   $('goal').value = '';
@@ -414,6 +413,7 @@ async function saveClient() {
       showMessage(error.message, 'error');
       return;
     }
+
   } else {
     const { data, error } = await sb
       .from('clients')
@@ -447,6 +447,7 @@ async function saveClient() {
         .from('client_private_notes')
         .update({ notes })
         .eq('id', oldNote.id);
+
     } else if (notes) {
       await sb
         .from('client_private_notes')
@@ -458,6 +459,7 @@ async function saveClient() {
   }
 
   clearClientForm();
+
   await loadClients();
 
   showMessage('Cliente guardado correctamente.');
@@ -493,6 +495,7 @@ async function deleteClient(client) {
   }
 
   await loadClients();
+
   showMessage('Cliente eliminado.');
 }
 
@@ -558,12 +561,15 @@ function renderPlanner() {
     const button = document.createElement('button');
 
     button.textContent = dayName;
-    button.className = `day ${dayName === selectedDay ? 'active' : ''}`;
+
+    button.className =
+      `day ${dayName === selectedDay ? 'active' : ''}`;
 
     button.addEventListener('click', async () => {
       selectedDay = dayName;
 
       await loadSelectedDay();
+
       renderPlanner();
     });
 
@@ -595,50 +601,90 @@ function renderExercises() {
       </div>
 
       <div class="cols">
+
         <div>
           <label>Ejercicio</label>
-          <input class="name" value="${escapeHtml(exercise.name)}">
+
+          <input
+            class="name"
+            value="${escapeHtml(exercise.name)}"
+          >
         </div>
 
         <div>
           <label>Series</label>
-          <input class="sets" value="${escapeHtml(exercise.sets)}">
+
+          <input
+            class="sets"
+            value="${escapeHtml(exercise.sets)}"
+          >
         </div>
 
         <div>
           <label>Repeticiones</label>
-          <input class="reps" value="${escapeHtml(exercise.reps)}">
+
+          <input
+            class="reps"
+            value="${escapeHtml(exercise.reps)}"
+          >
         </div>
 
         <div>
           <label>Carga</label>
-          <input class="load" value="${escapeHtml(exercise.load)}">
+
+          <input
+            class="load"
+            value="${escapeHtml(exercise.load)}"
+          >
         </div>
 
         <div>
           <label>Descanso</label>
-          <input class="rest" value="${escapeHtml(exercise.rest)}">
+
+          <input
+            class="rest"
+            value="${escapeHtml(exercise.rest)}"
+          >
         </div>
 
         <div>
           <label>Observaciones</label>
-          <input class="notes" value="${escapeHtml(exercise.notes)}">
+
+          <input
+            class="notes"
+            value="${escapeHtml(exercise.notes)}"
+          >
         </div>
+
       </div>
     `;
 
-    ['name', 'sets', 'reps', 'load', 'rest', 'notes'].forEach(field => {
+    [
+      'name',
+      'sets',
+      'reps',
+      'load',
+      'rest',
+      'notes'
+    ].forEach(field => {
+
       item
         .querySelector(`.${field}`)
         .addEventListener('input', event => {
           exercise[field] = event.target.value;
         });
+
     });
 
-    item.querySelector('.rm').addEventListener('click', () => {
-      draftExercises.splice(index, 1);
-      renderExercises();
-    });
+    item
+      .querySelector('.rm')
+      .addEventListener('click', () => {
+
+        draftExercises.splice(index, 1);
+
+        renderExercises();
+
+      });
 
     container.appendChild(item);
   });
@@ -680,16 +726,35 @@ async function saveSelectedDay() {
   }
 
   if (draftExercises.length) {
-    const rows = draftExercises.map((exercise, index) => ({
-      plan_id: currentPlanId,
-      exercise_name: exercise.name || 'Ejercicio',
-      sets: exercise.sets,
-      reps: exercise.reps,
-      load: exercise.load,
-      rest: exercise.rest,
-      notes: exercise.notes,
-      exercise_order: index
-    }));
+
+    const rows = draftExercises.map(
+      (exercise, index) => ({
+
+        plan_id: currentPlanId,
+
+        exercise_name:
+          exercise.name || 'Ejercicio',
+
+        sets:
+          exercise.sets,
+
+        reps:
+          exercise.reps,
+
+        load:
+          exercise.load,
+
+        rest:
+          exercise.rest,
+
+        notes:
+          exercise.notes,
+
+        exercise_order:
+          index
+
+      })
+    );
 
     const { error } = await sb
       .from('plan_exercises')
@@ -701,7 +766,9 @@ async function saveSelectedDay() {
     }
   }
 
-  showMessage(`${selectedDay} guardado correctamente.`);
+  showMessage(
+    `${selectedDay} guardado correctamente.`
+  );
 }
 
 function openLibrary() {
@@ -711,90 +778,175 @@ function openLibrary() {
   }
 
   $('libraryModal').classList.remove('hidden');
+
   renderLibrary();
 }
 
 function renderLibrary() {
-  const search = $('libSearch').value.toLowerCase().trim();
-  const category = $('libCat').value;
-  const container = $('library');
+  const search =
+    $('libSearch').value
+      .toLowerCase()
+      .trim();
+
+  const category =
+    $('libCat').value;
+
+  const container =
+    $('library');
 
   container.innerHTML = '';
 
   EXERCISE_LIBRARY
     .filter(exercise => {
+
       const categoryMatches =
-        !category || exercise[1] === category;
+        !category ||
+        exercise[1] === category;
 
       const searchMatches =
         !search ||
-        exercise.join(' ').toLowerCase().includes(search);
+        exercise
+          .join(' ')
+          .toLowerCase()
+          .includes(search);
 
-      return categoryMatches && searchMatches;
+      return (
+        categoryMatches &&
+        searchMatches
+      );
+
     })
+
     .forEach(exercise => {
-      const item = document.createElement('div');
+
+      const item =
+        document.createElement('div');
 
       item.className = 'lib';
 
       item.innerHTML = `
-        <b>${escapeHtml(exercise[0])}</b>
-        <small>${escapeHtml(exercise[1])}</small>
+        <b>
+          ${escapeHtml(exercise[0])}
+        </b>
+
+        <small>
+          ${escapeHtml(exercise[1])}
+        </small>
 
         <p>
           <small>
-            ${escapeHtml(exercise[2])} series
+
+            ${escapeHtml(exercise[2])}
+            series
+
             ·
+
             ${escapeHtml(exercise[3])}
+
             ·
-            descanso ${escapeHtml(exercise[4] || '-')}
+
+            descanso
+            ${escapeHtml(exercise[4] || '-')}
+
           </small>
         </p>
 
         <button>
-          Agregar a ${escapeHtml(selectedDay)}
+          Agregar a
+          ${escapeHtml(selectedDay)}
         </button>
       `;
 
-      item.querySelector('button').addEventListener('click', () => {
-        draftExercises.push({
-          name: exercise[0],
-          sets: exercise[2],
-          reps: exercise[3],
-          load: '',
-          rest: exercise[4],
-          notes: ''
+      item
+        .querySelector('button')
+        .addEventListener('click', () => {
+
+          draftExercises.push({
+
+            name:
+              exercise[0],
+
+            sets:
+              exercise[2],
+
+            reps:
+              exercise[3],
+
+            load:
+              '',
+
+            rest:
+              exercise[4],
+
+            notes:
+              ''
+
+          });
+
+          renderExercises();
+
+          alert(
+            'Agregado. Recordá guardar el día.'
+          );
+
         });
 
-        renderExercises();
-
-        alert('Agregado. Recordá guardar el día.');
-      });
-
       container.appendChild(item);
+
     });
 }
+
+
+/* ========================================
+   VISTA PÚBLICA DE LOS ALUMNOS
+======================================== */
+
 async function loadPublicClients() {
-  const params = new URLSearchParams(window.location.search);
-  const profe = (params.get('profe') || '').toLowerCase().trim();
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  const profe =
+    (params.get('profe') || '')
+      .toLowerCase()
+      .trim();
+
 
   const PROFESSORS = {
-    cristian: '5d1005e9-ca80-49db-9ed6-8309ac9c16fd',
-    jero: 'b03b6b12-46f1-44b5-842e-3931fe4ea875',
-    nico: '873b7f5e-fa25-4451-a03f-26ee20af5b7d',
-    rodri: '1f51bcf5-8092-436f-bbd2-09c35b1990b1'
+
+    cristian:
+      '5d1005e9-ca80-49db-9ed6-8309ac9c16fd',
+
+    jero:
+      'b03b6b12-46f1-44b5-842e-3931fe4ea875',
+
+    nico:
+      '873b7f5e-fa25-4451-a03f-26ee20af5b7d',
+
+    rodri:
+      '1f51bcf5-8092-436f-bbd2-09c35b1990b1'
+
   };
 
-  const professorId = PROFESSORS[profe];
+
+  const professorId =
+    PROFESSORS[profe];
+
 
   if (!professorId) {
+
     window.publicClients = [];
 
     $('results').innerHTML =
-      '<div class="error">Este enlace no corresponde a ningún profesor.</div>';
+      '<div class="error">' +
+      'Este enlace no corresponde a ningún profesor.' +
+      '</div>';
 
     return;
   }
+
 
   const { data, error } = await sb
     .from('clients')
@@ -803,162 +955,498 @@ async function loadPublicClients() {
     .eq('created_by', professorId)
     .order('name');
 
-  window.publicClients = data || [];
+
+  window.publicClients =
+    data || [];
+
 
   if (error) {
+
     $('results').innerHTML =
-      '<div class="error">No se pudieron cargar los alumnos.</div>';
+      '<div class="error">' +
+      'No se pudieron cargar los alumnos.' +
+      '</div>';
 
     return;
   }
+
 
   renderPublicResults();
 }
 
+
 function renderPublicResults() {
-  const search = $('search').value.toLowerCase().trim();
-  const container = $('results');
+
+  const search =
+    $('search').value
+      .toLowerCase()
+      .trim();
+
+
+  const container =
+    $('results');
+
 
   container.innerHTML = '';
 
-  const results = (window.publicClients || []).filter(client =>
-    !search ||
-    client.name.toLowerCase().includes(search)
-  );
+
+  const results =
+    (window.publicClients || [])
+      .filter(client =>
+
+        !search ||
+
+        client.name
+          .toLowerCase()
+          .includes(search)
+
+      );
+
 
   if (!results.length) {
+
     if (search) {
+
       container.innerHTML =
-        '<small>No se encontró ningún alumno.</small>';
+        '<small>' +
+        'No se encontró ningún alumno.' +
+        '</small>';
+
     }
 
     return;
   }
 
-  results.forEach(client => {
-    const button = document.createElement('button');
 
-    button.className = 'public-result';
+  results.forEach(client => {
+
+    const button =
+      document.createElement('button');
+
+
+    button.className =
+      'public-result';
+
 
     button.innerHTML = `
-      <b>${escapeHtml(client.name)}</b>
-      <small>${escapeHtml(client.goal || '')}</small>
+      <b>
+        ${escapeHtml(client.name)}
+      </b>
+
+      <small>
+        ${escapeHtml(client.goal || '')}
+      </small>
     `;
 
-    button.addEventListener('click', () => {
-      showPublicPlan(client);
-    });
+
+    button.addEventListener(
+      'click',
+      () => {
+
+        showPublicPlan(client);
+
+      }
+    );
+
 
     container.appendChild(button);
+
   });
 }
 
+
+/* ========================================
+   CONVERTIR DESCANSO A SEGUNDOS
+======================================== */
+
+function parseRestSeconds(value) {
+
+  const text =
+    String(value || '')
+      .toLowerCase()
+      .trim();
+
+
+  if (!text) {
+    return null;
+  }
+
+
+  /*
+    Ejemplos:
+
+    90 s
+    60 s
+    45 s
+    1 min
+    2 min
+  */
+
+
+  const minuteMatch =
+    text.match(
+      /(\d+(?:[.,]\d+)?)\s*min/
+    );
+
+
+  if (minuteMatch) {
+
+    return Math.round(
+
+      parseFloat(
+        minuteMatch[1]
+          .replace(',', '.')
+      ) * 60
+
+    );
+
+  }
+
+
+  const secondMatch =
+    text.match(
+      /(\d+)\s*s/
+    );
+
+
+  if (secondMatch) {
+
+    return Number(
+      secondMatch[1]
+    );
+
+  }
+
+
+  const plainNumber =
+    text.match(/^\d+$/);
+
+
+  if (plainNumber) {
+
+    return Number(
+      plainNumber[0]
+    );
+
+  }
+
+
+  return null;
+}
+
+
+/* ========================================
+   MOSTRAR PLANIFICACIÓN DEL ALUMNO
+======================================== */
+
 async function showPublicPlan(client) {
-  const { data: plans, error: plansError } = await sb
+
+  const {
+    data: plans,
+    error: plansError
+  } = await sb
+
     .from('workout_plans')
-    .select('id,day_of_week')
-    .eq('client_id', client.id);
+
+    .select(
+      'id,day_of_week'
+    )
+
+    .eq(
+      'client_id',
+      client.id
+    );
+
 
   if (plansError) {
-    $('publicPlan').innerHTML =
-      '<div class="error">No se pudo cargar la planificación.</div>';
 
-    $('publicPlan').classList.remove('hidden');
+    $('publicPlan').innerHTML =
+      '<div class="error">' +
+      'No se pudo cargar la planificación.' +
+      '</div>';
+
+
+    $('publicPlan')
+      .classList
+      .remove('hidden');
+
 
     return;
   }
 
-  const planIds = (plans || []).map(plan => plan.id);
+
+  const planIds =
+    (plans || [])
+      .map(
+        plan => plan.id
+      );
+
 
   let exercises = [];
 
+
   if (planIds.length) {
-    const { data, error } = await sb
+
+    const {
+      data,
+      error
+    } = await sb
+
       .from('plan_exercises')
+
       .select('*')
-      .in('plan_id', planIds)
-      .order('exercise_order');
+
+      .in(
+        'plan_id',
+        planIds
+      )
+
+      .order(
+        'exercise_order'
+      );
+
 
     if (error) {
-      $('publicPlan').innerHTML =
-        '<div class="error">No se pudieron cargar los ejercicios.</div>';
 
-      $('publicPlan').classList.remove('hidden');
+      $('publicPlan').innerHTML =
+        '<div class="error">' +
+        'No se pudieron cargar los ejercicios.' +
+        '</div>';
+
+
+      $('publicPlan')
+        .classList
+        .remove('hidden');
+
 
       return;
     }
 
-    exercises = data || [];
+
+    exercises =
+      data || [];
+
   }
 
+
   let html = `
-    <h2>${escapeHtml(client.name)}</h2>
-    <small>${escapeHtml(client.goal || '')}</small>
+
+    <h2>
+      ${escapeHtml(client.name)}
+    </h2>
+
+    <small>
+      ${escapeHtml(client.goal || '')}
+    </small>
+
   `;
 
-  DAYS.forEach(dayName => {
-    const plan = (plans || []).find(
-      item => item.day_of_week === dayName
-    );
 
-    const dayExercises = plan
-      ? exercises.filter(
-          exercise => exercise.plan_id === plan.id
-        )
-      : [];
+  DAYS.forEach(dayName => {
+
+    const plan =
+      (plans || [])
+        .find(
+          item =>
+            item.day_of_week ===
+            dayName
+        );
+
+
+    const dayExercises =
+      plan
+
+        ? exercises.filter(
+            exercise =>
+              exercise.plan_id ===
+              plan.id
+          )
+
+        : [];
+
 
     html += `
+
       <div class="plan-day">
-        <h3>${escapeHtml(dayName)}</h3>
+
+        <h3>
+          ${escapeHtml(dayName)}
+        </h3>
+
     `;
 
+
     if (dayExercises.length) {
+
       html += dayExercises
-        .map(exercise => `
-          <div class="public-ex">
-            <b>${escapeHtml(exercise.exercise_name)}</b>
 
-            <small>
-              ${escapeHtml(exercise.sets || '-')} series
-              ·
-              ${escapeHtml(exercise.reps || '-')}
-              ·
-              carga ${escapeHtml(exercise.load || '-')}
-              ·
-              descanso ${escapeHtml(exercise.rest || '-')}
-            </small>
+        .map(exercise => {
 
-            <div>${escapeHtml(exercise.notes || '')}</div>
-          </div>
-        `)
+          const restSeconds =
+            parseRestSeconds(
+              exercise.rest
+            );
+
+
+          const timerButton =
+            restSeconds
+
+              ? `
+
+                <button
+                  type="button"
+                  class="exercise-timer-btn"
+                  data-rest-seconds="${restSeconds}"
+                >
+
+                  ⏱ Iniciar descanso
+                  ${escapeHtml(
+                    exercise.rest
+                  )}
+
+                </button>
+
+              `
+
+              : '';
+
+
+          return `
+
+            <div class="public-ex">
+
+              <b>
+                ${escapeHtml(
+                  exercise.exercise_name
+                )}
+              </b>
+
+
+              <small>
+
+                ${escapeHtml(
+                  exercise.sets || '-'
+                )}
+                series
+
+                ·
+
+                ${escapeHtml(
+                  exercise.reps || '-'
+                )}
+
+                ·
+
+                carga
+                ${escapeHtml(
+                  exercise.load || '-'
+                )}
+
+                ·
+
+                descanso
+                ${escapeHtml(
+                  exercise.rest || '-'
+                )}
+
+              </small>
+
+
+              <div>
+                ${escapeHtml(
+                  exercise.notes || ''
+                )}
+              </div>
+
+
+              ${timerButton}
+
+
+            </div>
+
+          `;
+
+        })
+
         .join('');
+
+
     } else {
-      html += '<small>Sin ejercicios.</small>';
+
+      html +=
+        '<small>Sin ejercicios.</small>';
+
     }
 
-    html += '</div>';
+
+    html +=
+      '</div>';
+
   });
 
-  $('publicPlan').innerHTML = html;
-  $('publicPlan').classList.remove('hidden');
 
-  $('publicPlan').scrollIntoView({
-    behavior: 'smooth',
-    block: 'start'
-  });
+  $('publicPlan').innerHTML =
+    html;
+
+
+  $('publicPlan')
+    .classList
+    .remove('hidden');
+
+
+  /*
+    MOSTRAMOS EL CRONÓMETRO
+    SOLAMENTE CUANDO EL ALUMNO
+    ABRE SU PLANIFICACIÓN
+  */
+
+  const studentTimer =
+    document.getElementById(
+      'studentTimer'
+    );
+
+
+  if (studentTimer) {
+
+    studentTimer
+      .classList
+      .remove('hidden');
+
+  }
+
+
+  $('publicPlan')
+    .scrollIntoView({
+
+      behavior:
+        'smooth',
+
+      block:
+        'start'
+
+    });
+
 }
+/* ========================================
+   CATEGORÍAS DE LA BIBLIOTECA
+======================================== */
 
 function addLibraryCategories() {
   const select = $('libCat');
 
+  if (!select) return;
+
   const categories = [
     ...new Set(
-      EXERCISE_LIBRARY.map(exercise => exercise[1])
+      EXERCISE_LIBRARY.map(
+        exercise => exercise[1]
+      )
     )
   ];
 
   categories.forEach(category => {
-    const option = document.createElement('option');
+    const option =
+      document.createElement('option');
 
     option.value = category;
     option.textContent = category;
@@ -967,114 +1455,123 @@ function addLibraryCategories() {
   });
 }
 
-function bindEvents() {
-  $('adminTop').addEventListener('click', async () => {
-    const adminIsVisible =
-      !$('admin').classList.contains('hidden');
 
-    if (adminIsVisible) {
-      await showPublicMode();
-    } else {
-      await showAdminMode();
-    }
+/* ========================================
+   AGREGAR EJERCICIO MANUAL
+======================================== */
+
+function addManualExercise() {
+  if (!selectedClientId) {
+    alert('Seleccioná un cliente.');
+    return;
+  }
+
+  draftExercises.push({
+    name: '',
+    sets: '',
+    reps: '',
+    load: '',
+    rest: '',
+    notes: ''
   });
 
-  $('closeLogin').addEventListener('click', () => {
-    $('loginModal').classList.add('hidden');
-    $('loginErr').classList.add('hidden');
-  });
+  renderExercises();
+}
 
-  $('login').addEventListener('click', async () => {
-    const email = $('loginEmail').value.trim();
-    const password = $('loginPass').value;
 
-    $('loginErr').classList.add('hidden');
+/* ========================================
+   VISTA PREVIA DEL CLIENTE
+======================================== */
 
-    if (!email || !password) {
-      $('loginErr').textContent =
-        'Ingresá el correo y la contraseña.';
-
-      $('loginErr').classList.remove('hidden');
-
-      return;
-    }
-
-    const { error } = await sb.auth.signInWithPassword({
-      email,
-      password
-    });
-
-    if (error) {
-      $('loginErr').textContent = error.message;
-      $('loginErr').classList.remove('hidden');
-
-      return;
-    }
-
-    $('loginModal').classList.add('hidden');
-    $('loginPass').value = '';
-
-    await showAdminMode();
-  });
-
-  $('logout').addEventListener('click', async () => {
-    await sb.auth.signOut();
-    await showPublicMode();
-  });
-
-  $('saveClient').addEventListener('click', saveClient);
-  $('cancel').addEventListener('click', clearClientForm);
-
-  $('manual').addEventListener('click', () => {
-    draftExercises.push({
-      name: '',
-      sets: '',
-      reps: '',
-      load: '',
-      rest: '',
-      notes: ''
-    });
-
-    renderExercises();
-  });
-
-  $('saveDay').addEventListener('click', saveSelectedDay);
-  $('libraryBtn').addEventListener('click', openLibrary);
-  $('fromLib').addEventListener('click', openLibrary);
-
-  $('closeLib').addEventListener('click', () => {
-    $('libraryModal').classList.add('hidden');
-  });
-
-  $('libSearch').addEventListener('input', renderLibrary);
-  $('libCat').addEventListener('change', renderLibrary);
-  $('search').addEventListener('input', renderPublicResults);
-
-  $('preview').addEventListener('click', async () => {
-    const client = clients.find(
-      item => item.id === selectedClientId
+async function previewClient() {
+  const client =
+    clients.find(
+      item =>
+        item.id === selectedClientId
     );
 
-    if (!client) {
-      alert('Seleccioná un alumno.');
-      return;
-    }
+  if (!client) {
+    alert('Seleccioná un cliente.');
+    return;
+  }
 
-    await showPublicMode();
-    await showPublicPlan(client);
-  });
+  $('admin')
+    .classList
+    .add('hidden');
+
+  $('public')
+    .classList
+    .remove('hidden');
+
+  await showPublicPlan(client);
 }
 
-async function startApp() {
-  bindEvents();
-  addLibraryCategories();
 
-  await loadPublicClients();
-}
-
-document.addEventListener('DOMContentLoaded', startApp);
 /* ========================================
-   CRONÓMETRO DE DESCANSO
+   LOGIN
+======================================== */
+
+async function login() {
+  const email =
+    $('loginEmail')
+      .value
+      .trim();
+
+  const password =
+    $('loginPass')
+      .value;
+
+  const errorBox =
+    $('loginErr');
+
+  errorBox
+    .classList
+    .add('hidden');
+
+  const {
+    error
+  } = await sb.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) {
+    errorBox.textContent =
+      error.message;
+
+    errorBox
+      .classList
+      .remove('hidden');
+
+    return;
+  }
+
+  $('loginModal')
+    .classList
+    .add('hidden');
+
+  await showAdminMode();
+}
+
+
+/* ========================================
+   CERRAR SESIÓN
+======================================== */
+
+async function logout() {
+  await sb.auth.signOut();
+
+  selectedClientId = null;
+  selectedDay = 'Lunes';
+  draftExercises = [];
+  currentPlanId = null;
+
+  await showPublicMode();
+}
+
+
+/* ========================================
+   CRONÓMETRO DE DESCANSO PARA ALUMNOS
 ======================================== */
 
 let restTimerSeconds = 90;
@@ -1082,27 +1579,60 @@ let restTimerInitialSeconds = 90;
 let restTimerInterval = null;
 let restTimerRunning = false;
 
+
+/* ----------------------------------------
+   FORMATEAR TIEMPO
+----------------------------------------- */
+
 function formatRestTimer(seconds) {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
+  const minutes =
+    Math.floor(seconds / 60);
+
+  const remainingSeconds =
+    seconds % 60;
 
   return (
-    String(minutes).padStart(2, '0') +
-    ':' +
-    String(remainingSeconds).padStart(2, '0')
+    String(minutes)
+      .padStart(2, '0')
+    +
+    ':'
+    +
+    String(remainingSeconds)
+      .padStart(2, '0')
   );
 }
 
+
+/* ----------------------------------------
+   ACTUALIZAR PANTALLA
+----------------------------------------- */
+
 function updateRestTimerDisplay() {
-  const display = document.getElementById('timerDisplay');
+  const display =
+    document.getElementById(
+      'timerDisplay'
+    );
 
   if (!display) return;
 
-  display.textContent = formatRestTimer(restTimerSeconds);
+  display.textContent =
+    formatRestTimer(
+      restTimerSeconds
+    );
 }
 
-function setRestTimer(seconds) {
-  clearInterval(restTimerInterval);
+
+/* ----------------------------------------
+   ELEGIR TIEMPO
+----------------------------------------- */
+
+function setRestTimer(
+  seconds,
+  autoStart = false
+) {
+  clearInterval(
+    restTimerInterval
+  );
 
   restTimerInterval = null;
   restTimerRunning = false;
@@ -1112,157 +1642,315 @@ function setRestTimer(seconds) {
 
   updateRestTimerDisplay();
 
-  const timer = document.querySelector('.rest-timer');
+  const timer =
+    document.querySelector(
+      '.rest-timer'
+    );
 
   if (timer) {
-    timer.classList.remove('finished');
+    timer
+      .classList
+      .remove('finished');
   }
 
-  const status = document.getElementById('timerStatus');
+  const status =
+    document.getElementById(
+      'timerStatus'
+    );
 
   if (status) {
-    status.textContent = 'Listo para iniciar';
+    status.textContent =
+      'Listo para iniciar';
   }
 
-  document.querySelectorAll('.timer-preset').forEach(button => {
-    button.classList.toggle(
-      'active',
-      Number(button.dataset.seconds) === seconds
-    );
-  });
+  document
+    .querySelectorAll(
+      '.timer-preset'
+    )
+    .forEach(button => {
+
+      button.classList.toggle(
+        'active',
+
+        Number(
+          button.dataset.seconds
+        ) === seconds
+      );
+
+    });
+
+  /*
+    Si el tiempo vino directamente
+    desde un ejercicio, arrancamos
+    automáticamente.
+  */
+
+  if (autoStart) {
+    startRestTimer();
+
+    const studentTimer =
+      document.getElementById(
+        'studentTimer'
+      );
+
+    if (studentTimer) {
+      studentTimer.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+      });
+    }
+  }
 }
 
+
+/* ----------------------------------------
+   INICIAR
+----------------------------------------- */
+
 function startRestTimer() {
-  if (restTimerRunning) return;
+  if (restTimerRunning) {
+    return;
+  }
 
   if (restTimerSeconds <= 0) {
-    restTimerSeconds = restTimerInitialSeconds;
+    restTimerSeconds =
+      restTimerInitialSeconds;
+
+    updateRestTimerDisplay();
   }
 
   restTimerRunning = true;
 
-  const timer = document.querySelector('.rest-timer');
+  const timer =
+    document.querySelector(
+      '.rest-timer'
+    );
 
   if (timer) {
-    timer.classList.remove('finished');
+    timer
+      .classList
+      .remove('finished');
   }
 
-  const status = document.getElementById('timerStatus');
+  const status =
+    document.getElementById(
+      'timerStatus'
+    );
 
   if (status) {
-    status.textContent = 'Descanso en curso...';
+    status.textContent =
+      'Descanso en curso...';
   }
 
-  restTimerInterval = setInterval(() => {
-    restTimerSeconds--;
+  restTimerInterval =
+    setInterval(() => {
 
-    updateRestTimerDisplay();
+      restTimerSeconds -= 1;
 
-    if (restTimerSeconds <= 0) {
-      finishRestTimer();
-    }
-  }, 1000);
+      if (
+        restTimerSeconds <= 0
+      ) {
+        restTimerSeconds = 0;
+
+        updateRestTimerDisplay();
+
+        finishRestTimer();
+
+        return;
+      }
+
+      updateRestTimerDisplay();
+
+    }, 1000);
 }
+
+
+/* ----------------------------------------
+   PAUSAR
+----------------------------------------- */
 
 function pauseRestTimer() {
-  clearInterval(restTimerInterval);
+  clearInterval(
+    restTimerInterval
+  );
 
   restTimerInterval = null;
   restTimerRunning = false;
 
-  const status = document.getElementById('timerStatus');
+  const status =
+    document.getElementById(
+      'timerStatus'
+    );
 
-  if (status && restTimerSeconds > 0) {
-    status.textContent = 'Cronómetro pausado';
+  if (
+    status &&
+    restTimerSeconds > 0
+  ) {
+    status.textContent =
+      'Cronómetro pausado';
   }
 }
+
+
+/* ----------------------------------------
+   REINICIAR
+----------------------------------------- */
 
 function resetRestTimer() {
-  clearInterval(restTimerInterval);
+  clearInterval(
+    restTimerInterval
+  );
 
   restTimerInterval = null;
   restTimerRunning = false;
 
-  restTimerSeconds = restTimerInitialSeconds;
+  restTimerSeconds =
+    restTimerInitialSeconds;
 
   updateRestTimerDisplay();
 
-  const timer = document.querySelector('.rest-timer');
+  const timer =
+    document.querySelector(
+      '.rest-timer'
+    );
 
   if (timer) {
-    timer.classList.remove('finished');
+    timer
+      .classList
+      .remove('finished');
   }
 
-  const status = document.getElementById('timerStatus');
+  const status =
+    document.getElementById(
+      'timerStatus'
+    );
 
   if (status) {
-    status.textContent = 'Listo para iniciar';
+    status.textContent =
+      'Listo para iniciar';
   }
 }
 
+
+/* ----------------------------------------
+   FINALIZAR
+----------------------------------------- */
+
 function finishRestTimer() {
-  clearInterval(restTimerInterval);
+  clearInterval(
+    restTimerInterval
+  );
 
   restTimerInterval = null;
   restTimerRunning = false;
-  restTimerSeconds = 0;
 
-  updateRestTimerDisplay();
-
-  const timer = document.querySelector('.rest-timer');
+  const timer =
+    document.querySelector(
+      '.rest-timer'
+    );
 
   if (timer) {
-    timer.classList.add('finished');
+    timer
+      .classList
+      .add('finished');
   }
 
-  const status = document.getElementById('timerStatus');
+  const status =
+    document.getElementById(
+      'timerStatus'
+    );
 
   if (status) {
-    status.textContent = '🔥 ¡Descanso terminado!';
+    status.textContent =
+      '🔥 ¡Descanso terminado!';
   }
 
-  if ('vibrate' in navigator) {
-    navigator.vibrate([250, 150, 250, 150, 400]);
+  /*
+    Vibración en dispositivos
+    compatibles.
+  */
+
+  if (
+    'vibrate' in navigator
+  ) {
+    navigator.vibrate([
+      250,
+      150,
+      250,
+      150,
+      400
+    ]);
   }
 
   playRestTimerSound();
 }
 
+
+/* ----------------------------------------
+   SONIDO AL TERMINAR
+----------------------------------------- */
+
 function playRestTimerSound() {
   try {
     const AudioContext =
-      window.AudioContext || window.webkitAudioContext;
+      window.AudioContext ||
+      window.webkitAudioContext;
 
-    if (!AudioContext) return;
+    if (!AudioContext) {
+      return;
+    }
 
-    const audioContext = new AudioContext();
+    const audioContext =
+      new AudioContext();
 
-    const beep = (startTime, frequency) => {
-      const oscillator = audioContext.createOscillator();
-      const gain = audioContext.createGain();
+    const beep = (
+      startTime,
+      frequency
+    ) => {
+
+      const oscillator =
+        audioContext
+          .createOscillator();
+
+      const gain =
+        audioContext
+          .createGain();
 
       oscillator.connect(gain);
-      gain.connect(audioContext.destination);
 
-      oscillator.frequency.value = frequency;
-      oscillator.type = 'sine';
+      gain.connect(
+        audioContext.destination
+      );
+
+      oscillator.frequency.value =
+        frequency;
+
+      oscillator.type =
+        'sine';
 
       gain.gain.setValueAtTime(
         0.18,
-        audioContext.currentTime + startTime
+        audioContext.currentTime +
+        startTime
       );
 
-      gain.gain.exponentialRampToValueAtTime(
-        0.001,
-        audioContext.currentTime + startTime + 0.25
-      );
+      gain.gain
+        .exponentialRampToValueAtTime(
+          0.001,
+          audioContext.currentTime +
+          startTime +
+          0.25
+        );
 
       oscillator.start(
-        audioContext.currentTime + startTime
+        audioContext.currentTime +
+        startTime
       );
 
       oscillator.stop(
-        audioContext.currentTime + startTime + 0.25
+        audioContext.currentTime +
+        startTime +
+        0.25
       );
     };
 
@@ -1271,33 +1959,334 @@ function playRestTimerSound() {
     beep(0.70, 1000);
 
   } catch (error) {
-    console.log('No se pudo reproducir el aviso del cronómetro.');
+    console.log(
+      'No se pudo reproducir el aviso del cronómetro.'
+    );
   }
 }
 
-function initializeRestTimer() {
-  const startButton = document.getElementById('timerStart');
-  const pauseButton = document.getElementById('timerPause');
-  const resetButton = document.getElementById('timerReset');
 
-  if (!startButton || !pauseButton || !resetButton) {
+/* ========================================
+   INICIALIZAR CRONÓMETRO
+======================================== */
+
+function initializeRestTimer() {
+  const startButton =
+    document.getElementById(
+      'timerStart'
+    );
+
+  const pauseButton =
+    document.getElementById(
+      'timerPause'
+    );
+
+  const resetButton =
+    document.getElementById(
+      'timerReset'
+    );
+
+  if (
+    !startButton ||
+    !pauseButton ||
+    !resetButton
+  ) {
     return;
   }
 
-  document.querySelectorAll('.timer-preset').forEach(button => {
-    button.addEventListener('click', () => {
-      setRestTimer(Number(button.dataset.seconds));
-    });
-  });
+  document
+    .querySelectorAll(
+      '.timer-preset'
+    )
+    .forEach(button => {
 
-  startButton.addEventListener('click', startRestTimer);
-  pauseButton.addEventListener('click', pauseRestTimer);
-  resetButton.addEventListener('click', resetRestTimer);
+      button.addEventListener(
+        'click',
+        () => {
+
+          setRestTimer(
+            Number(
+              button.dataset.seconds
+            )
+          );
+
+        }
+      );
+
+    });
+
+  startButton
+    .addEventListener(
+      'click',
+      startRestTimer
+    );
+
+  pauseButton
+    .addEventListener(
+      'click',
+      pauseRestTimer
+    );
+
+  resetButton
+    .addEventListener(
+      'click',
+      resetRestTimer
+    );
 
   updateRestTimerDisplay();
 }
 
+
+/* ========================================
+   BOTÓN DE DESCANSO DE CADA EJERCICIO
+======================================== */
+
+document.addEventListener(
+  'click',
+  event => {
+
+    const button =
+      event.target.closest(
+        '[data-rest-seconds]'
+      );
+
+    if (!button) {
+      return;
+    }
+
+    const seconds =
+      Number(
+        button.dataset.restSeconds
+      );
+
+    if (!seconds) {
+      return;
+    }
+
+    /*
+      Carga el descanso indicado
+      por el profesor y arranca
+      automáticamente.
+    */
+
+    setRestTimer(
+      seconds,
+      true
+    );
+  }
+);
+
+
+/* ========================================
+   EVENTOS GENERALES DE LA APP
+======================================== */
+
+function setupEvents() {
+
+  $('adminTop')
+    .addEventListener(
+      'click',
+      async () => {
+
+        if (
+          !$('admin')
+            .classList
+            .contains('hidden')
+        ) {
+
+          await showPublicMode();
+
+        } else {
+
+          await showAdminMode();
+
+        }
+
+      }
+    );
+
+
+  $('closeLogin')
+    .addEventListener(
+      'click',
+      () => {
+
+        $('loginModal')
+          .classList
+          .add('hidden');
+
+      }
+    );
+
+
+  $('login')
+    .addEventListener(
+      'click',
+      login
+    );
+
+
+  $('loginPass')
+    .addEventListener(
+      'keydown',
+      event => {
+
+        if (
+          event.key === 'Enter'
+        ) {
+          login();
+        }
+
+      }
+    );
+
+
+  $('logout')
+    .addEventListener(
+      'click',
+      logout
+    );
+
+
+  $('saveClient')
+    .addEventListener(
+      'click',
+      saveClient
+    );
+
+
+  $('cancel')
+    .addEventListener(
+      'click',
+      clearClientForm
+    );
+
+
+  $('manual')
+    .addEventListener(
+      'click',
+      addManualExercise
+    );
+
+
+  $('fromLib')
+    .addEventListener(
+      'click',
+      openLibrary
+    );
+
+
+  $('saveDay')
+    .addEventListener(
+      'click',
+      saveSelectedDay
+    );
+
+
+  $('preview')
+    .addEventListener(
+      'click',
+      previewClient
+    );
+
+
+  $('libraryBtn')
+    .addEventListener(
+      'click',
+      openLibrary
+    );
+
+
+  $('closeLib')
+    .addEventListener(
+      'click',
+      () => {
+
+        $('libraryModal')
+          .classList
+          .add('hidden');
+
+      }
+    );
+
+
+  $('libSearch')
+    .addEventListener(
+      'input',
+      renderLibrary
+    );
+
+
+  $('libCat')
+    .addEventListener(
+      'change',
+      renderLibrary
+    );
+
+
+  $('search')
+    .addEventListener(
+      'input',
+      renderPublicResults
+    );
+
+}
+
+
+/* ========================================
+   INICIAR APLICACIÓN
+======================================== */
+
+async function startApp() {
+
+  addLibraryCategories();
+
+  setupEvents();
+
+  initializeRestTimer();
+
+
+  /*
+    Arrancamos siempre mostrando
+    la vista pública.
+  */
+
+  await showPublicMode();
+
+
+  /*
+    Si existe una sesión iniciada
+    NO abrimos automáticamente
+    el panel.
+
+    De esta manera el enlace
+    sigue funcionando como vista
+    pública para los alumnos.
+  */
+
+  const {
+    data
+  } = await sb.auth.getSession();
+
+
+  if (
+    data?.session &&
+    $('email')
+  ) {
+
+    $('email').textContent =
+      data.session.user.email || '';
+
+  }
+
+}
+
+
+/* ========================================
+   ARRANQUE
+======================================== */
+
 document.addEventListener(
   'DOMContentLoaded',
-  initializeRestTimer
+  startApp
 );
