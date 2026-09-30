@@ -6,17 +6,17 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const DAYS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
 
 const EXERCISE_LIBRARY = [
-  ['Sentadilla libre', 'Tren inferior', '4', '8-10', '90 s'],
-  ['Sentadilla goblet', 'Tren inferior', '3', '10-12', '60 s'],
-  ['Sentadilla frontal', 'Tren inferior', '4', '6-10', '120 s'],
-  ['Sentadilla sumo con mancuerna', 'Tren inferior', '3', '10-15', '60 s'],
-  ['Sentadilla a cajón', 'Tren inferior', '4', '8-10', '90 s'],
-  ['Sentadilla Hack', 'Tren inferior', '4', '8-12', '90 s'],
-  ['Sentadilla en multipower', 'Tren inferior', '4', '8-12', '90 s'],
-  ['Prensa de piernas', 'Tren inferior', '4', '10-12', '90 s'],
-  ['Prensa inclinada unilateral', 'Tren inferior', '3', '10-12 por pierna', '75 s'],
-  ['Peso muerto convencional', 'Tren inferior', '4', '6-8', '120 s'],
-  ['Peso muerto sumo', 'Tren inferior', '4', '6-10', '120 s'],
+  const EXERCISE_LIBRARY = [
+  ['Sentadilla libre', 'Tren inferior', '4', '8-10', '90 s', 'img/ejercicios/sentadilla-libre.png'],
+  ['Sentadilla goblet', 'Tren inferior', '3', '10-12', '60 s', 'img/ejercicios/sentadilla-goblet.png'],
+  ['Sentadilla frontal', 'Tren inferior', '4', '6-10', '120 s', 'img/ejercicios/sentadilla-frontal.png'],
+  ['Sentadilla sumo con mancuerna', 'Tren inferior', '3', '10-15', '60 s', 'img/ejercicios/sentadilla-sumo-con-mancuerna.png'],
+  ['Sentadilla a cajón', 'Tren inferior', '4', '8-10', '90 s', 'img/ejercicios/sentadilla-a-cajon.png'],
+  ['Sentadilla Hack', 'Tren inferior', '4', '8-12', '90 s', 'img/ejercicios/sentadilla-hack.png'],
+  ['Sentadilla en multipower', 'Tren inferior', '4', '8-12', '90 s', 'img/ejercicios/sentadilla-en-multipower.png'],
+  ['Prensa de piernas', 'Tren inferior', '4', '10-12', '90 s', 'img/ejercicios/prensa-de-piernas.png'],
+  ['Prensa inclinada unilateral', 'Tren inferior', '3', '10-12 por pierna', '75 s', 'img/ejercicios/prensa-inclinada-unilateral.png'],
+  ['Peso muerto convencional', 'Tren inferior', '4', '6-8', '120 s', 'img/ejercicios/peso-muerto-convencional.png'],
   ['Peso muerto con trap bar', 'Tren inferior', '4', '6-8', '120 s'],
   ['Peso muerto rumano', 'Tren inferior', '4', '8-10', '90 s'],
   ['Peso muerto a una pierna', 'Tren inferior', '3', '8-10 por pierna', '75 s'],
