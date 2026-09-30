@@ -454,3 +454,33 @@ small {
     width: 100%;
   }
 }
+.exercise-thumb {
+  width: 100%;
+  max-width: 180px;
+  height: auto;
+  display: block;
+  margin: 0 auto 10px auto;
+  border-radius: 14px;
+  object-fit: cover;
+}
+
+.public-ex-image {
+  width: 100%;
+  max-width: 260px;
+  height: auto;
+  display: block;
+  margin: 8px auto 10px auto;
+  border-radius: 16px;
+  object-fit: cover;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+.public-ex {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lib .exercise-thumb {
+  margin-bottom: 12px;
+}
