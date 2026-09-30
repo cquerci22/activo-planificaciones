@@ -6,7 +6,6 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const DAYS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
 
 const EXERCISE_LIBRARY = [
-  const EXERCISE_LIBRARY = [
   ['Sentadilla libre', 'Tren inferior', '4', '8-10', '90 s', 'img/ejercicios/sentadilla-libre.png'],
   ['Sentadilla goblet', 'Tren inferior', '3', '10-12', '60 s', 'img/ejercicios/sentadilla-goblet.png'],
   ['Sentadilla frontal', 'Tren inferior', '4', '6-10', '120 s', 'img/ejercicios/sentadilla-frontal.png'],
@@ -17,6 +16,8 @@ const EXERCISE_LIBRARY = [
   ['Prensa de piernas', 'Tren inferior', '4', '10-12', '90 s', 'img/ejercicios/prensa-de-piernas.png'],
   ['Prensa inclinada unilateral', 'Tren inferior', '3', '10-12 por pierna', '75 s', 'img/ejercicios/prensa-inclinada-unilateral.png'],
   ['Peso muerto convencional', 'Tren inferior', '4', '6-8', '120 s', 'img/ejercicios/peso-muerto-convencional.png'],
+
+  ['Peso muerto sumo', 'Tren inferior', '4', '6-10', '120 s'],
   ['Peso muerto con trap bar', 'Tren inferior', '4', '6-8', '120 s'],
   ['Peso muerto rumano', 'Tren inferior', '4', '8-10', '90 s'],
   ['Peso muerto a una pierna', 'Tren inferior', '3', '8-10 por pierna', '75 s'],
@@ -210,6 +211,22 @@ let currentPlanId = null;
 
 const $ = id => document.getElementById(id);
 
+function normalizeExerciseName(name) {
+  return String(name || '')
+    .toLowerCase()
+    .trim()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+}
+
+function getExerciseImage(name) {
+  const match = EXERCISE_LIBRARY.find(exercise =>
+    normalizeExerciseName(exercise[0]) === normalizeExerciseName(name)
+  );
+
+  return match?.[5] || '';
+}
+
 function escapeHtml(value) {
   return String(value ?? '').replace(/[&<>"']/g, character => ({
     '&': '&amp;',
@@ -283,10 +300,10 @@ async function loadClients() {
   }
 
   clients = data || [];
+
   renderClients();
   renderPlanner();
 }
-
 function renderClients() {
   const container = $('clients');
 
@@ -305,6 +322,7 @@ function renderClients() {
     item.innerHTML = `
       <div>
         <b>${escapeHtml(client.name)}</b>
+
         <small>
           ${escapeHtml(client.goal || '')}
           ·
@@ -319,83 +337,154 @@ function renderClients() {
       </div>
     `;
 
-    item.querySelector('.open').addEventListener('click', async () => {
-      selectedClientId = client.id;
-      selectedDay = 'Lunes';
+    item
+      .querySelector('.open')
+      .addEventListener('click', async () => {
+        selectedClientId = client.id;
+        selectedDay = 'Lunes';
 
-      await loadSelectedDay();
-      renderPlanner();
-    });
+        await loadSelectedDay();
 
-    item.querySelector('.edit').addEventListener('click', () => {
-      editClient(client);
-    });
+        renderPlanner();
+      });
 
-    item.querySelector('.del').addEventListener('click', () => {
-      deleteClient(client);
-    });
+    item
+      .querySelector('.edit')
+      .addEventListener('click', () => {
+        editClient(client);
+      });
+
+    item
+      .querySelector('.del')
+      .addEventListener('click', () => {
+        deleteClient(client);
+      });
 
     container.appendChild(item);
   });
 }
 
+
 async function editClient(client) {
-  const { data: userData, error: userError } = await sb.auth.getUser();
+  const {
+    data: userData,
+    error: userError
+  } = await sb.auth.getUser();
 
-  if (userError || !userData.user) {
-    showMessage('No se pudo identificar al profesor.', 'error');
+  if (
+    userError ||
+    !userData.user
+  ) {
+    showMessage(
+      'No se pudo identificar al profesor.',
+      'error'
+    );
+
     return;
   }
 
-  if (client.created_by !== userData.user.id) {
-    showMessage('No tenés permiso para editar este alumno.', 'error');
+  if (
+    client.created_by !==
+    userData.user.id
+  ) {
+    showMessage(
+      'No tenés permiso para editar este alumno.',
+      'error'
+    );
+
     return;
   }
 
-  $('name').value = client.name || '';
-  $('goal').value = client.goal || '';
-  $('active').checked = Boolean(client.active);
-  $('editId').value = client.id;
-  $('cancel').classList.remove('hidden');
+  $('name').value =
+    client.name || '';
 
-  const { data, error } = await sb
+  $('goal').value =
+    client.goal || '';
+
+  $('active').checked =
+    Boolean(client.active);
+
+  $('editId').value =
+    client.id;
+
+  $('cancel')
+    .classList
+    .remove('hidden');
+
+  const {
+    data,
+    error
+  } = await sb
     .from('client_private_notes')
     .select('notes')
     .eq('client_id', client.id)
     .maybeSingle();
 
-  $('notes').value = error ? '' : (data?.notes || '');
+  $('notes').value =
+    error
+      ? ''
+      : (data?.notes || '');
 }
+
+
 function clearClientForm() {
   $('name').value = '';
   $('goal').value = '';
   $('notes').value = '';
+
   $('active').checked = true;
+
   $('editId').value = '';
-  $('cancel').classList.add('hidden');
+
+  $('cancel')
+    .classList
+    .add('hidden');
 }
 
+
 async function saveClient() {
-  const name = $('name').value.trim();
-  const goal = $('goal').value.trim();
-  const active = $('active').checked;
-  const notes = $('notes').value.trim();
+  const name =
+    $('name').value.trim();
+
+  const goal =
+    $('goal').value.trim();
+
+  const active =
+    $('active').checked;
+
+  const notes =
+    $('notes').value.trim();
 
   if (!name) {
-    alert('Ingresá el nombre del alumno.');
+    alert(
+      'Ingresá el nombre del alumno.'
+    );
+
     return;
   }
 
-  const { data: userData, error: userError } = await sb.auth.getUser();
+  const {
+    data: userData,
+    error: userError
+  } = await sb.auth.getUser();
 
-  if (userError || !userData.user) {
-    showMessage('No se pudo identificar al profesor.', 'error');
+  if (
+    userError ||
+    !userData.user
+  ) {
+    showMessage(
+      'No se pudo identificar al profesor.',
+      'error'
+    );
+
     return;
   }
 
-  const professorId = userData.user.id;
+  const professorId =
+    userData.user.id;
 
-  let clientId = $('editId').value;
+  let clientId =
+    $('editId').value;
 
   if (clientId) {
     const { error } = await sb
@@ -404,55 +493,87 @@ async function saveClient() {
         name,
         goal,
         active,
-        updated_at: new Date().toISOString()
+        updated_at:
+          new Date().toISOString()
       })
       .eq('id', clientId)
-      .eq('created_by', professorId);
+      .eq(
+        'created_by',
+        professorId
+      );
 
     if (error) {
-      showMessage(error.message, 'error');
+      showMessage(
+        error.message,
+        'error'
+      );
+
       return;
     }
 
   } else {
-    const { data, error } = await sb
+    const {
+      data,
+      error
+    } = await sb
       .from('clients')
       .insert({
         name,
         goal,
         active,
-        created_by: professorId
+        created_by:
+          professorId
       })
       .select()
       .single();
 
     if (error) {
-      showMessage(error.message, 'error');
+      showMessage(
+        error.message,
+        'error'
+      );
+
       return;
     }
 
-    clientId = data.id;
-    selectedClientId = clientId;
+    clientId =
+      data.id;
+
+    selectedClientId =
+      clientId;
   }
 
-  const { data: oldNote, error: noteSearchError } = await sb
+  const {
+    data: oldNote,
+    error: noteSearchError
+  } = await sb
     .from('client_private_notes')
     .select('id')
-    .eq('client_id', clientId)
+    .eq(
+      'client_id',
+      clientId
+    )
     .maybeSingle();
 
   if (!noteSearchError) {
     if (oldNote) {
       await sb
         .from('client_private_notes')
-        .update({ notes })
-        .eq('id', oldNote.id);
+        .update({
+          notes
+        })
+        .eq(
+          'id',
+          oldNote.id
+        );
 
     } else if (notes) {
       await sb
         .from('client_private_notes')
         .insert({
-          client_id: clientId,
+          client_id:
+            clientId,
+
           notes
         });
     }
@@ -462,306 +583,546 @@ async function saveClient() {
 
   await loadClients();
 
-  showMessage('Cliente guardado correctamente.');
+  showMessage(
+    'Cliente guardado correctamente.'
+  );
 }
 
+
 async function deleteClient(client) {
-  const confirmed = confirm(`¿Eliminar a ${client.name}?`);
+  const confirmed =
+    confirm(
+      `¿Eliminar a ${client.name}?`
+    );
 
-  if (!confirmed) return;
+  if (!confirmed) {
+    return;
+  }
 
-  const { data: userData, error: userError } = await sb.auth.getUser();
+  const {
+    data: userData,
+    error: userError
+  } = await sb.auth.getUser();
 
-  if (userError || !userData.user) {
-    showMessage('No se pudo identificar al profesor.', 'error');
+  if (
+    userError ||
+    !userData.user
+  ) {
+    showMessage(
+      'No se pudo identificar al profesor.',
+      'error'
+    );
+
     return;
   }
 
   const { error } = await sb
     .from('clients')
     .delete()
-    .eq('id', client.id)
-    .eq('created_by', userData.user.id);
+    .eq(
+      'id',
+      client.id
+    )
+    .eq(
+      'created_by',
+      userData.user.id
+    );
 
   if (error) {
-    showMessage(error.message, 'error');
+    showMessage(
+      error.message,
+      'error'
+    );
+
     return;
   }
 
-  if (selectedClientId === client.id) {
-    selectedClientId = null;
-    draftExercises = [];
-    currentPlanId = null;
+  if (
+    selectedClientId ===
+    client.id
+  ) {
+    selectedClientId =
+      null;
+
+    draftExercises =
+      [];
+
+    currentPlanId =
+      null;
   }
 
   await loadClients();
 
-  showMessage('Cliente eliminado.');
+  showMessage(
+    'Cliente eliminado.'
+  );
 }
+
 
 async function loadSelectedDay() {
   draftExercises = [];
   currentPlanId = null;
 
-  if (!selectedClientId) return;
+  if (!selectedClientId) {
+    return;
+  }
 
-  const { data: plan, error } = await sb
+  const {
+    data: plan,
+    error
+  } = await sb
     .from('workout_plans')
     .select('*')
-    .eq('client_id', selectedClientId)
-    .eq('day_of_week', selectedDay)
+    .eq(
+      'client_id',
+      selectedClientId
+    )
+    .eq(
+      'day_of_week',
+      selectedDay
+    )
     .maybeSingle();
 
   if (error) {
-    showMessage(error.message, 'error');
+    showMessage(
+      error.message,
+      'error'
+    );
+
     return;
   }
 
-  if (!plan) return;
+  if (!plan) {
+    return;
+  }
 
-  currentPlanId = plan.id;
+  currentPlanId =
+    plan.id;
 
-  const { data: exercises, error: exercisesError } = await sb
+  const {
+    data: exercises,
+    error: exercisesError
+  } = await sb
     .from('plan_exercises')
     .select('*')
-    .eq('plan_id', plan.id)
-    .order('exercise_order');
+    .eq(
+      'plan_id',
+      plan.id
+    )
+    .order(
+      'exercise_order'
+    );
 
   if (exercisesError) {
-    showMessage(exercisesError.message, 'error');
+    showMessage(
+      exercisesError.message,
+      'error'
+    );
+
     return;
   }
 
-  draftExercises = (exercises || []).map(exercise => ({
-    name: exercise.exercise_name || '',
-    sets: exercise.sets || '',
-    reps: exercise.reps || '',
-    load: exercise.load || '',
-    rest: exercise.rest || '',
-    notes: exercise.notes || ''
-  }));
+  draftExercises =
+    (exercises || [])
+      .map(exercise => ({
+        name:
+          exercise.exercise_name || '',
+
+        sets:
+          exercise.sets || '',
+
+        reps:
+          exercise.reps || '',
+
+        load:
+          exercise.load || '',
+
+        rest:
+          exercise.rest || '',
+
+        notes:
+          exercise.notes || ''
+      }));
 }
 
+
 function renderPlanner() {
-  const client = clients.find(item => item.id === selectedClientId);
+  const client =
+    clients.find(
+      item =>
+        item.id ===
+        selectedClientId
+    );
 
-  $('empty').classList.toggle('hidden', Boolean(client));
-  $('planner').classList.toggle('hidden', !client);
+  $('empty')
+    .classList
+    .toggle(
+      'hidden',
+      Boolean(client)
+    );
 
-  if (!client) return;
+  $('planner')
+    .classList
+    .toggle(
+      'hidden',
+      !client
+    );
 
-  $('clientTitle').textContent = client.name;
-  $('clientGoal').textContent = client.goal || '';
+  if (!client) {
+    return;
+  }
 
-  const daysContainer = $('days');
+  $('clientTitle').textContent =
+    client.name;
 
-  daysContainer.innerHTML = '';
+  $('clientGoal').textContent =
+    client.goal || '';
+
+  const daysContainer =
+    $('days');
+
+  daysContainer.innerHTML =
+    '';
 
   DAYS.forEach(dayName => {
-    const button = document.createElement('button');
+    const button =
+      document.createElement(
+        'button'
+      );
 
-    button.textContent = dayName;
+    button.textContent =
+      dayName;
 
     button.className =
-      `day ${dayName === selectedDay ? 'active' : ''}`;
+      `day ${
+        dayName === selectedDay
+          ? 'active'
+          : ''
+      }`;
 
-    button.addEventListener('click', async () => {
-      selectedDay = dayName;
+    button.addEventListener(
+      'click',
+      async () => {
+        selectedDay =
+          dayName;
 
-      await loadSelectedDay();
+        await loadSelectedDay();
 
-      renderPlanner();
-    });
+        renderPlanner();
+      }
+    );
 
-    daysContainer.appendChild(button);
+    daysContainer
+      .appendChild(button);
   });
 
   renderExercises();
 }
 
-function renderExercises() {
-  const container = $('exerciseList');
 
-  container.innerHTML = '';
+function renderExercises() {
+  const container =
+    $('exerciseList');
+
+  container.innerHTML =
+    '';
 
   if (!draftExercises.length) {
-    container.innerHTML = '<small>Sin ejercicios.</small>';
+    container.innerHTML =
+      '<small>Sin ejercicios.</small>';
+
     return;
   }
 
-  draftExercises.forEach((exercise, index) => {
-    const item = document.createElement('div');
+  draftExercises.forEach(
+    (exercise, index) => {
 
-    item.className = 'exercise';
+      const item =
+        document.createElement(
+          'div'
+        );
 
-    item.innerHTML = `
-      <div class="row">
-        <b>Ejercicio ${index + 1}</b>
-        <button class="rm danger">Quitar</button>
-      </div>
+      item.className =
+        'exercise';
 
-      <div class="cols">
+      const exerciseImage =
+        getExerciseImage(
+          exercise.name
+        );
 
-        <div>
-          <label>Ejercicio</label>
+      item.innerHTML = `
+        <div class="row">
 
-          <input
-            class="name"
-            value="${escapeHtml(exercise.name)}"
-          >
+          <b>
+            Ejercicio ${index + 1}
+          </b>
+
+          <button class="rm danger">
+            Quitar
+          </button>
+
         </div>
 
-        <div>
-          <label>Series</label>
+        ${
+          exerciseImage
+            ? `
+              <img
+                src="${escapeHtml(
+                  exerciseImage
+                )}"
+                alt="${escapeHtml(
+                  exercise.name
+                )}"
+                class="exercise-thumb"
+              >
+            `
+            : ''
+        }
 
-          <input
-            class="sets"
-            value="${escapeHtml(exercise.sets)}"
-          >
+        <div class="cols">
+
+          <div>
+            <label>
+              Ejercicio
+            </label>
+
+            <input
+              class="name"
+              value="${escapeHtml(
+                exercise.name
+              )}"
+            >
+          </div>
+
+          <div>
+            <label>
+              Series
+            </label>
+
+            <input
+              class="sets"
+              value="${escapeHtml(
+                exercise.sets
+              )}"
+            >
+          </div>
+
+          <div>
+            <label>
+              Repeticiones
+            </label>
+
+            <input
+              class="reps"
+              value="${escapeHtml(
+                exercise.reps
+              )}"
+            >
+          </div>
+
+          <div>
+            <label>
+              Carga
+            </label>
+
+            <input
+              class="load"
+              value="${escapeHtml(
+                exercise.load
+              )}"
+            >
+          </div>
+
+          <div>
+            <label>
+              Descanso
+            </label>
+
+            <input
+              class="rest"
+              value="${escapeHtml(
+                exercise.rest
+              )}"
+            >
+          </div>
+
+          <div>
+            <label>
+              Observaciones
+            </label>
+
+            <input
+              class="notes"
+              value="${escapeHtml(
+                exercise.notes
+              )}"
+            >
+          </div>
+
         </div>
+      `;
 
-        <div>
-          <label>Repeticiones</label>
+      [
+        'name',
+        'sets',
+        'reps',
+        'load',
+        'rest',
+        'notes'
+      ].forEach(field => {
 
-          <input
-            class="reps"
-            value="${escapeHtml(exercise.reps)}"
-          >
-        </div>
+        item
+          .querySelector(
+            `.${field}`
+          )
+          .addEventListener(
+            'input',
+            event => {
 
-        <div>
-          <label>Carga</label>
+              exercise[field] =
+                event.target.value;
 
-          <input
-            class="load"
-            value="${escapeHtml(exercise.load)}"
-          >
-        </div>
-
-        <div>
-          <label>Descanso</label>
-
-          <input
-            class="rest"
-            value="${escapeHtml(exercise.rest)}"
-          >
-        </div>
-
-        <div>
-          <label>Observaciones</label>
-
-          <input
-            class="notes"
-            value="${escapeHtml(exercise.notes)}"
-          >
-        </div>
-
-      </div>
-    `;
-
-    [
-      'name',
-      'sets',
-      'reps',
-      'load',
-      'rest',
-      'notes'
-    ].forEach(field => {
-
-      item
-        .querySelector(`.${field}`)
-        .addEventListener('input', event => {
-          exercise[field] = event.target.value;
-        });
-
-    });
-
-    item
-      .querySelector('.rm')
-      .addEventListener('click', () => {
-
-        draftExercises.splice(index, 1);
-
-        renderExercises();
+              if (
+                field === 'name'
+              ) {
+                renderExercises();
+              }
+            }
+          );
 
       });
 
-    container.appendChild(item);
-  });
+      item
+        .querySelector('.rm')
+        .addEventListener(
+          'click',
+          () => {
+
+            draftExercises.splice(
+              index,
+              1
+            );
+
+            renderExercises();
+
+          }
+        );
+
+      container.appendChild(
+        item
+      );
+    }
+  );
 }
+
 
 async function saveSelectedDay() {
   if (!selectedClientId) {
-    alert('Seleccioná un alumno.');
+    alert(
+      'Seleccioná un alumno.'
+    );
+
     return;
   }
 
   if (!currentPlanId) {
-    const { data, error } = await sb
+    const {
+      data,
+      error
+    } = await sb
       .from('workout_plans')
       .insert({
-        client_id: selectedClientId,
-        day_of_week: selectedDay,
-        title: `Planificación ${selectedDay}`
+        client_id:
+          selectedClientId,
+
+        day_of_week:
+          selectedDay,
+
+        title:
+          `Planificación ${selectedDay}`
       })
       .select()
       .single();
 
     if (error) {
-      showMessage(error.message, 'error');
+      showMessage(
+        error.message,
+        'error'
+      );
+
       return;
     }
 
-    currentPlanId = data.id;
+    currentPlanId =
+      data.id;
   }
 
-  const { error: deleteError } = await sb
+  const {
+    error: deleteError
+  } = await sb
     .from('plan_exercises')
     .delete()
-    .eq('plan_id', currentPlanId);
+    .eq(
+      'plan_id',
+      currentPlanId
+    );
 
   if (deleteError) {
-    showMessage(deleteError.message, 'error');
+    showMessage(
+      deleteError.message,
+      'error'
+    );
+
     return;
   }
 
-  if (draftExercises.length) {
+  if (
+    draftExercises.length
+  ) {
+    const rows =
+      draftExercises.map(
+        (exercise, index) => ({
 
-    const rows = draftExercises.map(
-      (exercise, index) => ({
+          plan_id:
+            currentPlanId,
 
-        plan_id: currentPlanId,
+          exercise_name:
+            exercise.name ||
+            'Ejercicio',
 
-        exercise_name:
-          exercise.name || 'Ejercicio',
+          sets:
+            exercise.sets,
 
-        sets:
-          exercise.sets,
+          reps:
+            exercise.reps,
 
-        reps:
-          exercise.reps,
+          load:
+            exercise.load,
 
-        load:
-          exercise.load,
+          rest:
+            exercise.rest,
 
-        rest:
-          exercise.rest,
+          notes:
+            exercise.notes,
 
-        notes:
-          exercise.notes,
+          exercise_order:
+            index
 
-        exercise_order:
-          index
+        })
+      );
 
-      })
-    );
-
-    const { error } = await sb
+    const {
+      error
+    } = await sb
       .from('plan_exercises')
       .insert(rows);
 
     if (error) {
-      showMessage(error.message, 'error');
+      showMessage(
+        error.message,
+        'error'
+      );
+
       return;
     }
   }
@@ -771,20 +1132,28 @@ async function saveSelectedDay() {
   );
 }
 
+
 function openLibrary() {
   if (!selectedClientId) {
-    alert('Seleccioná un cliente.');
+    alert(
+      'Seleccioná un cliente.'
+    );
+
     return;
   }
 
-  $('libraryModal').classList.remove('hidden');
+  $('libraryModal')
+    .classList
+    .remove('hidden');
 
   renderLibrary();
 }
 
+
 function renderLibrary() {
   const search =
-    $('libSearch').value
+    $('libSearch')
+      .value
       .toLowerCase()
       .trim();
 
@@ -794,7 +1163,8 @@ function renderLibrary() {
   const container =
     $('library');
 
-  container.innerHTML = '';
+  container.innerHTML =
+    '';
 
   EXERCISE_LIBRARY
     .filter(exercise => {
@@ -816,82 +1186,124 @@ function renderLibrary() {
       );
 
     })
-
     .forEach(exercise => {
 
       const item =
-        document.createElement('div');
+        document.createElement(
+          'div'
+        );
 
-      item.className = 'lib';
+      const imagePath =
+        exercise[5] || '';
+
+      item.className =
+        'lib';
 
       item.innerHTML = `
+
+        ${
+          imagePath
+            ? `
+              <img
+                src="${escapeHtml(
+                  imagePath
+                )}"
+                alt="${escapeHtml(
+                  exercise[0]
+                )}"
+                class="exercise-thumb"
+              >
+            `
+            : ''
+        }
+
         <b>
-          ${escapeHtml(exercise[0])}
+          ${escapeHtml(
+            exercise[0]
+          )}
         </b>
 
         <small>
-          ${escapeHtml(exercise[1])}
+          ${escapeHtml(
+            exercise[1]
+          )}
         </small>
 
         <p>
           <small>
 
-            ${escapeHtml(exercise[2])}
+            ${escapeHtml(
+              exercise[2]
+            )}
             series
 
             ·
 
-            ${escapeHtml(exercise[3])}
+            ${escapeHtml(
+              exercise[3]
+            )}
 
             ·
 
             descanso
-            ${escapeHtml(exercise[4] || '-')}
+            ${escapeHtml(
+              exercise[4] || '-'
+            )}
 
           </small>
         </p>
 
         <button>
           Agregar a
-          ${escapeHtml(selectedDay)}
+          ${escapeHtml(
+            selectedDay
+          )}
         </button>
+
       `;
 
       item
-        .querySelector('button')
-        .addEventListener('click', () => {
+        .querySelector(
+          'button'
+        )
+        .addEventListener(
+          'click',
+          () => {
 
-          draftExercises.push({
+            draftExercises.push({
 
-            name:
-              exercise[0],
+              name:
+                exercise[0],
 
-            sets:
-              exercise[2],
+              sets:
+                exercise[2],
 
-            reps:
-              exercise[3],
+              reps:
+                exercise[3],
 
-            load:
-              '',
+              load:
+                '',
 
-            rest:
-              exercise[4],
+              rest:
+                exercise[4],
 
-            notes:
-              ''
+              notes:
+                ''
 
-          });
+            });
 
-          renderExercises();
+            renderExercises();
 
-          alert(
-            'Agregado. Recordá guardar el día.'
-          );
+            alert(
+              'Agregado. Recordá guardar el día.'
+            );
 
-        });
+          }
+        );
 
-      container.appendChild(item);
+      container.appendChild(
+        item
+      );
 
     });
 }
@@ -913,7 +1325,6 @@ async function loadPublicClients() {
       .toLowerCase()
       .trim();
 
-
   const PROFESSORS = {
 
     cristian:
@@ -930,14 +1341,13 @@ async function loadPublicClients() {
 
   };
 
-
   const professorId =
     PROFESSORS[profe];
 
-
   if (!professorId) {
 
-    window.publicClients = [];
+    window.publicClients =
+      [];
 
     $('results').innerHTML =
       '<div class="error">' +
@@ -947,18 +1357,28 @@ async function loadPublicClients() {
     return;
   }
 
-
-  const { data, error } = await sb
+  const {
+    data,
+    error
+  } = await sb
     .from('clients')
-    .select('id,name,goal')
-    .eq('active', true)
-    .eq('created_by', professorId)
-    .order('name');
-
+    .select(
+      'id,name,goal'
+    )
+    .eq(
+      'active',
+      true
+    )
+    .eq(
+      'created_by',
+      professorId
+    )
+    .order(
+      'name'
+    );
 
   window.publicClients =
     data || [];
-
 
   if (error) {
 
@@ -970,7 +1390,6 @@ async function loadPublicClients() {
     return;
   }
 
-
   renderPublicResults();
 }
 
@@ -978,17 +1397,16 @@ async function loadPublicClients() {
 function renderPublicResults() {
 
   const search =
-    $('search').value
+    $('search')
+      .value
       .toLowerCase()
       .trim();
-
 
   const container =
     $('results');
 
-
-  container.innerHTML = '';
-
+  container.innerHTML =
+    '';
 
   const results =
     (window.publicClients || [])
@@ -1001,7 +1419,6 @@ function renderPublicResults() {
           .includes(search)
 
       );
-
 
   if (!results.length) {
 
@@ -1017,39 +1434,46 @@ function renderPublicResults() {
     return;
   }
 
-
   results.forEach(client => {
 
     const button =
-      document.createElement('button');
-
+      document.createElement(
+        'button'
+      );
 
     button.className =
       'public-result';
 
-
     button.innerHTML = `
+
       <b>
-        ${escapeHtml(client.name)}
+        ${escapeHtml(
+          client.name
+        )}
       </b>
 
       <small>
-        ${escapeHtml(client.goal || '')}
+        ${escapeHtml(
+          client.goal || ''
+        )}
       </small>
-    `;
 
+    `;
 
     button.addEventListener(
       'click',
       () => {
 
-        showPublicPlan(client);
+        showPublicPlan(
+          client
+        );
 
       }
     );
 
-
-    container.appendChild(button);
+    container.appendChild(
+      button
+    );
 
   });
 }
@@ -1066,28 +1490,14 @@ function parseRestSeconds(value) {
       .toLowerCase()
       .trim();
 
-
   if (!text) {
     return null;
   }
-
-
-  /*
-    Ejemplos:
-
-    90 s
-    60 s
-    45 s
-    1 min
-    2 min
-  */
-
 
   const minuteMatch =
     text.match(
       /(\d+(?:[.,]\d+)?)\s*min/
     );
-
 
   if (minuteMatch) {
 
@@ -1102,12 +1512,10 @@ function parseRestSeconds(value) {
 
   }
 
-
   const secondMatch =
     text.match(
       /(\d+)\s*s/
     );
-
 
   if (secondMatch) {
 
@@ -1117,10 +1525,10 @@ function parseRestSeconds(value) {
 
   }
 
-
   const plainNumber =
-    text.match(/^\d+$/);
-
+    text.match(
+      /^\d+$/
+    );
 
   if (plainNumber) {
 
@@ -1129,7 +1537,6 @@ function parseRestSeconds(value) {
     );
 
   }
-
 
   return null;
 }
@@ -1145,18 +1552,14 @@ async function showPublicPlan(client) {
     data: plans,
     error: plansError
   } = await sb
-
     .from('workout_plans')
-
     .select(
       'id,day_of_week'
     )
-
     .eq(
       'client_id',
       client.id
     );
-
 
   if (plansError) {
 
@@ -1165,25 +1568,22 @@ async function showPublicPlan(client) {
       'No se pudo cargar la planificación.' +
       '</div>';
 
-
     $('publicPlan')
       .classList
       .remove('hidden');
 
-
     return;
   }
-
 
   const planIds =
     (plans || [])
       .map(
-        plan => plan.id
+        plan =>
+          plan.id
       );
 
-
-  let exercises = [];
-
+  let exercises =
+    [];
 
   if (planIds.length) {
 
@@ -1191,20 +1591,15 @@ async function showPublicPlan(client) {
       data,
       error
     } = await sb
-
       .from('plan_exercises')
-
       .select('*')
-
       .in(
         'plan_id',
         planIds
       )
-
       .order(
         'exercise_order'
       );
-
 
     if (error) {
 
@@ -1213,198 +1608,200 @@ async function showPublicPlan(client) {
         'No se pudieron cargar los ejercicios.' +
         '</div>';
 
-
       $('publicPlan')
         .classList
         .remove('hidden');
 
-
       return;
     }
-
 
     exercises =
       data || [];
 
   }
 
-
   let html = `
 
     <h2>
-      ${escapeHtml(client.name)}
+      ${escapeHtml(
+        client.name
+      )}
     </h2>
 
     <small>
-      ${escapeHtml(client.goal || '')}
+      ${escapeHtml(
+        client.goal || ''
+      )}
     </small>
 
   `;
 
+  DAYS.forEach(
+    dayName => {
 
-  DAYS.forEach(dayName => {
+      const plan =
+        (plans || [])
+          .find(
+            item =>
+              item.day_of_week ===
+              dayName
+          );
 
-    const plan =
-      (plans || [])
-        .find(
-          item =>
-            item.day_of_week ===
-            dayName
-        );
+      const dayExercises =
+        plan
+          ? exercises.filter(
+              exercise =>
+                exercise.plan_id ===
+                plan.id
+            )
+          : [];
 
+      html += `
 
-    const dayExercises =
-      plan
+        <div class="plan-day">
 
-        ? exercises.filter(
-            exercise =>
-              exercise.plan_id ===
-              plan.id
-          )
+          <h3>
+            ${escapeHtml(
+              dayName
+            )}
+          </h3>
 
-        : [];
+      `;
 
+      if (
+        dayExercises.length
+      ) {
 
-    html += `
+        html +=
+          dayExercises
+            .map(
+              exercise => {
 
-      <div class="plan-day">
-
-        <h3>
-          ${escapeHtml(dayName)}
-        </h3>
-
-    `;
-
-
-    if (dayExercises.length) {
-
-      html += dayExercises
-
-        .map(exercise => {
-
-          const restSeconds =
-            parseRestSeconds(
-              exercise.rest
-            );
-
-
-          const timerButton =
-            restSeconds
-
-              ? `
-
-                <button
-                  type="button"
-                  class="exercise-timer-btn"
-                  data-rest-seconds="${restSeconds}"
-                >
-
-                  ⏱ Iniciar descanso
-                  ${escapeHtml(
+                const restSeconds =
+                  parseRestSeconds(
                     exercise.rest
-                  )}
+                  );
 
-                </button>
+                const timerButton =
+                  restSeconds
+                    ? `
 
-              `
+                      <button
+                        type="button"
+                        class="exercise-timer-btn"
+                        data-rest-seconds="${restSeconds}"
+                      >
 
-              : '';
+                        ⏱ Iniciar descanso
+                        ${escapeHtml(
+                          exercise.rest
+                        )}
 
+                      </button>
 
-          return `
+                    `
+                    : '';
 
-            <div class="public-ex">
+                const exerciseImage =
+                  getExerciseImage(
+                    exercise.exercise_name
+                  );
 
-              <b>
-                ${escapeHtml(
-                  exercise.exercise_name
-                )}
-              </b>
+                return `
 
+                  <div class="public-ex">
 
-              <small>
+                    ${
+                      exerciseImage
+                        ? `
+                          <img
+                            src="${escapeHtml(
+                              exerciseImage
+                            )}"
+                            alt="${escapeHtml(
+                              exercise.exercise_name
+                            )}"
+                            class="public-ex-image"
+                          >
+                        `
+                        : ''
+                    }
 
-                ${escapeHtml(
-                  exercise.sets || '-'
-                )}
-                series
+                    <b>
+                      ${escapeHtml(
+                        exercise.exercise_name
+                      )}
+                    </b>
 
-                ·
+                    <small>
 
-                ${escapeHtml(
-                  exercise.reps || '-'
-                )}
+                      ${escapeHtml(
+                        exercise.sets || '-'
+                      )}
+                      series
 
-                ·
+                      ·
 
-                carga
-                ${escapeHtml(
-                  exercise.load || '-'
-                )}
+                      ${escapeHtml(
+                        exercise.reps || '-'
+                      )}
 
-                ·
+                      ·
 
-                descanso
-                ${escapeHtml(
-                  exercise.rest || '-'
-                )}
+                      carga
+                      ${escapeHtml(
+                        exercise.load || '-'
+                      )}
 
-              </small>
+                      ·
 
+                      descanso
+                      ${escapeHtml(
+                        exercise.rest || '-'
+                      )}
 
-              <div>
-                ${escapeHtml(
-                  exercise.notes || ''
-                )}
-              </div>
+                    </small>
 
+                    <div>
+                      ${escapeHtml(
+                        exercise.notes || ''
+                      )}
+                    </div>
 
-              ${timerButton}
+                    ${timerButton}
 
+                  </div>
 
-            </div>
+                `;
 
-          `;
+              }
+            )
+            .join('');
 
-        })
+      } else {
 
-        .join('');
+        html +=
+          '<small>Sin ejercicios.</small>';
 
-
-    } else {
+      }
 
       html +=
-        '<small>Sin ejercicios.</small>';
+        '</div>';
 
     }
-
-
-    html +=
-      '</div>';
-
-  });
-
+  );
 
   $('publicPlan').innerHTML =
     html;
-
 
   $('publicPlan')
     .classList
     .remove('hidden');
 
-
-  /*
-    MOSTRAMOS EL CRONÓMETRO
-    SOLAMENTE CUANDO EL ALUMNO
-    ABRE SU PLANIFICACIÓN
-  */
-
   const studentTimer =
     document.getElementById(
       'studentTimer'
     );
-
 
   if (studentTimer) {
 
@@ -1413,7 +1810,6 @@ async function showPublicPlan(client) {
       .remove('hidden');
 
   }
-
 
   $('publicPlan')
     .scrollIntoView({
@@ -1432,27 +1828,41 @@ async function showPublicPlan(client) {
 ======================================== */
 
 function addLibraryCategories() {
-  const select = $('libCat');
+  const select =
+    $('libCat');
 
-  if (!select) return;
+  if (!select) {
+    return;
+  }
 
   const categories = [
     ...new Set(
       EXERCISE_LIBRARY.map(
-        exercise => exercise[1]
+        exercise =>
+          exercise[1]
       )
     )
   ];
 
-  categories.forEach(category => {
-    const option =
-      document.createElement('option');
+  categories.forEach(
+    category => {
 
-    option.value = category;
-    option.textContent = category;
+      const option =
+        document.createElement(
+          'option'
+        );
 
-    select.appendChild(option);
-  });
+      option.value =
+        category;
+
+      option.textContent =
+        category;
+
+      select.appendChild(
+        option
+      );
+    }
+  );
 }
 
 
@@ -1461,18 +1871,36 @@ function addLibraryCategories() {
 ======================================== */
 
 function addManualExercise() {
+
   if (!selectedClientId) {
-    alert('Seleccioná un cliente.');
+
+    alert(
+      'Seleccioná un cliente.'
+    );
+
     return;
   }
 
   draftExercises.push({
-    name: '',
-    sets: '',
-    reps: '',
-    load: '',
-    rest: '',
-    notes: ''
+
+    name:
+      '',
+
+    sets:
+      '',
+
+    reps:
+      '',
+
+    load:
+      '',
+
+    rest:
+      '',
+
+    notes:
+      ''
+
   });
 
   renderExercises();
@@ -1484,26 +1912,38 @@ function addManualExercise() {
 ======================================== */
 
 async function previewClient() {
+
   const client =
     clients.find(
       item =>
-        item.id === selectedClientId
+        item.id ===
+        selectedClientId
     );
 
   if (!client) {
-    alert('Seleccioná un cliente.');
+
+    alert(
+      'Seleccioná un cliente.'
+    );
+
     return;
   }
 
   $('admin')
     .classList
-    .add('hidden');
+    .add(
+      'hidden'
+    );
 
   $('public')
     .classList
-    .remove('hidden');
+    .remove(
+      'hidden'
+    );
 
-  await showPublicPlan(client);
+  await showPublicPlan(
+    client
+  );
 }
 
 
@@ -1512,6 +1952,7 @@ async function previewClient() {
 ======================================== */
 
 async function login() {
+
   const email =
     $('loginEmail')
       .value
@@ -1526,29 +1967,38 @@ async function login() {
 
   errorBox
     .classList
-    .add('hidden');
+    .add(
+      'hidden'
+    );
 
   const {
     error
   } = await sb.auth.signInWithPassword({
+
     email,
     password
+
   });
 
   if (error) {
+
     errorBox.textContent =
       error.message;
 
     errorBox
       .classList
-      .remove('hidden');
+      .remove(
+        'hidden'
+      );
 
     return;
   }
 
   $('loginModal')
     .classList
-    .add('hidden');
+    .add(
+      'hidden'
+    );
 
   await showAdminMode();
 }
@@ -1559,12 +2009,20 @@ async function login() {
 ======================================== */
 
 async function logout() {
+
   await sb.auth.signOut();
 
-  selectedClientId = null;
-  selectedDay = 'Lunes';
-  draftExercises = [];
-  currentPlanId = null;
+  selectedClientId =
+    null;
+
+  selectedDay =
+    'Lunes';
+
+  draftExercises =
+    [];
+
+  currentPlanId =
+    null;
 
   await showPublicMode();
 }
@@ -1574,31 +2032,53 @@ async function logout() {
    CRONÓMETRO DE DESCANSO PARA ALUMNOS
 ======================================== */
 
-let restTimerSeconds = 90;
-let restTimerInitialSeconds = 90;
-let restTimerInterval = null;
-let restTimerRunning = false;
+let restTimerSeconds =
+  90;
+
+let restTimerInitialSeconds =
+  90;
+
+let restTimerInterval =
+  null;
+
+let restTimerRunning =
+  false;
 
 
 /* ----------------------------------------
    FORMATEAR TIEMPO
 ----------------------------------------- */
 
-function formatRestTimer(seconds) {
+function formatRestTimer(
+  seconds
+) {
+
   const minutes =
-    Math.floor(seconds / 60);
+    Math.floor(
+      seconds / 60
+    );
 
   const remainingSeconds =
     seconds % 60;
 
   return (
-    String(minutes)
-      .padStart(2, '0')
+    String(
+      minutes
+    )
+      .padStart(
+        2,
+        '0'
+      )
     +
     ':'
     +
-    String(remainingSeconds)
-      .padStart(2, '0')
+    String(
+      remainingSeconds
+    )
+      .padStart(
+        2,
+        '0'
+      )
   );
 }
 
@@ -1608,12 +2088,15 @@ function formatRestTimer(seconds) {
 ----------------------------------------- */
 
 function updateRestTimerDisplay() {
+
   const display =
     document.getElementById(
       'timerDisplay'
     );
 
-  if (!display) return;
+  if (!display) {
+    return;
+  }
 
   display.textContent =
     formatRestTimer(
@@ -1630,15 +2113,22 @@ function setRestTimer(
   seconds,
   autoStart = false
 ) {
+
   clearInterval(
     restTimerInterval
   );
 
-  restTimerInterval = null;
-  restTimerRunning = false;
+  restTimerInterval =
+    null;
 
-  restTimerSeconds = seconds;
-  restTimerInitialSeconds = seconds;
+  restTimerRunning =
+    false;
+
+  restTimerSeconds =
+    seconds;
+
+  restTimerInitialSeconds =
+    seconds;
 
   updateRestTimerDisplay();
 
@@ -1648,9 +2138,12 @@ function setRestTimer(
     );
 
   if (timer) {
+
     timer
       .classList
-      .remove('finished');
+      .remove(
+        'finished'
+      );
   }
 
   const status =
@@ -1659,6 +2152,7 @@ function setRestTimer(
     );
 
   if (status) {
+
     status.textContent =
       'Listo para iniciar';
   }
@@ -1667,25 +2161,26 @@ function setRestTimer(
     .querySelectorAll(
       '.timer-preset'
     )
-    .forEach(button => {
+    .forEach(
+      button => {
 
-      button.classList.toggle(
-        'active',
+        button
+          .classList
+          .toggle(
 
-        Number(
-          button.dataset.seconds
-        ) === seconds
-      );
+            'active',
 
-    });
+            Number(
+              button.dataset.seconds
+            ) ===
+            seconds
 
-  /*
-    Si el tiempo vino directamente
-    desde un ejercicio, arrancamos
-    automáticamente.
-  */
+          );
+      }
+    );
 
   if (autoStart) {
+
     startRestTimer();
 
     const studentTimer =
@@ -1694,10 +2189,17 @@ function setRestTimer(
       );
 
     if (studentTimer) {
-      studentTimer.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center'
-      });
+
+      studentTimer
+        .scrollIntoView({
+
+          behavior:
+            'smooth',
+
+          block:
+            'center'
+
+        });
     }
   }
 }
@@ -1708,18 +2210,24 @@ function setRestTimer(
 ----------------------------------------- */
 
 function startRestTimer() {
+
   if (restTimerRunning) {
     return;
   }
 
-  if (restTimerSeconds <= 0) {
+  if (
+    restTimerSeconds <=
+    0
+  ) {
+
     restTimerSeconds =
       restTimerInitialSeconds;
 
     updateRestTimerDisplay();
   }
 
-  restTimerRunning = true;
+  restTimerRunning =
+    true;
 
   const timer =
     document.querySelector(
@@ -1727,9 +2235,12 @@ function startRestTimer() {
     );
 
   if (timer) {
+
     timer
       .classList
-      .remove('finished');
+      .remove(
+        'finished'
+      );
   }
 
   const status =
@@ -1738,30 +2249,38 @@ function startRestTimer() {
     );
 
   if (status) {
+
     status.textContent =
       'Descanso en curso...';
   }
 
   restTimerInterval =
-    setInterval(() => {
+    setInterval(
+      () => {
 
-      restTimerSeconds -= 1;
+        restTimerSeconds -=
+          1;
 
-      if (
-        restTimerSeconds <= 0
-      ) {
-        restTimerSeconds = 0;
+        if (
+          restTimerSeconds <=
+          0
+        ) {
+
+          restTimerSeconds =
+            0;
+
+          updateRestTimerDisplay();
+
+          finishRestTimer();
+
+          return;
+        }
 
         updateRestTimerDisplay();
 
-        finishRestTimer();
-
-        return;
-      }
-
-      updateRestTimerDisplay();
-
-    }, 1000);
+      },
+      1000
+    );
 }
 
 
@@ -1770,12 +2289,16 @@ function startRestTimer() {
 ----------------------------------------- */
 
 function pauseRestTimer() {
+
   clearInterval(
     restTimerInterval
   );
 
-  restTimerInterval = null;
-  restTimerRunning = false;
+  restTimerInterval =
+    null;
+
+  restTimerRunning =
+    false;
 
   const status =
     document.getElementById(
@@ -1786,6 +2309,7 @@ function pauseRestTimer() {
     status &&
     restTimerSeconds > 0
   ) {
+
     status.textContent =
       'Cronómetro pausado';
   }
@@ -1797,12 +2321,16 @@ function pauseRestTimer() {
 ----------------------------------------- */
 
 function resetRestTimer() {
+
   clearInterval(
     restTimerInterval
   );
 
-  restTimerInterval = null;
-  restTimerRunning = false;
+  restTimerInterval =
+    null;
+
+  restTimerRunning =
+    false;
 
   restTimerSeconds =
     restTimerInitialSeconds;
@@ -1815,9 +2343,12 @@ function resetRestTimer() {
     );
 
   if (timer) {
+
     timer
       .classList
-      .remove('finished');
+      .remove(
+        'finished'
+      );
   }
 
   const status =
@@ -1826,6 +2357,7 @@ function resetRestTimer() {
     );
 
   if (status) {
+
     status.textContent =
       'Listo para iniciar';
   }
@@ -1837,12 +2369,16 @@ function resetRestTimer() {
 ----------------------------------------- */
 
 function finishRestTimer() {
+
   clearInterval(
     restTimerInterval
   );
 
-  restTimerInterval = null;
-  restTimerRunning = false;
+  restTimerInterval =
+    null;
+
+  restTimerRunning =
+    false;
 
   const timer =
     document.querySelector(
@@ -1850,9 +2386,12 @@ function finishRestTimer() {
     );
 
   if (timer) {
+
     timer
       .classList
-      .add('finished');
+      .add(
+        'finished'
+      );
   }
 
   const status =
@@ -1861,18 +2400,15 @@ function finishRestTimer() {
     );
 
   if (status) {
+
     status.textContent =
       '🔥 ¡Descanso terminado!';
   }
 
-  /*
-    Vibración en dispositivos
-    compatibles.
-  */
-
   if (
     'vibrate' in navigator
   ) {
+
     navigator.vibrate([
       250,
       150,
@@ -1891,7 +2427,9 @@ function finishRestTimer() {
 ----------------------------------------- */
 
 function playRestTimerSound() {
+
   try {
+
     const AudioContext =
       window.AudioContext ||
       window.webkitAudioContext;
@@ -1916,49 +2454,78 @@ function playRestTimerSound() {
         audioContext
           .createGain();
 
-      oscillator.connect(gain);
+      oscillator.connect(
+        gain
+      );
 
       gain.connect(
         audioContext.destination
       );
 
-      oscillator.frequency.value =
-        frequency;
+      oscillator
+        .frequency
+        .value =
+          frequency;
 
       oscillator.type =
         'sine';
 
-      gain.gain.setValueAtTime(
-        0.18,
-        audioContext.currentTime +
-        startTime
-      );
+      gain
+        .gain
+        .setValueAtTime(
 
-      gain.gain
+          0.18,
+
+          audioContext.currentTime +
+          startTime
+
+        );
+
+      gain
+        .gain
         .exponentialRampToValueAtTime(
+
           0.001,
+
           audioContext.currentTime +
           startTime +
           0.25
+
         );
 
       oscillator.start(
+
         audioContext.currentTime +
         startTime
+
       );
 
       oscillator.stop(
+
         audioContext.currentTime +
         startTime +
         0.25
+
       );
     };
 
-    beep(0, 750);
-    beep(0.35, 850);
-    beep(0.70, 1000);
+    beep(
+      0,
+      750
+    );
+
+    beep(
+      0.35,
+      850
+    );
+
+    beep(
+      0.70,
+      1000
+    );
 
   } catch (error) {
+
     console.log(
       'No se pudo reproducir el aviso del cronómetro.'
     );
@@ -1971,6 +2538,7 @@ function playRestTimerSound() {
 ======================================== */
 
 function initializeRestTimer() {
+
   const startButton =
     document.getElementById(
       'timerStart'
@@ -1998,22 +2566,26 @@ function initializeRestTimer() {
     .querySelectorAll(
       '.timer-preset'
     )
-    .forEach(button => {
+    .forEach(
+      button => {
 
-      button.addEventListener(
-        'click',
-        () => {
+        button.addEventListener(
+          'click',
+          () => {
 
-          setRestTimer(
-            Number(
-              button.dataset.seconds
-            )
-          );
+            setRestTimer(
 
-        }
-      );
+              Number(
+                button.dataset.seconds
+              )
 
-    });
+            );
+
+          }
+        );
+
+      }
+    );
 
   startButton
     .addEventListener(
@@ -2063,12 +2635,6 @@ document.addEventListener(
       return;
     }
 
-    /*
-      Carga el descanso indicado
-      por el profesor y arranca
-      automáticamente.
-    */
-
     setRestTimer(
       seconds,
       true
@@ -2091,7 +2657,9 @@ function setupEvents() {
         if (
           !$('admin')
             .classList
-            .contains('hidden')
+            .contains(
+              'hidden'
+            )
         ) {
 
           await showPublicMode();
@@ -2113,7 +2681,9 @@ function setupEvents() {
 
         $('loginModal')
           .classList
-          .add('hidden');
+          .add(
+            'hidden'
+          );
 
       }
     );
@@ -2132,9 +2702,12 @@ function setupEvents() {
       event => {
 
         if (
-          event.key === 'Enter'
+          event.key ===
+          'Enter'
         ) {
+
           login();
+
         }
 
       }
@@ -2204,7 +2777,9 @@ function setupEvents() {
 
         $('libraryModal')
           .classList
-          .add('hidden');
+          .add(
+            'hidden'
+          );
 
       }
     );
@@ -2229,7 +2804,6 @@ function setupEvents() {
       'input',
       renderPublicResults
     );
-
 }
 
 
@@ -2245,29 +2819,11 @@ async function startApp() {
 
   initializeRestTimer();
 
-
-  /*
-    Arrancamos siempre mostrando
-    la vista pública.
-  */
-
   await showPublicMode();
-
-
-  /*
-    Si existe una sesión iniciada
-    NO abrimos automáticamente
-    el panel.
-
-    De esta manera el enlace
-    sigue funcionando como vista
-    pública para los alumnos.
-  */
 
   const {
     data
   } = await sb.auth.getSession();
-
 
   if (
     data?.session &&
@@ -2275,10 +2831,9 @@ async function startApp() {
   ) {
 
     $('email').textContent =
-      data.session.user.email || '';
-
+      data.session.user.email ||
+      '';
   }
-
 }
 
 
