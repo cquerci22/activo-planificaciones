@@ -18,78 +18,78 @@ const EXERCISE_LIBRARY = [
   ['Peso muerto convencional', 'Tren inferior', '4', '6-8', '120 s', 'img/ejercicios/peso-muerto-convencional.png'],
 
   ['Peso muerto sumo', 'Tren inferior', '4', '6-10', '120 s', 'img/ejercicios/peso-muerto-sumo.png'],
-['Peso muerto con trap bar', 'Tren inferior', '4', '6-8', '120 s', 'img/ejercicios/peso-muerto-con-trap-bar.png'],
-['Peso muerto rumano', 'Tren inferior', '4', '8-10', '90 s', 'img/ejercicios/peso-muerto-rumano.png'],
-['Peso muerto a una pierna', 'Tren inferior', '3', '8-10 por pierna', '75 s', 'img/ejercicios/peso-muerto-a-una-pierna.png'],
-['Buenos días con barra', 'Tren inferior', '3', '10-12', '75 s', 'img/ejercicios/buenos-dias-con-barra.png'],
-['Hip thrust', 'Tren inferior', '4', '10-12', '75 s', 'img/ejercicios/hip-thrust.png'],
-['Hip thrust unilateral', 'Tren inferior', '3', '10-12 por pierna', '75 s', 'img/ejercicios/hip-thrust-unilateral.png'],
-['Puente de glúteos', 'Tren inferior', '4', '12-15', '60 s', 'img/ejercicios/puente-de-gluteos.png'],
-['Zancadas', 'Tren inferior', '3', '10 por pierna', '60 s', 'img/ejercicios/zancadas.png'],
-['Zancada hacia atrás', 'Tren inferior', '3', '10 por pierna', '60 s', 'img/ejercicios/zancada-hacia-atras.png'],
+  ['Peso muerto con trap bar', 'Tren inferior', '4', '6-8', '120 s', 'img/ejercicios/peso-muerto-con-trap-bar.png'],
+  ['Peso muerto rumano', 'Tren inferior', '4', '8-10', '90 s', 'img/ejercicios/peso-muerto-rumano.png'],
+  ['Peso muerto a una pierna', 'Tren inferior', '3', '8-10 por pierna', '75 s', 'img/ejercicios/peso-muerto-a-una-pierna.png'],
+  ['Buenos días con barra', 'Tren inferior', '3', '10-12', '75 s', 'img/ejercicios/buenos-dias-con-barra.png'],
+  ['Hip thrust', 'Tren inferior', '4', '10-12', '75 s', 'img/ejercicios/hip-thrust.png'],
+  ['Hip thrust unilateral', 'Tren inferior', '3', '10-12 por pierna', '75 s', 'img/ejercicios/hip-thrust-unilateral.png'],
+  ['Puente de glúteos', 'Tren inferior', '4', '12-15', '60 s', 'img/ejercicios/puente-de-gluteos.png'],
+  ['Zancadas', 'Tren inferior', '3', '10 por pierna', '60 s', 'img/ejercicios/zancadas.png'],
+  ['Zancada hacia atrás', 'Tren inferior', '3', '10 por pierna', '60 s', 'img/ejercicios/zancada-hacia-atras.png'],
   ['Zancada lateral', 'Tren inferior', '3', '10 por lado', '60 s', 'img/ejercicios/zancada-lateral.png'],
-['Zancadas caminando', 'Tren inferior', '3', '12 pasos por pierna', '75 s', 'img/ejercicios/zancadas-caminando.png'],
-['Sentadilla búlgara', 'Tren inferior', '3', '8-10 por pierna', '75 s', 'img/ejercicios/sentadilla-bulgara.png'],
-['Subida al banco', 'Tren inferior', '3', '10 por pierna', '60 s', 'img/ejercicios/subida-al-banco.png'],
-['Subida al banco con rodilla arriba', 'Tren inferior', '3', '10 por pierna', '60 s', 'img/ejercicios/subida-al-banco-con-rodilla-arriba.png'],
-['Extensión de cuádriceps', 'Tren inferior', '3', '12-15', '60 s', 'img/ejercicios/extension-de-cuadriceps.png'],
-['Extensión de cuádriceps unilateral', 'Tren inferior', '3', '10-15 por pierna', '60 s', 'img/ejercicios/extension-de-cuadriceps-unilateral.png'],
-['Curl femoral acostado', 'Tren inferior', '3', '10-15', '60 s', 'img/ejercicios/curl-femoral-acostado.png'],
-['Curl femoral sentado', 'Tren inferior', '3', '10-15', '60 s', 'img/ejercicios/curl-femoral-sentado.png'],
-['Curl femoral unilateral', 'Tren inferior', '3', '10-12 por pierna', '60 s', 'img/ejercicios/curl-femoral-unilateral.png'],
- ['Patada de glúteos en polea', 'Tren inferior', '3', '12-15 por pierna', '45 s', 'img/ejercicios/patada-de-gluteos-en-polea.png'],
-['Abducción de cadera en máquina', 'Tren inferior', '3', '15-20', '45 s', 'img/ejercicios/abduccion-de-cadera-en-maquina.png'],
-['Aducción de cadera en máquina', 'Tren inferior', '3', '15-20', '45 s', 'img/ejercicios/aduccion-de-cadera-en-maquina.png'],
-['Caminata lateral con minibanda', 'Tren inferior', '3', '12 pasos por lado', '45 s', 'img/ejercicios/caminata-lateral-con-minibanda.png'],
-['Monster walk con minibanda', 'Tren inferior', '3', '12 pasos por dirección', '45 s', 'img/ejercicios/monster-walk-con-minibanda.png'],
-['Elevación de talones de pie', 'Tren inferior', '4', '15-20', '45 s', 'img/ejercicios/elevacion-de-talones-de-pie.png'],
-['Elevación de talones sentado', 'Tren inferior', '4', '15-20', '45 s', 'img/ejercicios/elevacion-de-talones-sentado.png'],
-['Elevación de talón unilateral', 'Tren inferior', '3', '12-15 por pierna', '45 s', 'img/ejercicios/elevacion-de-talon-unilateral.png'],
+  ['Zancadas caminando', 'Tren inferior', '3', '12 pasos por pierna', '75 s', 'img/ejercicios/zancadas-caminando.png'],
+  ['Sentadilla búlgara', 'Tren inferior', '3', '8-10 por pierna', '75 s', 'img/ejercicios/sentadilla-bulgara.png'],
+  ['Subida al banco', 'Tren inferior', '3', '10 por pierna', '60 s', 'img/ejercicios/subida-al-banco.png'],
+  ['Subida al banco con rodilla arriba', 'Tren inferior', '3', '10 por pierna', '60 s', 'img/ejercicios/subida-al-banco-con-rodilla-arriba.png'],
+  ['Extensión de cuádriceps', 'Tren inferior', '3', '12-15', '60 s', 'img/ejercicios/extension-de-cuadriceps.png'],
+  ['Extensión de cuádriceps unilateral', 'Tren inferior', '3', '10-15 por pierna', '60 s', 'img/ejercicios/extension-de-cuadriceps-unilateral.png'],
+  ['Curl femoral acostado', 'Tren inferior', '3', '10-15', '60 s', 'img/ejercicios/curl-femoral-acostado.png'],
+  ['Curl femoral sentado', 'Tren inferior', '3', '10-15', '60 s', 'img/ejercicios/curl-femoral-sentado.png'],
+  ['Curl femoral unilateral', 'Tren inferior', '3', '10-12 por pierna', '60 s', 'img/ejercicios/curl-femoral-unilateral.png'],
+  ['Patada de glúteos en polea', 'Tren inferior', '3', '12-15 por pierna', '45 s', 'img/ejercicios/patada-de-gluteos-en-polea.png'],
+  ['Abducción de cadera en máquina', 'Tren inferior', '3', '15-20', '45 s', 'img/ejercicios/abduccion-de-cadera-en-maquina.png'],
+  ['Aducción de cadera en máquina', 'Tren inferior', '3', '15-20', '45 s', 'img/ejercicios/aduccion-de-cadera-en-maquina.png'],
+  ['Caminata lateral con minibanda', 'Tren inferior', '3', '12 pasos por lado', '45 s', 'img/ejercicios/caminata-lateral-con-minibanda.png'],
+  ['Monster walk con minibanda', 'Tren inferior', '3', '12 pasos por dirección', '45 s', 'img/ejercicios/monster-walk-con-minibanda.png'],
+  ['Elevación de talones de pie', 'Tren inferior', '4', '15-20', '45 s', 'img/ejercicios/elevacion-de-talones-de-pie.png'],
+  ['Elevación de talones sentado', 'Tren inferior', '4', '15-20', '45 s', 'img/ejercicios/elevacion-de-talones-sentado.png'],
+  ['Elevación de talón unilateral', 'Tren inferior', '3', '12-15 por pierna', '45 s', 'img/ejercicios/elevacion-de-talon-unilateral.png'],
 
-['Press de banca', 'Tren superior', '4', '8-10', '90 s', 'img/ejercicios/press-de-banca.png'],
-['Press plano con mancuernas', 'Tren superior', '4', '8-12', '75 s', 'img/ejercicios/press-plano-con-mancuernas.png'],
+  ['Press de banca', 'Tren superior', '4', '8-10', '90 s', 'img/ejercicios/press-de-banca.png'],
+  ['Press plano con mancuernas', 'Tren superior', '4', '8-12', '75 s', 'img/ejercicios/press-plano-con-mancuernas.png'],
   ['Press inclinado con barra', 'Tren superior', '4', '8-10', '90 s', 'img/ejercicios/press-inclinado-con-barra.png'],
-['Press inclinado con mancuernas', 'Tren superior', '4', '8-12', '75 s', 'img/ejercicios/press-inclinado-con-mancuernas.png'],
-['Press declinado con barra', 'Tren superior', '4', '8-10', '90 s', 'img/ejercicios/press-declinado-con-barra.png'],
-['Press de pecho en máquina', 'Tren superior', '3', '10-12', '75 s', 'img/ejercicios/press-de-pecho-en-maquina.png'],
-['Aperturas con mancuernas', 'Tren superior', '3', '12-15', '60 s', 'img/ejercicios/aperturas-con-mancuernas.png'],
-['Aperturas en máquina', 'Tren superior', '3', '12-15', '60 s', 'img/ejercicios/aperturas-en-maquina.png'],
-['Cruce de poleas alto', 'Tren superior', '3', '12-15', '45 s', 'img/ejercicios/cruce-de-poleas-alto.png'],
-['Cruce de poleas medio', 'Tren superior', '3', '12-15', '45 s', 'img/ejercicios/cruce-de-poleas-medio.png'],
-['Cruce de poleas bajo', 'Tren superior', '3', '12-15', '45 s', 'img/ejercicios/cruce-de-poleas-bajo.png'],
-['Flexiones de brazos', 'Tren superior', '3', '10-20', '60 s', 'img/ejercicios/flexiones-de-brazos.png'],
- ['Flexiones inclinadas', 'Tren superior', '3', '10-15', '60 s', 'img/ejercicios/flexiones-inclinadas.png'],
-['Flexiones con manos cerradas', 'Tren superior', '3', '8-15', '60 s', 'img/ejercicios/flexiones-con-manos-cerradas.png'],
+  ['Press inclinado con mancuernas', 'Tren superior', '4', '8-12', '75 s', 'img/ejercicios/press-inclinado-con-mancuernas.png'],
+  ['Press declinado con barra', 'Tren superior', '4', '8-10', '90 s', 'img/ejercicios/press-declinado-con-barra.png'],
+  ['Press de pecho en máquina', 'Tren superior', '3', '10-12', '75 s', 'img/ejercicios/press-de-pecho-en-maquina.png'],
+  ['Aperturas con mancuernas', 'Tren superior', '3', '12-15', '60 s', 'img/ejercicios/aperturas-con-mancuernas.png'],
+  ['Aperturas en máquina', 'Tren superior', '3', '12-15', '60 s', 'img/ejercicios/aperturas-en-maquina.png'],
+  ['Cruce de poleas alto', 'Tren superior', '3', '12-15', '45 s', 'img/ejercicios/cruce-de-poleas-alto.png'],
+  ['Cruce de poleas medio', 'Tren superior', '3', '12-15', '45 s', 'img/ejercicios/cruce-de-poleas-medio.png'],
+  ['Cruce de poleas bajo', 'Tren superior', '3', '12-15', '45 s', 'img/ejercicios/cruce-de-poleas-bajo.png'],
+  ['Flexiones de brazos', 'Tren superior', '3', '10-20', '60 s', 'img/ejercicios/flexiones-de-brazos.png'],
+  ['Flexiones inclinadas', 'Tren superior', '3', '10-15', '60 s', 'img/ejercicios/flexiones-inclinadas.png'],
+  ['Flexiones con manos cerradas', 'Tren superior', '3', '8-15', '60 s', 'img/ejercicios/flexiones-con-manos-cerradas.png'],
 
-['Dominadas pronas', 'Tren superior', '4', '6-10', '90 s', 'img/ejercicios/dominadas-pronas.png'],
-['Dominadas supinas', 'Tren superior', '4', '6-10', '90 s', 'img/ejercicios/dominadas-supinas.png'],
-['Dominadas asistidas', 'Tren superior', '4', '8-12', '75 s', 'img/ejercicios/dominadas-asistidas.png'],
-['Jalón al pecho', 'Tren superior', '4', '10-12', '75 s', 'img/ejercicios/jalon-al-pecho.png'],
-['Jalón al pecho agarre cerrado', 'Tren superior', '4', '10-12', '75 s', 'img/ejercicios/jalon-al-pecho-agarre-cerrado.png'],
-['Jalón al pecho agarre supino', 'Tren superior', '4', '10-12', '75 s', 'img/ejercicios/jalon-al-pecho-agarre-supino.png'],
-['Jalón unilateral en polea', 'Tren superior', '3', '10-12 por lado', '60 s', 'img/ejercicios/jalon-unilateral-en-polea.png'],
-['Pullover en polea', 'Tren superior', '3', '12-15', '60 s', 'img/ejercicios/pullover-en-polea.png'],
-['Remo con barra', 'Tren superior', '4', '8-10', '90 s', 'img/ejercicios/remo-con-barra.png'],
-['Remo con mancuerna unilateral', 'Tren superior', '4', '8-12 por lado', '75 s', 'img/ejercicios/remo-con-mancuerna-unilateral.png'],
-['Remo en máquina', 'Tren superior', '4', '10-12', '75 s', 'img/ejercicios/remo-en-maquina.png'],
-['Remo sentado en polea', 'Tren superior', '4', '10-12', '75 s', 'img/ejercicios/remo-sentado-en-polea.png'],
-['Remo en polea agarre amplio', 'Tren superior', '3', '10-12', '75 s', 'img/ejercicios/remo-en-polea-agarre-amplio.png'],
-['Remo pecho apoyado con mancuernas', 'Tren superior', '3', '10-12', '75 s', 'img/ejercicios/remo-pecho-apoyado-con-mancuernas.png'],
-['Remo invertido', 'Tren superior', '3', '8-15', '60 s', 'img/ejercicios/remo-invertido.png'],
-['Face pull', 'Tren superior', '3', '12-15', '45 s', 'img/ejercicios/face-pull.png'],
-['Encogimientos con mancuernas', 'Tren superior', '3', '12-15', '60 s', 'img/ejercicios/encogimientos-con-mancuernas.png'],
+  ['Dominadas pronas', 'Tren superior', '4', '6-10', '90 s', 'img/ejercicios/dominadas-pronas.png'],
+  ['Dominadas supinas', 'Tren superior', '4', '6-10', '90 s', 'img/ejercicios/dominadas-supinas.png'],
+  ['Dominadas asistidas', 'Tren superior', '4', '8-12', '75 s', 'img/ejercicios/dominadas-asistidas.png'],
+  ['Jalón al pecho', 'Tren superior', '4', '10-12', '75 s', 'img/ejercicios/jalon-al-pecho.png'],
+  ['Jalón al pecho agarre cerrado', 'Tren superior', '4', '10-12', '75 s', 'img/ejercicios/jalon-al-pecho-agarre-cerrado.png'],
+  ['Jalón al pecho agarre supino', 'Tren superior', '4', '10-12', '75 s', 'img/ejercicios/jalon-al-pecho-agarre-supino.png'],
+  ['Jalón unilateral en polea', 'Tren superior', '3', '10-12 por lado', '60 s', 'img/ejercicios/jalon-unilateral-en-polea.png'],
+  ['Pullover en polea', 'Tren superior', '3', '12-15', '60 s', 'img/ejercicios/pullover-en-polea.png'],
+  ['Remo con barra', 'Tren superior', '4', '8-10', '90 s', 'img/ejercicios/remo-con-barra.png'],
+  ['Remo con mancuerna unilateral', 'Tren superior', '4', '8-12 por lado', '75 s', 'img/ejercicios/remo-con-mancuerna-unilateral.png'],
+  ['Remo en máquina', 'Tren superior', '4', '10-12', '75 s', 'img/ejercicios/remo-en-maquina.png'],
+  ['Remo sentado en polea', 'Tren superior', '4', '10-12', '75 s', 'img/ejercicios/remo-sentado-en-polea.png'],
+  ['Remo en polea agarre amplio', 'Tren superior', '3', '10-12', '75 s', 'img/ejercicios/remo-en-polea-agarre-amplio.png'],
+  ['Remo pecho apoyado con mancuernas', 'Tren superior', '3', '10-12', '75 s', 'img/ejercicios/remo-pecho-apoyado-con-mancuernas.png'],
+  ['Remo invertido', 'Tren superior', '3', '8-15', '60 s', 'img/ejercicios/remo-invertido.png'],
+  ['Face pull', 'Tren superior', '3', '12-15', '45 s', 'img/ejercicios/face-pull.png'],
+  ['Encogimientos con mancuernas', 'Tren superior', '3', '12-15', '60 s', 'img/ejercicios/encogimientos-con-mancuernas.png'],
 
-['Press militar', 'Tren superior', '4', '8-10', '90 s', 'img/ejercicios/press-militar.png'],
+  ['Press militar', 'Tren superior', '4', '8-10', '90 s', 'img/ejercicios/press-militar.png'],
   ['Press militar con mancuernas', 'Tren superior', '4', '8-10', '90 s', 'img/ejercicios/press-militar-con-mancuernas.png'],
-['Press Arnold', 'Tren superior', '4', '8-10', '75 s', 'img/ejercicios/press-arnold.png'],
-['Press de hombros en máquina', 'Tren superior', '4', '10-12', '75 s', 'img/ejercicios/press-de-hombros-en-maquina.png'],
-['Elevaciones laterales', 'Tren superior', '3', '12-15', '45 s', 'img/ejercicios/elevaciones-laterales.png'],
-['Elevación lateral unilateral en polea', 'Tren superior', '3', '12-15 por lado', '45 s', 'img/ejercicios/elevacion-lateral-unilateral-en-polea.png'],
-['Elevación frontal con mancuernas', 'Tren superior', '3', '12-15', '45 s', 'img/ejercicios/elevacion-frontal-con-mancuernas.png'],
-['Elevación frontal con disco', 'Tren superior', '3', '12-15', '45 s', 'img/ejercicios/elevacion-frontal-con-disco.png'],
-['Pájaros con mancuernas', 'Tren superior', '3', '12-15', '45 s', 'img/ejercicios/pajaros-con-mancuernas.png'],
-['Pájaros en máquina', 'Tren superior', '3', '12-15', '45 s', 'img/ejercicios/pajaros-en-maquina.png'],
-['Remo al mentón con barra', 'Tren superior', '3', '10-12', '60 s', 'img/ejercicios/remo-al-menton-con-barra.png'],
+  ['Press Arnold', 'Tren superior', '4', '8-10', '75 s', 'img/ejercicios/press-arnold.png'],
+  ['Press de hombros en máquina', 'Tren superior', '4', '10-12', '75 s', 'img/ejercicios/press-de-hombros-en-maquina.png'],
+  ['Elevaciones laterales', 'Tren superior', '3', '12-15', '45 s', 'img/ejercicios/elevaciones-laterales.png'],
+  ['Elevación lateral unilateral en polea', 'Tren superior', '3', '12-15 por lado', '45 s', 'img/ejercicios/elevacion-lateral-unilateral-en-polea.png'],
+  ['Elevación frontal con mancuernas', 'Tren superior', '3', '12-15', '45 s', 'img/ejercicios/elevacion-frontal-con-mancuernas.png'],
+  ['Elevación frontal con disco', 'Tren superior', '3', '12-15', '45 s', 'img/ejercicios/elevacion-frontal-con-disco.png'],
+  ['Pájaros con mancuernas', 'Tren superior', '3', '12-15', '45 s', 'img/ejercicios/pajaros-con-mancuernas.png'],
+  ['Pájaros en máquina', 'Tren superior', '3', '12-15', '45 s', 'img/ejercicios/pajaros-en-maquina.png'],
+  ['Remo al mentón con barra', 'Tren superior', '3', '10-12', '60 s', 'img/ejercicios/remo-al-menton-con-barra.png'],
   ['Rotación externa con banda', 'Tren superior', '3', '12-15 por lado', '45 s'],
 
   ['Curl de bíceps', 'Tren superior', '3', '10-12', '45 s'],
@@ -304,6 +304,7 @@ async function loadClients() {
   renderClients();
   renderPlanner();
 }
+
 function renderClients() {
   const container = $('clients');
 
@@ -363,7 +364,6 @@ function renderClients() {
     container.appendChild(item);
   });
 }
-
 
 async function editClient(client) {
   const {
@@ -426,7 +426,6 @@ async function editClient(client) {
       : (data?.notes || '');
 }
 
-
 function clearClientForm() {
   $('name').value = '';
   $('goal').value = '';
@@ -440,7 +439,6 @@ function clearClientForm() {
     .classList
     .add('hidden');
 }
-
 
 async function saveClient() {
   const name =
@@ -588,7 +586,6 @@ async function saveClient() {
   );
 }
 
-
 async function deleteClient(client) {
   const confirmed =
     confirm(
@@ -657,7 +654,6 @@ async function deleteClient(client) {
     'Cliente eliminado.'
   );
 }
-
 
 async function loadSelectedDay() {
   draftExercises = [];
@@ -745,7 +741,6 @@ async function loadSelectedDay() {
       }));
 }
 
-
 function renderPlanner() {
   const client =
     clients.find(
@@ -818,7 +813,6 @@ function renderPlanner() {
 
   renderExercises();
 }
-
 
 function renderExercises() {
   const container =
@@ -1015,7 +1009,6 @@ function renderExercises() {
   );
 }
 
-
 async function saveSelectedDay() {
   if (!selectedClientId) {
     alert(
@@ -1131,8 +1124,6 @@ async function saveSelectedDay() {
     `${selectedDay} guardado correctamente.`
   );
 }
-
-
 function openLibrary() {
   if (!selectedClientId) {
     alert(
@@ -1544,6 +1535,7 @@ function parseRestSeconds(value) {
 
 /* ========================================
    MOSTRAR PLANIFICACIÓN DEL ALUMNO
+   NUEVO: DÍAS POR PESTAÑAS
 ======================================== */
 
 async function showPublicPlan(client) {
@@ -1620,21 +1612,138 @@ async function showPublicPlan(client) {
 
   }
 
+  /* ========================================
+     BUSCAR PRIMER DÍA QUE TENGA EJERCICIOS
+  ======================================== */
+
+  const daysWithExercises =
+    DAYS.filter(
+      dayName => {
+
+        const plan =
+          (plans || [])
+            .find(
+              item =>
+                item.day_of_week ===
+                dayName
+            );
+
+        if (!plan) {
+          return false;
+        }
+
+        return exercises.some(
+          exercise =>
+            exercise.plan_id ===
+            plan.id
+        );
+
+      }
+    );
+
+  const initialDay =
+    daysWithExercises[0] ||
+    DAYS[0];
+
+
+  /* ========================================
+     ENCABEZADO DEL ALUMNO
+  ======================================== */
+
   let html = `
 
-    <h2>
-      ${escapeHtml(
-        client.name
-      )}
-    </h2>
+    <div class="public-plan-header">
 
-    <small>
-      ${escapeHtml(
-        client.goal || ''
-      )}
-    </small>
+      <h2>
+        ${escapeHtml(
+          client.name
+        )}
+      </h2>
+
+      <small>
+        ${escapeHtml(
+          client.goal || ''
+        )}
+      </small>
+
+    </div>
+
+
+    <div class="public-day-tabs">
 
   `;
+
+
+  /* ========================================
+     BOTONES / PESTAÑAS DE LOS DÍAS
+  ======================================== */
+
+  DAYS.forEach(
+    dayName => {
+
+      const plan =
+        (plans || [])
+          .find(
+            item =>
+              item.day_of_week ===
+              dayName
+          );
+
+      const hasExercises =
+        plan
+          ? exercises.some(
+              exercise =>
+                exercise.plan_id ===
+                plan.id
+            )
+          : false;
+
+      html += `
+
+        <button
+          type="button"
+          class="public-day-tab
+            ${
+              dayName ===
+              initialDay
+                ? 'active'
+                : ''
+            }
+            ${
+              !hasExercises
+                ? 'empty'
+                : ''
+            }
+          "
+          data-public-day="${escapeHtml(
+            dayName
+          )}"
+        >
+
+          ${escapeHtml(
+            dayName
+          )}
+
+        </button>
+
+      `;
+
+    }
+  );
+
+
+  html += `
+
+    </div>
+
+    <div class="public-days-container">
+
+  `;
+
+
+  /* ========================================
+     CONTENIDO DE CADA DÍA
+  ======================================== */
 
   DAYS.forEach(
     dayName => {
@@ -1658,7 +1767,17 @@ async function showPublicPlan(client) {
 
       html += `
 
-        <div class="plan-day">
+        <div
+          class="plan-day public-day-panel ${
+            dayName ===
+            initialDay
+              ? 'active'
+              : ''
+          }"
+          data-public-panel="${escapeHtml(
+            dayName
+          )}"
+        >
 
           <h3>
             ${escapeHtml(
@@ -1667,6 +1786,7 @@ async function showPublicPlan(client) {
           </h3>
 
       `;
+
 
       if (
         dayExercises.length
@@ -1692,7 +1812,7 @@ async function showPublicPlan(client) {
                         data-rest-seconds="${restSeconds}"
                       >
 
-                        ⏱ Iniciar descanso
+                        ⏱ Descanso
                         ${escapeHtml(
                           exercise.rest
                         )}
@@ -1762,11 +1882,19 @@ async function showPublicPlan(client) {
 
                     </small>
 
-                    <div>
-                      ${escapeHtml(
-                        exercise.notes || ''
-                      )}
-                    </div>
+                    ${
+                      exercise.notes
+                        ? `
+                          <div class="exercise-notes">
+
+                            ${escapeHtml(
+                              exercise.notes
+                            )}
+
+                          </div>
+                        `
+                        : ''
+                    }
 
                     ${timerButton}
 
@@ -1780,16 +1908,33 @@ async function showPublicPlan(client) {
 
       } else {
 
-        html +=
-          '<small>Sin ejercicios.</small>';
+        html += `
+
+          <div class="empty-day-message">
+            Sin ejercicios cargados para este día.
+          </div>
+
+        `;
 
       }
 
-      html +=
-        '</div>';
+
+      html += `
+
+        </div>
+
+      `;
 
     }
   );
+
+
+  html += `
+
+    </div>
+
+  `;
+
 
   $('publicPlan').innerHTML =
     html;
@@ -1797,6 +1942,11 @@ async function showPublicPlan(client) {
   $('publicPlan')
     .classList
     .remove('hidden');
+
+
+  /* ========================================
+     MOSTRAR CRONÓMETRO
+  ======================================== */
 
   const studentTimer =
     document.getElementById(
@@ -1811,6 +1961,82 @@ async function showPublicPlan(client) {
 
   }
 
+
+  /* ========================================
+     FUNCIONAMIENTO DE LAS PESTAÑAS
+  ======================================== */
+
+  document
+    .querySelectorAll(
+      '.public-day-tab'
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          'click',
+          () => {
+
+            const selectedPublicDay =
+              button.dataset.publicDay;
+
+
+            document
+              .querySelectorAll(
+                '.public-day-tab'
+              )
+              .forEach(
+                tab => {
+
+                  tab
+                    .classList
+                    .remove(
+                      'active'
+                    );
+
+                }
+              );
+
+
+            button
+              .classList
+              .add(
+                'active'
+              );
+
+
+            document
+              .querySelectorAll(
+                '.public-day-panel'
+              )
+              .forEach(
+                panel => {
+
+                  const isSelected =
+                    panel.dataset.publicPanel ===
+                    selectedPublicDay;
+
+                  panel
+                    .classList
+                    .toggle(
+                      'active',
+                      isSelected
+                    );
+
+                }
+              );
+
+          }
+        );
+
+      }
+    );
+
+
+  /* ========================================
+     LLEVAR AL INICIO DEL PLAN SOLO UNA VEZ
+  ======================================== */
+
   $('publicPlan')
     .scrollIntoView({
 
@@ -1823,6 +2049,8 @@ async function showPublicPlan(client) {
     });
 
 }
+
+
 /* ========================================
    CATEGORÍAS DE LA BIBLIOTECA
 ======================================== */
@@ -1861,6 +2089,7 @@ function addLibraryCategories() {
       select.appendChild(
         option
       );
+
     }
   );
 }
@@ -2043,8 +2272,6 @@ let restTimerInterval =
 
 let restTimerRunning =
   false;
-
-
 /* ----------------------------------------
    FORMATEAR TIEMPO
 ----------------------------------------- */
@@ -2179,28 +2406,14 @@ function setRestTimer(
       }
     );
 
+  /* IMPORTANTE:
+     Si el descanso viene desde un ejercicio,
+     arranca automáticamente pero NO mueve
+     la pantalla del alumno.
+  */
+
   if (autoStart) {
-
     startRestTimer();
-
-    const studentTimer =
-      document.getElementById(
-        'studentTimer'
-      );
-
-    if (studentTimer) {
-
-      studentTimer
-        .scrollIntoView({
-
-          behavior:
-            'smooth',
-
-          block:
-            'center'
-
-        });
-    }
   }
 }
 
