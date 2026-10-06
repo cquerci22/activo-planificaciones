@@ -260,10 +260,145 @@ label input[type="checkbox"] {
   border-right: 1px solid var(--bd);
   border-bottom: 1px solid var(--bd);
   margin-bottom: 8px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 small {
   color: var(--g);
+}
+
+
+/* ========================================
+   PESTAÑAS DE DÍAS - VISTA ALUMNO
+======================================== */
+
+.public-plan-header {
+  margin-bottom: 12px;
+}
+
+.public-plan-header h2 {
+  margin-bottom: 4px;
+}
+
+.public-day-tabs {
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+
+  padding: 4px 2px 10px;
+  margin: 14px 0 16px;
+
+  position: sticky;
+  top: 0;
+
+  z-index: 30;
+
+  background: var(--f);
+
+  scrollbar-width: none;
+}
+
+.public-day-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.public-day-tab {
+  flex: 0 0 auto;
+
+  white-space: nowrap;
+
+  border: 1px solid var(--bd);
+
+  background: #ffffff;
+  color: var(--a);
+
+  border-radius: 999px;
+
+  padding: 10px 15px;
+
+  font-size: 14px;
+  font-weight: 800;
+
+  box-shadow: 0 3px 10px #10213a12;
+
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.public-day-tab:hover {
+  background: #eef4fb;
+}
+
+.public-day-tab:active {
+  transform: scale(0.97);
+}
+
+.public-day-tab.active {
+  background: var(--a);
+  color: #ffffff;
+  border-color: var(--a);
+}
+
+.public-day-tab.empty {
+  opacity: 0.48;
+}
+
+.public-day-tab.empty.active {
+  opacity: 1;
+}
+
+.public-days-container {
+  width: 100%;
+}
+
+.public-day-panel {
+  display: none;
+}
+
+.public-day-panel.active {
+  display: block;
+}
+
+.public-day-panel h3 {
+  margin-top: 0;
+}
+
+.empty-day-message {
+  padding: 18px;
+  text-align: center;
+
+  border: 1px dashed var(--bd);
+  border-radius: 12px;
+
+  background: #ffffff;
+  color: var(--g);
+}
+
+
+/* ========================================
+   BOTÓN DESCANSO DEL EJERCICIO
+======================================== */
+
+.exercise-timer-btn {
+  margin-top: 4px;
+
+  background: var(--a);
+  color: #ffffff;
+
+  align-self: flex-start;
+
+  padding: 9px 12px;
+
+  border-radius: 10px;
+}
+
+.exercise-timer-btn:hover {
+  background: var(--b);
 }
 
 
@@ -275,13 +410,28 @@ small {
   margin: 18px 0;
   padding: 18px;
   border-radius: 16px;
+
   background: linear-gradient(
     135deg,
     #071b36,
     var(--a)
   );
+
   color: #ffffff;
+
   box-shadow: 0 8px 25px #0b3b7830;
+}
+
+
+/* CRONÓMETRO SIEMPRE ACCESIBLE */
+#studentTimer {
+  position: sticky;
+  bottom: 10px;
+
+  z-index: 60;
+
+  box-shadow:
+    0 14px 40px rgba(0, 0, 0, 0.30);
 }
 
 .timer-header {
@@ -305,24 +455,32 @@ small {
 
 .timer-display {
   text-align: center;
+
   font-size: 58px;
   line-height: 1;
+
   font-weight: 800;
+
   letter-spacing: 3px;
+
   margin: 22px 0;
+
   color: #ffffff;
 }
 
 .timer-presets {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+
   gap: 8px;
+
   margin-bottom: 10px;
 }
 
 .timer-preset {
   background: #ffffff18;
   color: #ffffff;
+
   border: 1px solid #ffffff35;
 }
 
@@ -338,7 +496,10 @@ small {
 
 .timer-controls {
   display: grid;
-  grid-template-columns: 1.2fr 1fr 1fr;
+
+  grid-template-columns:
+    1.2fr 1fr 1fr;
+
   gap: 8px;
 }
 
@@ -353,10 +514,14 @@ small {
 
 .timer-status {
   margin-top: 12px;
+
   text-align: center;
+
   font-size: 13px;
   font-weight: 700;
+
   color: #ffffff;
+
   opacity: 0.85;
 }
 
@@ -369,10 +534,15 @@ small {
 }
 
 .rest-timer.finished .timer-display {
-  animation: timerPulse 0.6s ease-in-out 3;
+  animation:
+    timerPulse
+    0.6s
+    ease-in-out
+    3;
 }
 
 @keyframes timerPulse {
+
   0% {
     transform: scale(1);
   }
@@ -388,10 +558,59 @@ small {
 
 
 /* ========================================
+   IMÁGENES
+======================================== */
+
+.exercise-thumb {
+  width: 100%;
+  max-width: 180px;
+
+  height: auto;
+
+  display: block;
+
+  margin:
+    0 auto 10px auto;
+
+  border-radius: 14px;
+
+  object-fit: cover;
+}
+
+.public-ex-image {
+  width: 100%;
+  max-width: 260px;
+
+  height: auto;
+
+  display: block;
+
+  margin:
+    8px auto 10px auto;
+
+  border-radius: 16px;
+
+  object-fit: cover;
+
+  box-shadow:
+    0 6px 18px
+    rgba(0, 0, 0, 0.25);
+}
+
+.lib .exercise-thumb {
+  margin-bottom: 12px;
+}
+
+
+/* ========================================
    CELULAR
 ======================================== */
 
 @media (max-width: 760px) {
+
+  body {
+    padding-bottom: 10px;
+  }
 
   .grid,
   .cols {
@@ -413,9 +632,13 @@ small {
 
   .brand {
     width: 100%;
+
     flex-direction: column;
+
     justify-content: center;
+
     text-align: center;
+
     gap: 6px;
   }
 
@@ -433,54 +656,118 @@ small {
     margin-top: 8px;
   }
 
+
+  /* PESTAÑAS */
+
+  .public-day-tabs {
+    margin-left: -4px;
+    margin-right: -4px;
+
+    padding:
+      6px 4px 10px;
+
+    top: 0;
+  }
+
+  .public-day-tab {
+    padding: 9px 13px;
+
+    font-size: 13px;
+  }
+
+
+  /* EJERCICIOS */
+
+  .public-ex {
+    padding: 10px;
+  }
+
+  .public-ex-image {
+    max-width: 220px;
+  }
+
+  .exercise-timer-btn {
+    width: 100%;
+
+    text-align: center;
+
+    padding: 10px;
+  }
+
+
+  /* CRONÓMETRO MÁS COMPACTO */
+
+  #studentTimer {
+    position: sticky;
+
+    bottom: 6px;
+
+    margin-bottom: 6px;
+  }
+
   .rest-timer {
-    padding: 15px;
+    padding: 11px 12px;
+
+    border-radius: 14px;
+  }
+
+  .timer-header {
+    gap: 6px;
+  }
+
+  .timer-header h3 {
+    font-size: 15px;
+  }
+
+  .timer-header small {
+    display: none;
   }
 
   .timer-display {
-    font-size: 52px;
-    margin: 20px 0;
+    font-size: 36px;
+
+    letter-spacing: 2px;
+
+    margin:
+      8px 0 10px;
   }
 
   .timer-presets {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns:
+      repeat(4, 1fr);
+
+    gap: 5px;
+
+    margin-bottom: 6px;
+  }
+
+  .timer-preset {
+    padding: 7px 4px;
+
+    font-size: 12px;
   }
 
   .timer-controls {
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      repeat(3, 1fr);
+
+    gap: 5px;
   }
 
   .timer-controls button {
     width: 100%;
+
+    min-height: 36px;
+
+    padding: 6px 4px;
+
+    font-size: 12px;
   }
-}
-.exercise-thumb {
-  width: 100%;
-  max-width: 180px;
-  height: auto;
-  display: block;
-  margin: 0 auto 10px auto;
-  border-radius: 14px;
-  object-fit: cover;
-}
 
-.public-ex-image {
-  width: 100%;
-  max-width: 260px;
-  height: auto;
-  display: block;
-  margin: 8px auto 10px auto;
-  border-radius: 16px;
-  object-fit: cover;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
-}
+  .timer-status {
+    margin-top: 6px;
 
-.public-ex {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
+    font-size: 11px;
+  }
 
-.lib .exercise-thumb {
-  margin-bottom: 12px;
 }
