@@ -92,27 +92,27 @@ const EXERCISE_LIBRARY = [
   ['Remo al mentón con barra', 'Tren superior', '3', '10-12', '60 s', 'img/ejercicios/remo-al-menton-con-barra.png'],
   ['Rotación externa con banda', 'Tren superior', '3', '12-15 por lado', '45 s'],
 
- ['Curl de bíceps', 'Tren superior', '3', '10-12', '45 s', 'img/ejercicios/curl-de-biceps.png'],
-['Curl con barra recta', 'Tren superior', '3', '8-12', '60 s', 'img/ejercicios/curl-con-barra-recta.png'],
-['Curl con barra Z', 'Tren superior', '3', '8-12', '60 s', 'img/ejercicios/curl-con-barra-z.png'],
-['Curl alternado con mancuernas', 'Tren superior', '3', '10-12 por brazo', '45 s', 'img/ejercicios/curl-alternado-con-mancuernas.png'],
-['Curl martillo', 'Tren superior', '3', '10-12', '45 s', 'img/ejercicios/curl-martillo.png'],
-['Curl inclinado con mancuernas', 'Tren superior', '3', '10-12', '60 s', 'img/ejercicios/curl-inclinado-con-mancuernas.png'],
-['Curl concentrado', 'Tren superior', '3', '10-12 por brazo', '45 s', 'img/ejercicios/curl-concentrado.png'],
-['Curl predicador', 'Tren superior', '3', '10-12', '60 s', 'img/ejercicios/curl-predicador.png'],
-['Curl en polea baja', 'Tren superior', '3', '12-15', '45 s', 'img/ejercicios/curl-en-polea-baja.png'],
-['Curl Bayesian en polea', 'Tren superior', '3', '10-15 por brazo', '45 s', 'img/ejercicios/curl-bayesian-en-polea.png'],
+  ['Curl de bíceps', 'Tren superior', '3', '10-12', '45 s', 'img/ejercicios/curl-de-biceps.png'],
+  ['Curl con barra recta', 'Tren superior', '3', '8-12', '60 s', 'img/ejercicios/curl-con-barra-recta.png'],
+  ['Curl con barra Z', 'Tren superior', '3', '8-12', '60 s', 'img/ejercicios/curl-con-barra-z.png'],
+  ['Curl alternado con mancuernas', 'Tren superior', '3', '10-12 por brazo', '45 s', 'img/ejercicios/curl-alternado-con-mancuernas.png'],
+  ['Curl martillo', 'Tren superior', '3', '10-12', '45 s', 'img/ejercicios/curl-martillo.png'],
+  ['Curl inclinado con mancuernas', 'Tren superior', '3', '10-12', '60 s', 'img/ejercicios/curl-inclinado-con-mancuernas.png'],
+  ['Curl concentrado', 'Tren superior', '3', '10-12 por brazo', '45 s', 'img/ejercicios/curl-concentrado.png'],
+  ['Curl predicador', 'Tren superior', '3', '10-12', '60 s', 'img/ejercicios/curl-predicador.png'],
+  ['Curl en polea baja', 'Tren superior', '3', '12-15', '45 s', 'img/ejercicios/curl-en-polea-baja.png'],
+  ['Curl Bayesian en polea', 'Tren superior', '3', '10-15 por brazo', '45 s', 'img/ejercicios/curl-bayesian-en-polea.png'],
 
- ['Tríceps en polea', 'Tren superior', '3', '12-15', '45 s', 'img/ejercicios/triceps-en-polea.png'],
-['Fondos en paralelas', 'Tren superior', '4', '6-12', '90 s', 'img/ejercicios/fondos-en-paralelas.png'],
-['Fondos asistidos', 'Tren superior', '3', '8-15', '75 s', 'img/ejercicios/fondos-asistidos.png'],
-['Press francés con barra Z', 'Tren superior', '3', '8-12', '60 s', 'img/ejercicios/press-frances-con-barra-z.png'],
-['Press francés con mancuernas', 'Tren superior', '3', '10-12', '60 s', 'img/ejercicios/press-frances-con-mancuernas.png'],
-['Extensión de tríceps sobre la cabeza', 'Tren superior', '3', '10-15', '60 s', 'img/ejercicios/extension-de-triceps-sobre-la-cabeza.png'],
-['Extensión de tríceps con cuerda', 'Tren superior', '3', '12-15', '45 s', 'img/ejercicios/extension-de-triceps-con-cuerda.png'],
-['Extensión unilateral de tríceps en polea', 'Tren superior', '3', '12-15 por brazo', '45 s', 'img/ejercicios/extension-unilateral-de-triceps-en-polea.png'],
-['Patada de tríceps con mancuerna', 'Tren superior', '3', '12-15 por brazo', '45 s', 'img/ejercicios/patada-de-triceps-con-mancuerna.png'],
-['Press de banca agarre cerrado', 'Tren superior', '4', '8-10', '90 s', 'img/ejercicios/press-de-banca-agarre-cerrado.png'],
+  ['Tríceps en polea', 'Tren superior', '3', '12-15', '45 s', 'img/ejercicios/triceps-en-polea.png'],
+  ['Fondos en paralelas', 'Tren superior', '4', '6-12', '90 s', 'img/ejercicios/fondos-en-paralelas.png'],
+  ['Fondos asistidos', 'Tren superior', '3', '8-15', '75 s', 'img/ejercicios/fondos-asistidos.png'],
+  ['Press francés con barra Z', 'Tren superior', '3', '8-12', '60 s', 'img/ejercicios/press-frances-con-barra-z.png'],
+  ['Press francés con mancuernas', 'Tren superior', '3', '10-12', '60 s', 'img/ejercicios/press-frances-con-mancuernas.png'],
+  ['Extensión de tríceps sobre la cabeza', 'Tren superior', '3', '10-15', '60 s', 'img/ejercicios/extension-de-triceps-sobre-la-cabeza.png'],
+  ['Extensión de tríceps con cuerda', 'Tren superior', '3', '12-15', '45 s', 'img/ejercicios/extension-de-triceps-con-cuerda.png'],
+  ['Extensión unilateral de tríceps en polea', 'Tren superior', '3', '12-15 por brazo', '45 s', 'img/ejercicios/extension-unilateral-de-triceps-en-polea.png'],
+  ['Patada de tríceps con mancuerna', 'Tren superior', '3', '12-15 por brazo', '45 s', 'img/ejercicios/patada-de-triceps-con-mancuerna.png'],
+  ['Press de banca agarre cerrado', 'Tren superior', '4', '8-10', '90 s', 'img/ejercicios/press-de-banca-agarre-cerrado.png'],
 
   ['Plancha frontal', 'Core', '3', '30-45 s', '45 s'],
   ['Plancha lateral', 'Core', '3', '25-40 s', '45 s'],
@@ -957,7 +957,6 @@ function renderExercises() {
       `;
 
       [
-        'name',
         'sets',
         'reps',
         'load',
@@ -966,9 +965,7 @@ function renderExercises() {
       ].forEach(field => {
 
         item
-          .querySelector(
-            `.${field}`
-          )
+          .querySelector(`.${field}`)
           .addEventListener(
             'input',
             event => {
@@ -976,15 +973,32 @@ function renderExercises() {
               exercise[field] =
                 event.target.value;
 
-              if (
-                field === 'name'
-              ) {
-                renderExercises();
-              }
             }
           );
 
       });
+
+      const nameInput =
+        item.querySelector('.name');
+
+      nameInput.addEventListener(
+        'input',
+        event => {
+
+          exercise.name =
+            event.target.value;
+
+        }
+      );
+
+      nameInput.addEventListener(
+        'change',
+        () => {
+
+          renderExercises();
+
+        }
+      );
 
       item
         .querySelector('.rm')
@@ -1008,7 +1022,6 @@ function renderExercises() {
     }
   );
 }
-
 async function saveSelectedDay() {
   if (!selectedClientId) {
     alert(
@@ -1124,6 +1137,7 @@ async function saveSelectedDay() {
     `${selectedDay} guardado correctamente.`
   );
 }
+
 function openLibrary() {
   if (!selectedClientId) {
     alert(
@@ -2049,8 +2063,6 @@ async function showPublicPlan(client) {
     });
 
 }
-
-
 /* ========================================
    CATEGORÍAS DE LA BIBLIOTECA
 ======================================== */
@@ -2272,6 +2284,8 @@ let restTimerInterval =
 
 let restTimerRunning =
   false;
+
+
 /* ----------------------------------------
    FORMATEAR TIEMPO
 ----------------------------------------- */
@@ -2405,12 +2419,6 @@ function setRestTimer(
           );
       }
     );
-
-  /* IMPORTANTE:
-     Si el descanso viene desde un ejercicio,
-     arranca automáticamente pero NO mueve
-     la pantalla del alumno.
-  */
 
   if (autoStart) {
     startRestTimer();
