@@ -228,19 +228,993 @@ function getExerciseImage(name) {
 }
 
 
-/* Galería ACTIVO: fotografías existentes y fichas gráficas para ejercicios
-   que todavía no tienen una fotografía técnica propia. */
+/* Galería ACTIVO: fotos disponibles y fichas gráficas para las pendientes. */
 function exerciseMediaHtml(name, imagePath, category = '') {
   const safeName = escapeHtml(name);
   const safePath = escapeHtml(imagePath || '');
   const safeCategory = escapeHtml(category || 'Entrenamiento');
   const icon = /movilidad|estiramiento/i.test(category) ? '↗'
     : /cardio|aeróbic/i.test(category) ? '♥'
-    : /core|abdominal/i.test(category) ? '◎'
-    : /funcional/i.test(category) ? '◆' : '✦';
-
+    : /core|abdominal/i.test(category) ? '◎' : '✦';
   return `<div class="activo-exercise-media">
-    ${exerciseMediaHtml(exercise[0], imagePath, exercise[1])}
+    ${imagePath
+      ? `<img class="exercise-thumb" src="${safePath}" alt="${safeName}" loading="lazy" decoding="async">`
+      : `<div class="activo-exercise-cover" role="img" aria-label="Ficha gráfica de ${safeName}, fotografía pendiente">
+          <span class="activo-cover-icon" aria-hidden="true">${icon}</span>
+          <span class="activo-cover-category">${safeCategory}</span>
+          <strong>${safeName}</strong>
+          <small>Imagen demostrativa pendiente</small>
+        </div>`}
+    <img class="activo-media-logo" src="img/logo-activo-nuevo.png" alt="ACTIVO" loading="lazy">
+  </div>`;
+}
+
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, character => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  })[character]);
+}
+
+function showMessage(text, type = 'ok') {
+  const msg = $('msg');
+
+  if (!msg) return;
+
+  msg.innerHTML = `<div class="${type}">${escapeHtml(text)}</div>`;
+
+  setTimeout(() => {
+    msg.innerHTML = '';
+  }, 3000);
+}
+
+async function showPublicMode() {
+  $('admin').classList.add('hidden');
+  $('public').classList.remove('hidden');
+  $('adminTop').textContent = 'Panel del profesor';
+
+  await loadPublicClients();
+}
+
+async function showAdminMode() {
+  const { data, error } = await sb.auth.getSession();
+
+  if (error) {
+    alert(`No se pudo revisar la sesión: ${error.message}`);
+    return;
+  }
+
+  const session = data.session;
+
+  if (!session) {
+    $('loginModal').classList.remove('hidden');
+    return;
+  }
+
+  $('public').classList.add('hidden');
+  $('admin').classList.remove('hidden');
+  $('adminTop').textContent = 'Vista clientes';
+  $('email').textContent = session.user.email || '';
+
+  await loadClients();
+}
+
+async function loadClients() {
+  const { data: userData, error: userError } = await sb.auth.getUser();
+
+  if (userError || !userData.user) {
+    showMessage('No se pudo identificar al profesor.', 'error');
+    return;
+  }
+
+  const { data, error } = await sb
+    .from('clients')
+    .select('*')
+    .eq('created_by', userData.user.id)
+    .order('name');
+
+  if (error) {
+    showMessage(error.message, 'error');
+    return;
+  }
+
+  clients = data || [];
+
+  renderClients();
+  renderPlanner();
+}
+
+function renderClients() {
+  const container = $('clients');
+
+  container.innerHTML = '';
+
+  if (!clients.length) {
+    container.innerHTML = '<small>No hay clientes cargados.</small>';
+    return;
+  }
+
+  clients.forEach(client => {
+    const item = document.createElement('div');
+
+    item.className = 'client';
+
+    item.innerHTML = `
+      <div>
+        <b>${escapeHtml(client.name)}</b>
+
+        <small>
+          ${escapeHtml(client.goal || '')}
+          ·
+          ${client.active ? 'Activo' : 'Inactivo'}
+        </small>
+      </div>
+
+      <div class="row">
+        <button class="open">Abrir</button>
+        <button class="edit">Editar</button>
+        <button class="del danger">Eliminar</button>
+      </div>
+    `;
+
+    item
+      .querySelector('.open')
+      .addEventListener('click', async () => {
+        selectedClientId = client.id;
+        selectedDay = 'Lunes';
+
+        await loadSelectedDay();
+
+        renderPlanner();
+      });
+
+    item
+      .querySelector('.edit')
+      .addEventListener('click', () => {
+        editClient(client);
+      });
+
+    item
+      .querySelector('.del')
+      .addEventListener('click', () => {
+        deleteClient(client);
+      });
+
+    container.appendChild(item);
+  });
+}
+
+async function editClient(client) {
+  const {
+    data: userData,
+    error: userError
+  } = await sb.auth.getUser();
+
+  if (
+    userError ||
+    !userData.user
+  ) {
+    showMessage(
+      'No se pudo identificar al profesor.',
+      'error'
+    );
+
+    return;
+  }
+
+  if (
+    client.created_by !==
+    userData.user.id
+  ) {
+    showMessage(
+      'No tenés permiso para editar este alumno.',
+      'error'
+    );
+
+    return;
+  }
+
+  $('name').value =
+    client.name || '';
+
+  $('goal').value =
+    client.goal || '';
+
+  $('active').checked =
+    Boolean(client.active);
+
+  $('editId').value =
+    client.id;
+
+  $('cancel')
+    .classList
+    .remove('hidden');
+
+  const {
+    data,
+    error
+  } = await sb
+    .from('client_private_notes')
+    .select('notes')
+    .eq('client_id', client.id)
+    .maybeSingle();
+
+  $('notes').value =
+    error
+      ? ''
+      : (data?.notes || '');
+}
+
+function clearClientForm() {
+  $('name').value = '';
+  $('goal').value = '';
+  $('notes').value = '';
+
+  $('active').checked = true;
+
+  $('editId').value = '';
+
+  $('cancel')
+    .classList
+    .add('hidden');
+}
+
+async function saveClient() {
+  const name =
+    $('name').value.trim();
+
+  const goal =
+    $('goal').value.trim();
+
+  const active =
+    $('active').checked;
+
+  const notes =
+    $('notes').value.trim();
+
+  if (!name) {
+    alert(
+      'Ingresá el nombre del alumno.'
+    );
+
+    return;
+  }
+
+  const {
+    data: userData,
+    error: userError
+  } = await sb.auth.getUser();
+
+  if (
+    userError ||
+    !userData.user
+  ) {
+    showMessage(
+      'No se pudo identificar al profesor.',
+      'error'
+    );
+
+    return;
+  }
+
+  const professorId =
+    userData.user.id;
+
+  let clientId =
+    $('editId').value;
+
+  if (clientId) {
+    const { error } = await sb
+      .from('clients')
+      .update({
+        name,
+        goal,
+        active,
+        updated_at:
+          new Date().toISOString()
+      })
+      .eq('id', clientId)
+      .eq(
+        'created_by',
+        professorId
+      );
+
+    if (error) {
+      showMessage(
+        error.message,
+        'error'
+      );
+
+      return;
+    }
+
+  } else {
+    const {
+      data,
+      error
+    } = await sb
+      .from('clients')
+      .insert({
+        name,
+        goal,
+        active,
+        created_by:
+          professorId
+      })
+      .select()
+      .single();
+
+    if (error) {
+      showMessage(
+        error.message,
+        'error'
+      );
+
+      return;
+    }
+
+    clientId =
+      data.id;
+
+    selectedClientId =
+      clientId;
+  }
+
+  const {
+    data: oldNote,
+    error: noteSearchError
+  } = await sb
+    .from('client_private_notes')
+    .select('id')
+    .eq(
+      'client_id',
+      clientId
+    )
+    .maybeSingle();
+
+  if (!noteSearchError) {
+    if (oldNote) {
+      await sb
+        .from('client_private_notes')
+        .update({
+          notes
+        })
+        .eq(
+          'id',
+          oldNote.id
+        );
+
+    } else if (notes) {
+      await sb
+        .from('client_private_notes')
+        .insert({
+          client_id:
+            clientId,
+
+          notes
+        });
+    }
+  }
+
+  clearClientForm();
+
+  await loadClients();
+
+  showMessage(
+    'Cliente guardado correctamente.'
+  );
+}
+
+async function deleteClient(client) {
+  const confirmed =
+    confirm(
+      `¿Eliminar a ${client.name}?`
+    );
+
+  if (!confirmed) {
+    return;
+  }
+
+  const {
+    data: userData,
+    error: userError
+  } = await sb.auth.getUser();
+
+  if (
+    userError ||
+    !userData.user
+  ) {
+    showMessage(
+      'No se pudo identificar al profesor.',
+      'error'
+    );
+
+    return;
+  }
+
+  const { error } = await sb
+    .from('clients')
+    .delete()
+    .eq(
+      'id',
+      client.id
+    )
+    .eq(
+      'created_by',
+      userData.user.id
+    );
+
+  if (error) {
+    showMessage(
+      error.message,
+      'error'
+    );
+
+    return;
+  }
+
+  if (
+    selectedClientId ===
+    client.id
+  ) {
+    selectedClientId =
+      null;
+
+    draftExercises =
+      [];
+
+    currentPlanId =
+      null;
+  }
+
+  await loadClients();
+
+  showMessage(
+    'Cliente eliminado.'
+  );
+}
+
+async function loadSelectedDay() {
+  draftExercises = [];
+  currentPlanId = null;
+
+  if (!selectedClientId) {
+    return;
+  }
+
+  const {
+    data: plan,
+    error
+  } = await sb
+    .from('workout_plans')
+    .select('*')
+    .eq(
+      'client_id',
+      selectedClientId
+    )
+    .eq(
+      'day_of_week',
+      selectedDay
+    )
+    .maybeSingle();
+
+  if (error) {
+    showMessage(
+      error.message,
+      'error'
+    );
+
+    return;
+  }
+
+  if (!plan) {
+    return;
+  }
+
+  currentPlanId =
+    plan.id;
+
+  const {
+    data: exercises,
+    error: exercisesError
+  } = await sb
+    .from('plan_exercises')
+    .select('*')
+    .eq(
+      'plan_id',
+      plan.id
+    )
+    .order(
+      'exercise_order'
+    );
+
+  if (exercisesError) {
+    showMessage(
+      exercisesError.message,
+      'error'
+    );
+
+    return;
+  }
+
+  draftExercises =
+    (exercises || [])
+      .map(exercise => ({
+        name:
+          exercise.exercise_name || '',
+
+        sets:
+          exercise.sets || '',
+
+        reps:
+          exercise.reps || '',
+
+        load:
+          exercise.load || '',
+
+        rest:
+          exercise.rest || '',
+
+        notes:
+          exercise.notes || ''
+      }));
+}
+
+function renderPlanner() {
+  const client =
+    clients.find(
+      item =>
+        item.id ===
+        selectedClientId
+    );
+
+  $('empty')
+    .classList
+    .toggle(
+      'hidden',
+      Boolean(client)
+    );
+
+  $('planner')
+    .classList
+    .toggle(
+      'hidden',
+      !client
+    );
+
+  if (!client) {
+    return;
+  }
+
+  $('clientTitle').textContent =
+    client.name;
+
+  $('clientGoal').textContent =
+    client.goal || '';
+
+  const daysContainer =
+    $('days');
+
+  daysContainer.innerHTML =
+    '';
+
+  DAYS.forEach(dayName => {
+    const button =
+      document.createElement(
+        'button'
+      );
+
+    button.textContent =
+      dayName;
+
+    button.className =
+      `day ${
+        dayName === selectedDay
+          ? 'active'
+          : ''
+      }`;
+
+    button.addEventListener(
+      'click',
+      async () => {
+        selectedDay =
+          dayName;
+
+        await loadSelectedDay();
+
+        renderPlanner();
+      }
+    );
+
+    daysContainer
+      .appendChild(button);
+  });
+
+  renderExercises();
+}
+
+function renderExercises() {
+  const container =
+    $('exerciseList');
+
+  container.innerHTML =
+    '';
+
+  if (!draftExercises.length) {
+    container.innerHTML =
+      '<small>Sin ejercicios.</small>';
+
+    return;
+  }
+
+  draftExercises.forEach(
+    (exercise, index) => {
+
+      const item =
+        document.createElement(
+          'div'
+        );
+
+      item.className =
+        'exercise';
+
+      const exerciseImage =
+        getExerciseImage(
+          exercise.name
+        );
+
+      item.innerHTML = `
+        <div class="row">
+
+          <b>
+            Ejercicio ${index + 1}
+          </b>
+
+          <button class="rm danger">
+            Quitar
+          </button>
+
+        </div>
+
+        ${exerciseMediaHtml(exercise.name, exerciseImage, EXERCISE_LIBRARY.find(item => normalizeExerciseName(item[0]) === normalizeExerciseName(exercise.name))?.[1] || "")}
+
+        <div class="cols">
+
+          <div>
+            <label>
+              Ejercicio
+            </label>
+
+            <input
+              class="name"
+              value="${escapeHtml(
+                exercise.name
+              )}"
+            >
+          </div>
+
+          <div>
+            <label>
+              Series
+            </label>
+
+            <input
+              class="sets"
+              value="${escapeHtml(
+                exercise.sets
+              )}"
+            >
+          </div>
+
+          <div>
+            <label>
+              Repeticiones
+            </label>
+
+            <input
+              class="reps"
+              value="${escapeHtml(
+                exercise.reps
+              )}"
+            >
+          </div>
+
+          <div>
+            <label>
+              Carga
+            </label>
+
+            <input
+              class="load"
+              value="${escapeHtml(
+                exercise.load
+              )}"
+            >
+          </div>
+
+          <div>
+            <label>
+              Descanso
+            </label>
+
+            <input
+              class="rest"
+              value="${escapeHtml(
+                exercise.rest
+              )}"
+            >
+          </div>
+
+          <div>
+            <label>
+              Observaciones
+            </label>
+
+            <input
+              class="notes"
+              value="${escapeHtml(
+                exercise.notes
+              )}"
+            >
+          </div>
+
+        </div>
+      `;
+
+      [
+        'sets',
+        'reps',
+        'load',
+        'rest',
+        'notes'
+      ].forEach(field => {
+
+        item
+          .querySelector(`.${field}`)
+          .addEventListener(
+            'input',
+            event => {
+
+              exercise[field] =
+                event.target.value;
+
+            }
+          );
+
+      });
+
+      const nameInput =
+        item.querySelector('.name');
+
+      nameInput.addEventListener(
+        'input',
+        event => {
+
+          exercise.name =
+            event.target.value;
+
+        }
+      );
+
+      nameInput.addEventListener(
+        'change',
+        () => {
+
+          renderExercises();
+
+        }
+      );
+
+      item
+        .querySelector('.rm')
+        .addEventListener(
+          'click',
+          () => {
+
+            draftExercises.splice(
+              index,
+              1
+            );
+
+            renderExercises();
+
+          }
+        );
+
+      container.appendChild(
+        item
+      );
+    }
+  );
+}
+async function saveSelectedDay() {
+  if (!selectedClientId) {
+    alert(
+      'Seleccioná un alumno.'
+    );
+
+    return;
+  }
+
+  if (!currentPlanId) {
+    const {
+      data,
+      error
+    } = await sb
+      .from('workout_plans')
+      .insert({
+        client_id:
+          selectedClientId,
+
+        day_of_week:
+          selectedDay,
+
+        title:
+          `Planificación ${selectedDay}`
+      })
+      .select()
+      .single();
+
+    if (error) {
+      showMessage(
+        error.message,
+        'error'
+      );
+
+      return;
+    }
+
+    currentPlanId =
+      data.id;
+  }
+
+  const {
+    error: deleteError
+  } = await sb
+    .from('plan_exercises')
+    .delete()
+    .eq(
+      'plan_id',
+      currentPlanId
+    );
+
+  if (deleteError) {
+    showMessage(
+      deleteError.message,
+      'error'
+    );
+
+    return;
+  }
+
+  if (
+    draftExercises.length
+  ) {
+    const rows =
+      draftExercises.map(
+        (exercise, index) => ({
+
+          plan_id:
+            currentPlanId,
+
+          exercise_name:
+            exercise.name ||
+            'Ejercicio',
+
+          sets:
+            exercise.sets,
+
+          reps:
+            exercise.reps,
+
+          load:
+            exercise.load,
+
+          rest:
+            exercise.rest,
+
+          notes:
+            exercise.notes,
+
+          exercise_order:
+            index
+
+        })
+      );
+
+    const {
+      error
+    } = await sb
+      .from('plan_exercises')
+      .insert(rows);
+
+    if (error) {
+      showMessage(
+        error.message,
+        'error'
+      );
+
+      return;
+    }
+  }
+
+  showMessage(
+    `${selectedDay} guardado correctamente.`
+  );
+}
+
+function openLibrary() {
+  if (!selectedClientId) {
+    alert(
+      'Seleccioná un cliente.'
+    );
+
+    return;
+  }
+
+  $('libraryModal')
+    .classList
+    .remove('hidden');
+
+  renderLibrary();
+}
+
+
+function renderLibrary() {
+  const search =
+    $('libSearch')
+      .value
+      .toLowerCase()
+      .trim();
+
+  const category =
+    $('libCat').value;
+
+  const container =
+    $('library');
+
+  container.innerHTML =
+    '';
+
+  EXERCISE_LIBRARY
+    .filter(exercise => {
+
+      const categoryMatches =
+        !category ||
+        exercise[1] === category;
+
+      const searchMatches =
+        !search ||
+        exercise
+          .join(' ')
+          .toLowerCase()
+          .includes(search);
+
+      return (
+        categoryMatches &&
+        searchMatches
+      );
+
+    })
+    .forEach(exercise => {
+
+      const item =
+        document.createElement(
+          'div'
+        );
+
+      const imagePath =
+        exercise[5] || '';
+
+      item.className =
+        'lib';
+
+      item.innerHTML = `
+
+        ${exerciseMediaHtml(exercise[0], imagePath, exercise[1])}
 
         <b>
           ${escapeHtml(
