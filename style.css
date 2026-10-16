@@ -760,6 +760,283 @@ small {
     min-height: 36px;
 
     padding: 6px 4px;
+    
+/* =======================================
+   ACTIVO 2.0 - TEMA OSCURO DEPORTIVO
+   ======================================= */
+
+:root {
+  --a: #2563EB;
+  --b: #1E3A66;
+  --r: #E53945;
+  --f: #111827;
+  --bd: #40516A;
+  --t: #F8FAFC;
+  --g: #CBD5E1;
+
+  --panel: #1E293B;
+  --panel-2: #25344A;
+}
+
+body {
+  background: var(--f);
+  color: var(--t);
+  color-scheme: dark;
+  line-height: 1.5;
+}
+
+/* ENCABEZADO */
+
+header {
+  background: linear-gradient(
+    135deg, #101827, #203859
+  );
+  border-bottom: 3px solid var(--r);
+  color: white;
+}
+
+.logo-activo {
+  object-fit: contain;
+}
+
+.brand-text b {
+  color: white;
+  letter-spacing: 0.7px;
+}
+
+.head small {
+  color: #E2E8F0;
+}
+
+/* PANEL ADMINISTRATIVO */
+
+#adminTop {
+  background: #1B2940;
+  color: white;
+  border-bottom: 1px solid var(--bd);
+}
+
+/* TARJETAS Y VENTANAS */
+
+.card, .box {
+  background: var(--panel);
+  color: var(--t);
+  border: 1px solid var(--bd);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px #00000030;
+}
+
+/* LISTAS Y EJERCICIOS */
+
+.client,
+.exercise,
+.lib,
+.public-result,
+.public-ex {
+  background: var(--panel-2);
+  border-color: var(--bd);
+  color: var(--t);
+  border-radius: 12px;
+}
+
+.public-ex {
+  border-left: 5px solid var(--r);
+}
+
+.public-result {
+  text-align: left;
+}
+
+/* BOTONES */
+
+button {
+  background: #334155;
+  color: white;
+  border-radius: 10px;
+  min-height: 40px;
+  transition: background .2s, transform .2s;
+}
+
+button:hover {
+  filter: brightness(1.12);
+}
+
+button:active {
+  transform: scale(.98);
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #60A5FA;
+  outline-offset: 2px;
+}
+
+.danger {
+  background: var(--r);
+  color: white;
+}
+
+.success, .timer-start {
+  background: #168A4F;
+  color: white;
+}
+
+/* FORMULARIOS */
+
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+  background: #101827;
+  color: white;
+  border: 1px solid #53657E;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #B4C1D2;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: var(--a);
+}
+
+label {
+  color: var(--t);
+}
+
+small {
+  color: var(--g);
+}
+
+/* PESTAÑAS DE DIAS */
+
+.day {
+  background: #334155;
+  color: white;
+}
+
+.day.active,
+.public-day-tab.active {
+  background: var(--r);
+  color: white;
+  border-color: var(--r);
+}
+
+.public-day-tabs {
+  background: var(--f);
+}
+
+.public-day-tab {
+  background: #25344A;
+  color: white;
+  border: 1px solid var(--bd);
+  box-shadow: none;
+}
+
+.public-day-tab:hover {
+  background: #375276;
+}
+
+.public-day-tab.empty {
+  opacity: .65;
+}
+
+.empty-day-message {
+  background: var(--panel);
+  color: var(--g);
+  border: 1px dashed var(--bd);
+}
+
+/* TITULOS DE RUTINAS */
+
+.plan-day h3 {
+  background: #254F9A;
+  color: white;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+/* CRONOMETRO */
+
+.rest-timer {
+  background: linear-gradient(
+    135deg, #172B4D, #2563EB
+  );
+  color: white;
+  border: 1px solid #456EA8;
+}
+
+.exercise-timer-btn {
+  background: var(--a);
+  color: white;
+}
+
+.exercise-timer-btn:hover {
+  background: #1D4ED8;
+}
+
+.timer-preset {
+  background: #FFFFFF20;
+  color: white;
+  border-color: #FFFFFF55;
+}
+
+.timer-preset.active {
+  background: var(--r);
+  border-color: var(--r);
+}
+
+.timer-controls button {
+  min-height: 44px;
+}
+
+.rest-timer.finished {
+  background: linear-gradient(
+    135deg, #8F1D2B, #E53945
+  );
+}
+
+/* MENSAJES Y MODALES */
+
+.modal {
+  background: #000000CC;
+}
+
+.error {
+  background: #51232B;
+  color: #FFE4E6;
+}
+
+.ok {
+  background: #173D31;
+  color: #D1FAE5;
+}
+
+/* AJUSTES PARA CELULARES */
+
+@media (max-width: 600px) {
+  .card {
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .brand {
+    gap: 10px;
+  }
+
+  .public-day-tab {
+    padding: 11px 14px;
+  }
+
+  .exercise,
+  .public-ex {
+    padding: 12px;
+  }
+}
+  
 
     font-size: 12px;
   }
