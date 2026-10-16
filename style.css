@@ -341,3 +341,233 @@ a:hover { color: #bfdbfe; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
+
+/* ========================================
+   ACTIVO 2.0 - RETOQUE VISUAL PREMIUM
+   ENCABEZADO + PANEL DEL PROFESOR
+======================================== */
+
+/* ENCABEZADO PRINCIPAL */
+
+header {
+  background: linear-gradient(
+    125deg,
+    #101827 0%,
+    #172B4D 65%,
+    #203859 100%
+  );
+  border-bottom: 3px solid #E53945;
+  box-shadow: 0 5px 24px #00000035;
+  padding: 12px 20px;
+}
+
+.head {
+  gap: 16px;
+  min-height: 76px;
+}
+
+.brand {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+}
+
+/* LOGO ACTIVO */
+
+.logo-activo {
+  width: 110px;
+  height: 65px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+/* NOMBRE DEL GIMNASIO */
+
+.brand-text b {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: .7px;
+  color: #FFFFFF;
+}
+
+.brand-text small {
+  color: #CBD5E1;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+/* BOTÓN PANEL DEL PROFESOR */
+
+#adminTop {
+  background: #2563EB;
+  color: #FFFFFF;
+  border: 1px solid #60A5FA55;
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-weight: 800;
+  box-shadow: 0 4px 14px #00000030;
+}
+
+#adminTop:hover {
+  background: #1D4ED8;
+  transform: translateY(-1px);
+}
+
+/* CABECERA DEL PANEL ADMINISTRATIVO */
+
+#admin > .bar {
+  background: linear-gradient(
+    135deg, #1E293B, #253A58
+  );
+  border: 1px solid #40516A;
+  border-left: 4px solid #E53945;
+  padding: 20px;
+  border-radius: 16px;
+  gap: 15px;
+}
+
+#admin > .bar h2 {
+  color: #FFFFFF;
+  margin: 0 0 5px;
+  font-size: 23px;
+}
+
+#admin > .bar small {
+  color: #CBD5E1;
+}
+
+/* BOTONES DEL PANEL */
+
+#libraryBtn {
+  background: #2563EB;
+  color: #FFFFFF;
+  border-radius: 10px;
+  padding: 12px 18px;
+}
+
+#logout {
+  background: #9F2833;
+  color: #FFFFFF;
+  border-radius: 10px;
+  padding: 12px 18px;
+}
+
+/* TARJETAS ADMINISTRATIVAS */
+
+#admin .grid > .card {
+  background: #1E293B;
+  border: 1px solid #40516A;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 8px 25px #00000025;
+}
+
+#admin .grid > .card h3 {
+  color: #FFFFFF;
+  margin-top: 0;
+  font-size: 20px;
+}
+
+/* CAMPOS DE CLIENTES */
+
+#admin input:not([type="checkbox"]):not([type="radio"]),
+#admin textarea,
+#admin select {
+  background: #111827;
+  border: 1px solid #52647E;
+  border-radius: 10px;
+  color: #FFFFFF;
+  padding: 12px;
+}
+
+#admin input:focus,
+#admin textarea:focus,
+#admin select:focus {
+  border-color: #60A5FA;
+  outline: 2px solid #60A5FA55;
+  outline-offset: 1px;
+}
+
+/* BOTÓN GUARDAR CLIENTE */
+
+#saveClient {
+  background: #2563EB;
+  color: #FFFFFF;
+  padding: 12px 20px;
+  border-radius: 10px;
+}
+
+/* CLIENTES DE LA LISTA */
+
+#clients .client {
+  background: #25344A;
+  border: 1px solid #40516A;
+  border-radius: 12px;
+  padding: 14px;
+  transition: border-color .2s;
+}
+
+#clients .client:hover {
+  border-color: #60A5FA;
+}
+
+/* VISTA CELULAR */
+
+@media (max-width: 760px) {
+
+  header {
+    padding: 12px;
+  }
+
+  .head {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .brand {
+    flex-direction: row;
+    width: 100%;
+    text-align: left;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .logo-activo {
+    width: 85px;
+    height: 60px;
+    flex-shrink: 0;
+  }
+
+  .brand-text b {
+    font-size: 14px;
+    letter-spacing: .3px;
+  }
+
+  .brand-text small {
+    font-size: 11px;
+  }
+
+  #adminTop {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  #admin > .bar {
+    padding: 15px;
+  }
+
+  #admin > .bar > div {
+    width: 100%;
+  }
+
+  #libraryBtn,
+  #logout {
+    width: 100%;
+    margin: 4px 0;
+  }
+
+  #admin .grid > .card {
+    padding: 15px;
+  }
+}
