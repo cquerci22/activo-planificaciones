@@ -1151,3 +1151,43 @@ button,input,select,textarea {font-family:inherit;}
 @media (prefers-reduced-motion:reduce) {
   * {scroll-behavior:auto!important;transition-duration:0.01ms!important;}
 }
+
+/* ACTIVO · HOME 3.0 · renovación visual de la vista pública */
+#public>.activo-home-hero {
+  position:relative;overflow:hidden;
+  padding:clamp(22px,4vw,40px)!important;
+  background:radial-gradient(circle at 94% 6%,#24518a88,transparent 40%),linear-gradient(130deg,#172d50 0%,#101c32 78%)!important;
+  border:1px solid #40638c!important;border-top:3px solid #ed4650!important;
+  box-shadow:0 20px 45px #030b1b70!important;
+}
+.activo-home-hero:before {content:"";pointer-events:none;position:absolute;right:-72px;top:-105px;width:265px;height:265px;border:28px solid #3b82f61c;border-radius:50%;}
+.activo-hero-top {display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;position:relative;}
+.activo-hero-kicker {font-weight:850;color:#9dcbff;font-size:11px;letter-spacing:2.2px;}
+.activo-hero-symbol {display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:#2b5487;color:#fa636b;font-size:26px;}
+.activo-home-hero h1 {position:relative;color:#fff;font-size:clamp(30px,4.8vw,49px);line-height:1.09;letter-spacing:-1.2px;max-width:650px;margin:0 0 13px;font-weight:900;}
+.activo-home-hero h1 span {color:#89bfff;display:block;}
+.activo-hero-description {font-size:clamp(14px,2vw,17px);color:#cbd9eb;max-width:560px;margin:0 0 25px;}
+.activo-search-panel {position:relative;max-width:710px;padding:20px;background:#101d32cf;border:1px solid #49648a;border-radius:18px;}
+#public .activo-search-panel h2:before {display:none!important;}
+#public .activo-search-panel h2 {color:#fff;font-size:19px;margin:0 0 5px;}
+.activo-search-panel p {color:#a9c0de;font-size:13px;margin:0 0 14px;}
+.activo-search-panel #search {background:#eaf1fa!important;color:#152238!important;border:2px solid transparent!important;min-height:55px;border-radius:12px;padding:14px 17px;}
+.activo-search-panel #search::placeholder {color:#526477;}
+.activo-search-panel #search:focus {border-color:#60a5fa!important;outline:3px solid #60a5fa33;}
+.activo-search-panel #results {margin-top:12px;}
+.activo-hero-footer {margin-top:22px;display:flex;flex-wrap:wrap;align-items:center;gap:9px;color:#8eaccf;font-size:10px;font-weight:750;letter-spacing:1px;}
+.activo-hero-dot {width:8px;height:8px;border-radius:50%;background:#e53945;}
+.activo-hero-line {height:1px;width:20px;background:#547095;}
+#publicPlan {background:linear-gradient(150deg,#192c47,#172338);border-top:3px solid #e53945;border-radius:20px;}
+#publicPlan .public-day-tabs {border-radius:13px;}
+#publicPlan .public-ex {border-left:0;border-top:2px solid #e53945;background:#21344f;box-shadow:0 8px 20px #0003;}
+#publicPlan .public-ex-image {background:#111b2b;padding:7px;border:1px solid #405470;}
+#publicPlan .public-day-tab.active {background:#2563eb;}
+@media(max-width:700px) {
+ #public>.activo-home-hero {padding:22px 16px!important;border-radius:18px;}
+ .activo-home-hero h1 {font-size:33px;}
+ .activo-hero-description {font-size:14px;}
+ .activo-search-panel {padding:16px 13px;}
+ .activo-search-panel h2 {font-size:17px;}
+ .activo-hero-footer {font-size:9px;gap:7px;}
+}
