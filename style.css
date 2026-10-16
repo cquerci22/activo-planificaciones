@@ -1074,3 +1074,80 @@ label input[type="checkbox"] {
 .activo-cover-category {font-size: 10px; color: #93c5fd; text-transform: uppercase; letter-spacing: .11em; font-weight: 700;}
 .activo-exercise-cover strong {font-size: 13px; line-height: 1.25; overflow-wrap: anywhere;}
 .activo-exercise-cover small {font-size: 10px; color: #94a3b8;}
+
+/* ==========================================
+   ACTIVO 3.0 · REFRESCO VISUAL RESPONSIVE
+   Solo presentación. No altera datos ni lógica.
+   ========================================== */
+:root {
+  --f: #0e1625;
+  --panel: #19283d;
+  --panel-2: #223650;
+  --bd: #384d67;
+  --a: #2563eb;
+  --r: #e53945;
+}
+body { background: radial-gradient(ellipse at top, #152642 0%, #0e1625 55%); min-height:100vh; }
+header {
+  background: linear-gradient(120deg,#0d1626,#173158 75%,#1c3b61);
+  border-bottom: 2px solid var(--r);
+  position: relative;
+}
+.head, main { max-width: 1180px; }
+.head { min-height: 82px; }
+.brand { min-width:0; }
+.brand .logo-activo { filter: drop-shadow(0 3px 8px #0006); }
+.card, #admin .grid > .card {
+  border-radius:20px;
+  border-color:#344a64;
+  box-shadow:0 10px 30px #00000029;
+}
+#public > .card:first-child {
+  background: linear-gradient(145deg,#1b304e,#162338 75%);
+  border-color: #35537b;
+  padding: clamp(18px,3vw,28px);
+}
+#public > .card:first-child h2 {font-size:clamp(21px,3vw,28px);margin:0 0 7px;letter-spacing:-.45px;}
+#public > .card:first-child h2::before { content:"TU ENTRENAMIENTO";display:block;font-size:10px;letter-spacing:2px;color:#93c5fd;margin-bottom:8px;font-weight:800;}
+#search {
+  min-height:52px;
+  padding:13px 16px;
+  border:1px solid #54749d;
+  border-radius:14px;
+  background:#101c30;
+  font-size:16px;
+}
+#search:focus {border-color:#80b8ff;outline:2px solid #3b82f666;outline-offset:2px;}
+.public-day-tabs,.days {gap:8px;scrollbar-width:thin;scrollbar-color:#536d90 transparent;}
+.public-day-tab,.day {border-radius:12px;min-height:44px;padding:11px 16px;}
+.public-day-tab.active,.day.active {background:#2563eb;border-color:#60a5fa;box-shadow:0 4px 14px #2563eb40;}
+.public-ex {border-left:3px solid var(--r);background:#1b2c43;border-radius:18px;padding:19px;gap:11px;}
+.public-ex-image {border-radius:14px;background:#111c2c;padding:5px;max-height:270px;}
+.exercise-timer-btn {border-radius:12px;min-height:44px;font-weight:750;}
+#publicPlan {border-color:#405a77;}
+#publicPlan h2 {letter-spacing:-.4px;}
+#studentTimer {border:1px solid #517ab4;border-radius:18px;background:linear-gradient(135deg,#183259,#1e4c94);backdrop-filter:blur(8px);}
+#adminTop,#libraryBtn,#saveClient {border-radius:13px;min-height:46px;}
+#admin .grid>.card {padding:clamp(14px,2.5vw,23px);}
+.client,.exercise,.lib {border-radius:16px;}
+.library {gap:14px;}
+.modal .box {border-radius:20px;}
+button,input,select,textarea {font-family:inherit;}
+@media(max-width:700px){
+  header {padding:10px 13px;}
+  .head {min-height:64px;gap:8px;flex-wrap:nowrap;}
+  .brand .logo-activo {max-width:140px;max-height:72px;width:auto;}
+  #adminTop {font-size:12px;padding:10px 11px;min-height:42px;max-width:49%;}
+  main {padding:14px 11px 28px;}
+  .card,#admin .grid>.card {border-radius:17px;}
+  #public>.card:first-child {padding:20px 16px;}
+  .public-day-tabs {position:sticky;top:0;z-index:35;padding:9px 0 12px;background:#0e1625f0;backdrop-filter:blur(10px);}
+  .public-day-tab {min-height:44px;}
+  .public-ex {padding:15px;}
+  .public-ex-image {max-width:100%;max-height:245px;}
+  #studentTimer {bottom:6px;}
+  .library {grid-template-columns:repeat(auto-fit,minmax(145px,1fr));}
+}
+@media (prefers-reduced-motion:reduce) {
+  * {scroll-behavior:auto!important;transition-duration:0.01ms!important;}
+}
