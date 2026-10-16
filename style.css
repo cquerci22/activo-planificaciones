@@ -1,52 +1,44 @@
+
+/* ACTIVO PLANIFICACIONES 2.0 — OSCURO DEPORTIVO
+   Archivo completo de reemplazo basado en la estructura pública de Activo.
+   Estilos generales, panel docente, alumnos, biblioteca, cronómetro y celular.
+*/
 :root {
-  --a: #0b3b78;
-  --b: #155db1;
-  --r: #df2632;
-  --f: #f4f7fb;
-  --bd: #dce3ed;
-  --t: #142033;
-  --g: #687386;
+  --a: #2563eb;
+  --b: #1e3a66;
+  --r: #e53945;
+  --f: #111827;
+  --bd: #40516a;
+  --t: #f8fafc;
+  --g: #cbd5e1;
+  --panel: #1e293b;
+  --panel-2: #25344a;
 }
-
-* {
-  box-sizing: border-box;
-}
-
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 body {
   margin: 0;
   font-family: Arial, sans-serif;
   background: var(--f);
   color: var(--t);
+  color-scheme: dark;
+  line-height: 1.5;
 }
-
 header {
-  background: linear-gradient(135deg, var(--a), var(--b));
-  color: #ffffff;
+  background: linear-gradient(135deg, #101827, #203859);
+  border-bottom: 3px solid var(--r);
+  color: #fff;
   padding: 14px 16px;
 }
-
-.head,
-main {
-  max-width: 1100px;
-  margin: auto;
-}
-
-.head,
-.bar,
-.row {
+.head, main { max-width: 1100px; margin: auto; }
+.head, .bar, .row {
   display: flex;
   gap: 8px;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
 }
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
+.brand { display: flex; align-items: center; gap: 16px; }
 .logo-activo {
   width: 130px;
   height: 70px;
@@ -54,997 +46,298 @@ main {
   display: block;
   border-radius: 10px;
 }
-
-.brand-text {
-  display: flex;
-  flex-direction: column;
-}
-
-.brand-text b {
-  font-size: 18px;
-  letter-spacing: 0.5px;
-}
-
-.head small {
-  display: block;
-  color: #ffffff;
-  opacity: 0.88;
-  margin-top: 4px;
-}
-
+.brand-text { display: flex; flex-direction: column; }
+.brand-text b { font-size: 18px; letter-spacing: .6px; color: #fff; }
+.head small { display: block; color: #e2e8f0; opacity: .92; margin-top: 4px; }
 #adminTop {
-  background: #ffffff;
-  color: var(--a);
+  background: #1b2940;
+  color: #fff;
+  border: 1px solid var(--bd);
 }
-
-main {
-  padding: 20px 14px;
-}
-
+main { padding: 20px 14px; }
 .card {
-  background: #ffffff;
+  background: var(--panel);
+  color: var(--t);
   border: 1px solid var(--bd);
   border-radius: 16px;
   padding: 16px;
   margin-bottom: 16px;
-  box-shadow: 0 7px 24px #10213a10;
+  box-shadow: 0 8px 24px #00000030;
 }
-
-.grid {
-  display: grid;
-  grid-template-columns: 340px 1fr;
-  gap: 16px;
-}
-
-.hidden {
-  display: none !important;
-}
-
+.grid { display: grid; grid-template-columns: 340px 1fr; gap: 16px; }
+.hidden { display: none !important; }
 button {
   border: 0;
   border-radius: 10px;
   padding: 10px 13px;
+  min-height: 40px;
   font-weight: 700;
   cursor: pointer;
-  background: #e9eef6;
+  background: #334155;
+  color: #fff;
+  transition: filter .2s, transform .2s, background .2s;
 }
-
-button:hover {
-  filter: brightness(0.97);
+button:hover { filter: brightness(1.13); }
+button:active { transform: scale(.98); }
+button:disabled { opacity: .55; cursor: not-allowed; }
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid #60a5fa;
+  outline-offset: 2px;
 }
-
-.danger {
-  background: var(--r);
-  color: #ffffff;
-}
-
-.success {
-  background: #168a4f;
-  color: #ffffff;
-}
-
-input,
-select,
-textarea {
+.danger { background: var(--r); color: #fff; }
+.success { background: #168a4f; color: #fff; }
+input, select, textarea {
   width: 100%;
   padding: 10px;
-  border: 1px solid var(--bd);
+  border: 1px solid #53657e;
   border-radius: 10px;
   font: inherit;
+  background: #101827;
+  color: #fff;
 }
-
-textarea {
-  min-height: 70px;
-}
-
+input::placeholder, textarea::placeholder { color: #b4c1d2; }
+input[type="checkbox"], input[type="radio"] { accent-color: var(--a); }
+textarea { min-height: 70px; }
 label {
   display: block;
+  color: var(--t);
   font-weight: 700;
   font-size: 13px;
   margin: 10px 0 6px;
 }
-
-label input[type="checkbox"] {
-  width: auto;
-  margin-right: 6px;
-}
-
-.client,
-.exercise,
-.lib,
-.public-result {
+label input[type="checkbox"] { width: auto; margin-right: 6px; }
+.client, .exercise, .lib, .public-result {
   border: 1px solid var(--bd);
   border-radius: 12px;
   padding: 11px;
   margin-top: 8px;
+  background: var(--panel-2);
+  color: var(--t);
 }
 
-.client {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  align-items: center;
-}
-
-.days {
-  display: flex;
-  gap: 7px;
-  overflow: auto;
-  margin: 14px 0;
-}
-
-.day {
-  white-space: nowrap;
-}
-
-.day.active {
-  background: var(--a);
-  color: #ffffff;
-}
-
-.exercise {
-  background: #fbfcfe;
-}
-
-.cols {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
+.client { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+.days { display: flex; gap: 7px; overflow: auto; margin: 14px 0; }
+.day { white-space: nowrap; background: #334155; color: #fff; }
+.day.active { background: var(--r); color: #fff; }
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .modal {
   position: fixed;
   inset: 0;
-  background: #00000099;
+  background: #000000cc;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 16px;
   z-index: 99;
 }
-
 .box {
-  background: #ffffff;
+  background: var(--panel);
+  color: var(--t);
+  border: 1px solid var(--bd);
   width: min(440px, 100%);
   border-radius: 16px;
   padding: 20px;
+  box-shadow: 0 8px 24px #00000030;
 }
-
-.wide {
-  width: min(1000px, 100%);
-  max-height: 92vh;
-  overflow: auto;
-}
-
-.error {
-  background: #ffe9ea;
-  color: #9f1820;
-  padding: 10px;
-  border-radius: 10px;
-  margin: 10px 0;
-}
-
-.ok {
-  background: #e8f7ef;
-  color: #14643b;
-  padding: 10px;
-  border-radius: 10px;
-  margin-bottom: 10px;
-}
-
-.library {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 10px;
-}
-
-.public-result {
-  width: 100%;
-  text-align: left;
-  background: #ffffff;
-}
-
+.wide { width: min(1000px, 100%); max-height: 92vh; overflow: auto; }
+.error { background: #51232b; color: #ffe4e6; padding: 10px; border-radius: 10px; margin: 10px 0; }
+.ok { background: #173d31; color: #d1fae5; padding: 10px; border-radius: 10px; margin-bottom: 10px; }
+.library { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+.public-result { width: 100%; text-align: left; }
 .plan-day h3 {
-  background: var(--a);
-  color: #ffffff;
-  padding: 9px;
+  background: #254f9a;
+  color: #fff;
+  padding: 9px 12px;
   border-radius: 9px;
 }
-
 .public-ex {
   border-left: 5px solid var(--r);
   padding: 10px;
   border-radius: 10px;
-  background: #ffffff;
+  background: var(--panel-2);
   border-top: 1px solid var(--bd);
   border-right: 1px solid var(--bd);
   border-bottom: 1px solid var(--bd);
   margin-bottom: 8px;
-
   display: flex;
   flex-direction: column;
   gap: 8px;
+  color: var(--t);
 }
+small { color: var(--g); }
+a { color: #93c5fd; }
+a:hover { color: #bfdbfe; }
 
-small {
-  color: var(--g);
-}
-
-
-/* ========================================
-   PESTAÑAS DE DÍAS - VISTA ALUMNO
-======================================== */
-
-.public-plan-header {
-  margin-bottom: 12px;
-}
-
-.public-plan-header h2 {
-  margin-bottom: 4px;
-}
-
+/* PESTAÑAS DE DÍAS — ALUMNO */
+.public-plan-header { margin-bottom: 12px; }
+.public-plan-header h2 { margin-bottom: 4px; }
 .public-day-tabs {
   display: flex;
   gap: 7px;
   overflow-x: auto;
-
   padding: 4px 2px 10px;
   margin: 14px 0 16px;
-
   position: sticky;
   top: 0;
-
   z-index: 30;
-
   background: var(--f);
-
   scrollbar-width: none;
 }
-
-.public-day-tabs::-webkit-scrollbar {
-  display: none;
-}
-
+.public-day-tabs::-webkit-scrollbar { display: none; }
 .public-day-tab {
   flex: 0 0 auto;
-
   white-space: nowrap;
-
   border: 1px solid var(--bd);
-
-  background: #ffffff;
-  color: var(--a);
-
+  background: var(--panel-2);
+  color: #fff;
   border-radius: 999px;
-
   padding: 10px 15px;
-
   font-size: 14px;
   font-weight: 800;
-
-  box-shadow: 0 3px 10px #10213a12;
-
-  transition:
-    transform 0.15s ease,
-    background 0.15s ease,
-    color 0.15s ease;
+  box-shadow: none;
+  transition: transform .15s, background .15s, color .15s;
 }
-
-.public-day-tab:hover {
-  background: #eef4fb;
-}
-
-.public-day-tab:active {
-  transform: scale(0.97);
-}
-
-.public-day-tab.active {
-  background: var(--a);
-  color: #ffffff;
-  border-color: var(--a);
-}
-
-.public-day-tab.empty {
-  opacity: 0.48;
-}
-
-.public-day-tab.empty.active {
-  opacity: 1;
-}
-
-.public-days-container {
-  width: 100%;
-}
-
-.public-day-panel {
-  display: none;
-}
-
-.public-day-panel.active {
-  display: block;
-}
-
-.public-day-panel h3 {
-  margin-top: 0;
-}
-
+.public-day-tab:hover { background: #375276; }
+.public-day-tab:active { transform: scale(.97); }
+.public-day-tab.active { background: var(--r); color: #fff; border-color: var(--r); }
+.public-day-tab.empty { opacity: .65; }
+.public-day-tab.empty.active { opacity: 1; }
+.public-days-container { width: 100%; }
+.public-day-panel { display: none; }
+.public-day-panel.active { display: block; }
+.public-day-panel h3 { margin-top: 0; }
 .empty-day-message {
   padding: 18px;
   text-align: center;
-
   border: 1px dashed var(--bd);
   border-radius: 12px;
-
-  background: #ffffff;
+  background: var(--panel);
   color: var(--g);
 }
 
-
-/* ========================================
-   BOTÓN DESCANSO DEL EJERCICIO
-======================================== */
-
+/* EJERCICIOS Y BOTÓN DE DESCANSO */
 .exercise-timer-btn {
   margin-top: 4px;
-
   background: var(--a);
-  color: #ffffff;
-
+  color: #fff;
   align-self: flex-start;
-
   padding: 9px 12px;
-
   border-radius: 10px;
 }
+.exercise-timer-btn:hover { background: #1d4ed8; }
 
-.exercise-timer-btn:hover {
-  background: var(--b);
-}
-
-
-/* ========================================
-   CRONÓMETRO DE DESCANSO
-======================================== */
-
+/* CRONÓMETRO DE DESCANSO */
 .rest-timer {
   margin: 18px 0;
   padding: 18px;
+
   border-radius: 16px;
-
-  background: linear-gradient(
-    135deg,
-    #071b36,
-    var(--a)
-  );
-
-  color: #ffffff;
-
-  box-shadow: 0 8px 25px #0b3b7830;
+  background: linear-gradient(135deg, #172b4d, #2563eb);
+  color: #fff;
+  border: 1px solid #456ea8;
+  box-shadow: 0 8px 25px #00000030;
 }
-
-
-/* CRONÓMETRO SIEMPRE ACCESIBLE */
 #studentTimer {
   position: sticky;
   bottom: 10px;
-
   z-index: 60;
-
-  box-shadow:
-    0 14px 40px rgba(0, 0, 0, 0.30);
+  box-shadow: 0 14px 40px rgba(0,0,0,.30);
 }
-
-.timer-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-}
-
-.timer-header h3 {
-  margin: 0;
-  color: #ffffff;
-}
-
-.timer-header small {
-  display: block;
-  margin-top: 4px;
-  color: #ffffff;
-  opacity: 0.75;
-}
-
+.timer-header { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.timer-header h3 { margin: 0; color: #fff; }
+.timer-header small { display: block; margin-top: 4px; color: #fff; opacity: .82; }
 .timer-display {
   text-align: center;
-
   font-size: 58px;
   line-height: 1;
-
   font-weight: 800;
-
   letter-spacing: 3px;
-
   margin: 22px 0;
-
-  color: #ffffff;
+  color: #fff;
 }
-
-.timer-presets {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-
-  gap: 8px;
-
-  margin-bottom: 10px;
-}
-
-.timer-preset {
-  background: #ffffff18;
-  color: #ffffff;
-
-  border: 1px solid #ffffff35;
-}
-
-.timer-preset:hover {
-  background: #ffffff25;
-}
-
-.timer-preset.active {
-  background: var(--r);
-  color: #ffffff;
-  border-color: var(--r);
-}
-
-.timer-controls {
-  display: grid;
-
-  grid-template-columns:
-    1.2fr 1fr 1fr;
-
-  gap: 8px;
-}
-
-.timer-controls button {
-  min-height: 44px;
-}
-
-.timer-start {
-  background: #168a4f;
-  color: #ffffff;
-}
-
+.timer-presets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; }
+.timer-preset { background: #ffffff20; color: #fff; border: 1px solid #ffffff55; }
+.timer-preset:hover { background: #ffffff35; }
+.timer-preset.active { background: var(--r); color: #fff; border-color: var(--r); }
+.timer-controls { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 8px; }
+.timer-controls button { min-height: 44px; }
+.timer-start { background: #168a4f; color: #fff; }
 .timer-status {
   margin-top: 12px;
-
   text-align: center;
-
   font-size: 13px;
   font-weight: 700;
-
-  color: #ffffff;
-
-  opacity: 0.85;
+  color: #fff;
+  opacity: .9;
 }
-
-.rest-timer.finished {
-  background: linear-gradient(
-    135deg,
-    #9f1820,
-    var(--r)
-  );
-}
-
-.rest-timer.finished .timer-display {
-  animation:
-    timerPulse
-    0.6s
-    ease-in-out
-    3;
-}
-
+.rest-timer.finished { background: linear-gradient(135deg, #8f1d2b, #e53945); }
+.rest-timer.finished .timer-display { animation: timerPulse .6s ease-in-out 3; }
 @keyframes timerPulse {
-
-  0% {
-    transform: scale(1);
-  }
-
-  50% {
-    transform: scale(1.08);
-  }
-
-  100% {
-    transform: scale(1);
-  }
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
 }
 
-
-/* ========================================
-   IMÁGENES
-======================================== */
-
+/* IMÁGENES DE EJERCICIOS */
 .exercise-thumb {
   width: 100%;
   max-width: 180px;
-
   height: auto;
-
   display: block;
-
-  margin:
-    0 auto 10px auto;
-
+  margin: 0 auto 10px;
   border-radius: 14px;
-
   object-fit: cover;
 }
-
 .public-ex-image {
   width: 100%;
   max-width: 260px;
-
   height: auto;
-
   display: block;
-
-  margin:
-    8px auto 10px auto;
-
+  margin: 8px auto 10px;
   border-radius: 16px;
-
   object-fit: cover;
-
-  box-shadow:
-    0 6px 18px
-    rgba(0, 0, 0, 0.25);
+  box-shadow: 0 6px 18px rgba(0,0,0,.25);
 }
+.lib .exercise-thumb { margin-bottom: 12px; }
 
-.lib .exercise-thumb {
-  margin-bottom: 12px;
-}
-
-
-/* ========================================
-   CELULAR
-======================================== */
-
+/* RESPONSIVE — CELULAR Y TABLET */
 @media (max-width: 760px) {
-
-  body {
-    padding-bottom: 10px;
-  }
-
-  .grid,
-  .cols {
-    grid-template-columns: 1fr;
-  }
-
-  .client {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  header {
-    padding: 12px;
-  }
-
-  .head {
-    justify-content: center;
-  }
-
+  body { padding-bottom: 10px; }
+  .grid, .cols { grid-template-columns: 1fr; }
+  .client { align-items: flex-start; flex-direction: column; }
+  header { padding: 12px; }
+  .head { justify-content: center; }
   .brand {
     width: 100%;
-
     flex-direction: column;
-
     justify-content: center;
-
     text-align: center;
-
     gap: 6px;
   }
-
-  .logo-activo {
-    width: 170px;
-    height: 90px;
-  }
-
-  .brand-text b {
-    font-size: 16px;
-  }
-
-  #adminTop {
-    width: 100%;
-    margin-top: 8px;
-  }
-
-
-  /* PESTAÑAS */
-
-  .public-day-tabs {
-    margin-left: -4px;
-    margin-right: -4px;
-
-    padding:
-      6px 4px 10px;
-
-    top: 0;
-  }
-
-  .public-day-tab {
-    padding: 9px 13px;
-
-    font-size: 13px;
-  }
-
-
-  /* EJERCICIOS */
-
-  .public-ex {
-    padding: 10px;
-  }
-
-  .public-ex-image {
-    max-width: 220px;
-  }
-
-  .exercise-timer-btn {
-    width: 100%;
-
-    text-align: center;
-
-    padding: 10px;
-  }
-
-
-  /* CRONÓMETRO MÁS COMPACTO */
-
-  #studentTimer {
-    position: sticky;
-
-    bottom: 6px;
-
-    margin-bottom: 6px;
-  }
-
-  .rest-timer {
-    padding: 11px 12px;
-
-    border-radius: 14px;
-  }
-
-  .timer-header {
-    gap: 6px;
-  }
-
-  .timer-header h3 {
-    font-size: 15px;
-  }
-
-  .timer-header small {
-    display: none;
-  }
-
-  .timer-display {
-    font-size: 36px;
-
-    letter-spacing: 2px;
-
-    margin:
-      8px 0 10px;
-  }
-
-  .timer-presets {
-    grid-template-columns:
-      repeat(4, 1fr);
-
-    gap: 5px;
-
-    margin-bottom: 6px;
-  }
-
-  .timer-preset {
-    padding: 7px 4px;
-
-    font-size: 12px;
-  }
-
-  .timer-controls {
-    grid-template-columns:
-      repeat(3, 1fr);
-
-    gap: 5px;
-  }
-
-  .timer-controls button {
-    width: 100%;
-
-    min-height: 36px;
-
-    padding: 6px 4px;
-    
-/* =======================================
-   ACTIVO 2.0 - TEMA OSCURO DEPORTIVO
-   ======================================= */
-
-:root {
-  --a: #2563EB;
-  --b: #1E3A66;
-  --r: #E53945;
-  --f: #111827;
-  --bd: #40516A;
-  --t: #F8FAFC;
-  --g: #CBD5E1;
-
-  --panel: #1E293B;
-  --panel-2: #25344A;
+  .logo-activo { width: 170px; height: 90px; }
+  .brand-text b { font-size: 16px; }
+  #adminTop { width: 100%; margin-top: 8px; }
+  .public-day-tabs { margin-left: -4px; margin-right: -4px; padding: 6px 4px 10px; top: 0; }
+  .public-day-tab { padding: 9px 13px; font-size: 13px; }
+  .public-ex { padding: 10px; }
+  .public-ex-image { max-width: 220px; }
+  .exercise-timer-btn { width: 100%; text-align: center; padding: 10px; }
+  #studentTimer { position: sticky; bottom: 6px; margin-bottom: 6px; }
+  .rest-timer { padding: 11px 12px; border-radius: 14px; }
+  .timer-header { gap: 6px; }
+  .timer-header h3 { font-size: 15px; }
+  .timer-header small { display: none; }
+  .timer-display { font-size: 36px; letter-spacing: 2px; margin: 8px 0 10px; }
+  .timer-presets { grid-template-columns: repeat(4, 1fr); gap: 5px; margin-bottom: 6px; }
+  .timer-preset { padding: 7px 4px; font-size: 12px; }
+  .timer-controls { grid-template-columns: repeat(3, 1fr); gap: 5px; }
+  .timer-controls button { width: 100%; min-height: 36px; padding: 6px 4px; font-size: 12px; }
+  .timer-status { margin-top: 6px; font-size: 11px; }
 }
-
-body {
-  background: var(--f);
-  color: var(--t);
-  color-scheme: dark;
-  line-height: 1.5;
+@media (max-width: 420px) {
+  .card { padding: 14px; border-radius: 14px; }
+  .box { padding: 14px; }
+  .public-day-tab { padding: 10px 12px; }
 }
-
-/* ENCABEZADO */
-
-header {
-  background: linear-gradient(
-    135deg, #101827, #203859
-  );
-  border-bottom: 3px solid var(--r);
-  color: white;
-}
-
-.logo-activo {
-  object-fit: contain;
-}
-
-.brand-text b {
-  color: white;
-  letter-spacing: 0.7px;
-}
-
-.head small {
-  color: #E2E8F0;
-}
-
-/* PANEL ADMINISTRATIVO */
-
-#adminTop {
-  background: #1B2940;
-  color: white;
-  border-bottom: 1px solid var(--bd);
-}
-
-/* TARJETAS Y VENTANAS */
-
-.card, .box {
-  background: var(--panel);
-  color: var(--t);
-  border: 1px solid var(--bd);
-  border-radius: 16px;
-  box-shadow: 0 8px 24px #00000030;
-}
-
-/* LISTAS Y EJERCICIOS */
-
-.client,
-.exercise,
-.lib,
-.public-result,
-.public-ex {
-  background: var(--panel-2);
-  border-color: var(--bd);
-  color: var(--t);
-  border-radius: 12px;
-}
-
-.public-ex {
-  border-left: 5px solid var(--r);
-}
-
-.public-result {
-  text-align: left;
-}
-
-/* BOTONES */
-
-button {
-  background: #334155;
-  color: white;
-  border-radius: 10px;
-  min-height: 40px;
-  transition: background .2s, transform .2s;
-}
-
-button:hover {
-  filter: brightness(1.12);
-}
-
-button:active {
-  transform: scale(.98);
-}
-
-button:focus-visible,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible {
-  outline: 2px solid #60A5FA;
-  outline-offset: 2px;
-}
-
-.danger {
-  background: var(--r);
-  color: white;
-}
-
-.success, .timer-start {
-  background: #168A4F;
-  color: white;
-}
-
-/* FORMULARIOS */
-
-input:not([type="checkbox"]):not([type="radio"]),
-select,
-textarea {
-  background: #101827;
-  color: white;
-  border: 1px solid #53657E;
-}
-
-input::placeholder,
-textarea::placeholder {
-  color: #B4C1D2;
-}
-
-input[type="checkbox"],
-input[type="radio"] {
-  accent-color: var(--a);
-}
-
-label {
-  color: var(--t);
-}
-
-small {
-  color: var(--g);
-}
-
-/* PESTAÑAS DE DIAS */
-
-.day {
-  background: #334155;
-  color: white;
-}
-
-.day.active,
-.public-day-tab.active {
-  background: var(--r);
-  color: white;
-  border-color: var(--r);
-}
-
-.public-day-tabs {
-  background: var(--f);
-}
-
-.public-day-tab {
-  background: #25344A;
-  color: white;
-  border: 1px solid var(--bd);
-  box-shadow: none;
-}
-
-.public-day-tab:hover {
-  background: #375276;
-}
-
-.public-day-tab.empty {
-  opacity: .65;
-}
-
-.empty-day-message {
-  background: var(--panel);
-  color: var(--g);
-  border: 1px dashed var(--bd);
-}
-
-/* TITULOS DE RUTINAS */
-
-.plan-day h3 {
-  background: #254F9A;
-  color: white;
-  border-radius: 10px;
-  padding: 12px;
-}
-
-/* CRONOMETRO */
-
-.rest-timer {
-  background: linear-gradient(
-    135deg, #172B4D, #2563EB
-  );
-  color: white;
-  border: 1px solid #456EA8;
-}
-
-.exercise-timer-btn {
-  background: var(--a);
-  color: white;
-}
-
-.exercise-timer-btn:hover {
-  background: #1D4ED8;
-}
-
-.timer-preset {
-  background: #FFFFFF20;
-  color: white;
-  border-color: #FFFFFF55;
-}
-
-.timer-preset.active {
-  background: var(--r);
-  border-color: var(--r);
-}
-
-.timer-controls button {
-  min-height: 44px;
-}
-
-.rest-timer.finished {
-  background: linear-gradient(
-    135deg, #8F1D2B, #E53945
-  );
-}
-
-/* MENSAJES Y MODALES */
-
-.modal {
-  background: #000000CC;
-}
-
-.error {
-  background: #51232B;
-  color: #FFE4E6;
-}
-
-.ok {
-  background: #173D31;
-  color: #D1FAE5;
-}
-
-/* AJUSTES PARA CELULARES */
-
-@media (max-width: 600px) {
-  .card {
-    padding: 14px;
-    border-radius: 14px;
-  }
-
-  .brand {
-    gap: 10px;
-  }
-
-  .public-day-tab {
-    padding: 11px 14px;
-  }
-
-  .exercise,
-  .public-ex {
-    padding: 12px;
-  }
-}
-  
-
-    font-size: 12px;
-  }
-
-  .timer-status {
-    margin-top: 6px;
-
-    font-size: 11px;
-  }
-
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
