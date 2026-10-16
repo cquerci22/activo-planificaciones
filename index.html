@@ -5,11 +5,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#111827">
-  <meta name="description" content="ACTIVO Funcional Training - Planificaciones de entrenamiento">
+  <meta name="description" content="ACTIVO Funcional Training - Planificaciones de entrenamiento.">
   <title>ACTIVO | Planificaciones</title>
 
-  <link rel="stylesheet" href="style.css">
+  <!-- CONEXIÓN CON SUPABASE -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- ESTILOS ACTIVO -->
+  <link rel="stylesheet" href="style.css">
 
   <style>
     .logo-activo {
@@ -24,16 +27,21 @@
 
 <body>
 
+  <!-- ENCABEZADO ACTIVO -->
   <header>
     <div class="head">
       <div class="brand">
+
+        <!-- NUEVO LOGO OFICIAL ACTIVO -->
         <img
           src="img/logo-activo-nuevo.png"
-          alt="ACTIVO Funcional Training"
+          alt="ACTIVO Funcional Training - Entrenamiento Físico Integral"
           class="logo-activo"
         >
+
       </div>
 
+      <!-- ACCESO A PROFESORES -->
       <button id="adminTop" type="button">
         Panel del profesor
       </button>
@@ -42,6 +50,7 @@
 
   <main>
 
+    <!-- SECCIÓN PÚBLICA DE ALUMNOS -->
     <section id="public">
 
       <div class="card">
@@ -52,19 +61,26 @@
           type="search"
           placeholder="Nombre o apellido"
           autocomplete="off"
+          aria-label="Buscar planificación"
         >
 
         <div id="results"></div>
       </div>
 
+      <!-- PLANIFICACIÓN PERSONAL -->
       <div id="publicPlan" class="card hidden"></div>
 
+      <!-- CRONÓMETRO DEL ALUMNO -->
       <div id="studentTimer" class="card rest-timer hidden">
 
-        <h3>⏱ Cronómetro de descanso</h3>
+        <div class="timer-header">
+          <div>
+            <h3>⏱ Cronómetro de descanso</h3>
+            <small>Controlá tu descanso entre series</small>
+          </div>
+        </div>
 
-        <small>Controlá tu descanso entre series</small>
-
+        <!-- VISUALIZACIÓN DEL TIEMPO -->
         <div
           id="timerDisplay"
           class="timer-display"
@@ -73,26 +89,51 @@
           01:30
         </div>
 
+        <!-- TIEMPOS PREDEFINIDOS -->
         <div class="timer-presets">
-          <button type="button" class="timer-preset" data-seconds="30">
+
+          <button
+            type="button"
+            class="timer-preset"
+            data-seconds="30"
+          >
             30 s
           </button>
 
-          <button type="button" class="timer-preset" data-seconds="60">
+          <button
+            type="button"
+            class="timer-preset"
+            data-seconds="60"
+          >
             60 s
           </button>
 
-          <button type="button" class="timer-preset active" data-seconds="90">
+          <button
+            type="button"
+            class="timer-preset active"
+            data-seconds="90"
+          >
             90 s
           </button>
 
-          <button type="button" class="timer-preset" data-seconds="120">
+          <button
+            type="button"
+            class="timer-preset"
+            data-seconds="120"
+          >
             2 min
           </button>
+
         </div>
 
+        <!-- CONTROLES DEL CRONÓMETRO -->
         <div class="timer-controls">
-          <button id="timerStart" type="button">
+
+          <button
+            id="timerStart"
+            type="button"
+            class="timer-start"
+          >
             ▶ Iniciar
           </button>
 
@@ -103,18 +144,27 @@
           <button id="timerReset" type="button">
             ↻ Reiniciar
           </button>
+
         </div>
 
-        <div id="timerStatus" aria-live="polite">
+        <div
+          id="timerStatus"
+          class="timer-status"
+          aria-live="polite"
+        >
           Listo para iniciar
         </div>
 
       </div>
+      <!-- FIN CRONÓMETRO -->
 
     </section>
+    <!-- FIN VISTA PÚBLICA -->
 
+    <!-- PANEL PROFESIONAL ACTIVO -->
     <section id="admin" class="hidden">
 
+      <!-- ENCABEZADO DEL PROFESOR -->
       <div class="card bar">
 
         <div>
@@ -127,86 +177,138 @@
             📚 Biblioteca
           </button>
 
-          <button id="logout" type="button" class="danger">
+          <button
+            id="logout"
+            type="button"
+            class="danger"
+          >
             Cerrar sesión
           </button>
         </div>
 
       </div>
 
+      <!-- MENSAJES DEL SISTEMA -->
       <div id="msg" aria-live="polite"></div>
 
+      <!-- DISTRIBUCIÓN DEL PANEL -->
       <div class="grid">
 
+        <!-- GESTIÓN DE ALUMNOS -->
         <div class="card">
 
           <h3>👥 Clientes</h3>
 
-          <label for="name">Nombre y apellido</label>
+          <!-- NOMBRE DEL ALUMNO -->
+          <label for="name">
+            Nombre y apellido
+          </label>
+
           <input
             id="name"
             type="text"
             placeholder="Nombre del alumno"
+            autocomplete="off"
           >
 
-          <label for="goal">Objetivo</label>
+          <!-- OBJETIVO -->
+          <label for="goal">
+            Objetivo
+          </label>
+
           <input
             id="goal"
             type="text"
             placeholder="Objetivo del entrenamiento"
           >
 
-          <label for="notes">Observaciones privadas</label>
+          <!-- OBSERVACIONES -->
+          <label for="notes">
+            Observaciones privadas
+          </label>
+
           <textarea
             id="notes"
             rows="3"
             placeholder="Observaciones del profesor"
           ></textarea>
 
+          <!-- ESTADO DEL ALUMNO -->
           <label for="active">
-            <input id="active" type="checkbox" checked>
+            <input
+              id="active"
+              type="checkbox"
+              checked
+            >
             Activo y visible
           </label>
 
+          <!-- BOTONES DE ALUMNOS -->
           <div class="row">
-            <button id="saveClient" type="button">
+
+            <button
+              id="saveClient"
+              type="button"
+            >
               Guardar cliente
             </button>
 
-            <button id="cancel" type="button" class="hidden">
+            <button
+              id="cancel"
+              type="button"
+              class="hidden"
+            >
               Cancelar
             </button>
+
           </div>
 
+          <!-- IDENTIFICADOR DE EDICIÓN -->
           <input id="editId" type="hidden">
 
+          <!-- LISTA DINÁMICA DE ALUMNOS -->
           <div id="clients"></div>
 
         </div>
 
+        <!-- PLANIFICADOR DE ENTRENAMIENTO -->
         <div class="card">
+
+          <!-- SIN ALUMNO SELECCIONADO -->
           <div id="empty">
             Seleccioná un cliente para comenzar.
           </div>
 
+          <!-- PLANIFICADOR -->
           <div id="planner" class="hidden">
 
+            <!-- DATOS DEL ALUMNO -->
             <h2 id="clientTitle"></h2>
             <small id="clientGoal"></small>
 
-            <!-- Pestañas de entrenamiento por día -->
-            <div id="days" class="days"></div>
+            <!-- PESTAÑAS POR DÍA -->
+            <div
+              id="days"
+              class="days"
+            ></div>
 
-            <!-- Ejercicios del día seleccionado -->
+            <!-- LISTADO DE EJERCICIOS -->
             <div id="exerciseList"></div>
 
+            <!-- ACCIONES DEL PLANIFICADOR -->
             <div class="row">
 
-              <button id="manual" type="button">
+              <button
+                id="manual"
+                type="button"
+              >
                 + Agregar manual
               </button>
 
-              <button id="fromLib" type="button">
+              <button
+                id="fromLib"
+                type="button"
+              >
                 Elegir de biblioteca
               </button>
 
@@ -218,27 +320,36 @@
                 Guardar este día
               </button>
 
-              <button id="preview" type="button">
+              <button
+                id="preview"
+                type="button"
+              >
                 Ver como cliente
               </button>
 
             </div>
+
           </div>
+
         </div>
 
       </div>
+
     </section>
 
   </main>
 
-  <!-- ACCESO DE PROFESORES -->
-
-  <div id="loginModal" class="modal hidden">
+  <!-- INICIO DE SESIÓN DE PROFESORES -->
+  <div
+    id="loginModal"
+    class="modal hidden"
+  >
 
     <div class="box">
 
       <h2>Panel del profesor</h2>
 
+      <!-- CORREO ELECTRÓNICO -->
       <label for="loginEmail">
         Correo electrónico
       </label>
@@ -250,6 +361,7 @@
         autocomplete="username"
       >
 
+      <!-- CONTRASEÑA -->
       <label for="loginPass">
         Contraseña
       </label>
@@ -261,43 +373,59 @@
         autocomplete="current-password"
       >
 
+      <!-- MENSAJE DE ERROR -->
       <div
         id="loginErr"
         class="error hidden"
         role="alert"
       ></div>
 
+      <!-- BOTONES DE INGRESO -->
       <div class="row">
 
-        <button id="login" type="button">
+        <button
+          id="login"
+          type="button"
+        >
           Ingresar
         </button>
 
-        <button id="closeLogin" type="button">
+        <button
+          id="closeLogin"
+          type="button"
+        >
           Cancelar
         </button>
 
       </div>
 
     </div>
+
   </div>
 
   <!-- BIBLIOTECA DE EJERCICIOS -->
-
-  <div id="libraryModal" class="modal hidden">
+  <div
+    id="libraryModal"
+    class="modal hidden"
+  >
 
     <div class="box wide">
 
+      <!-- ENCABEZADO BIBLIOTECA -->
       <div class="bar">
 
         <h2>Biblioteca de ejercicios</h2>
 
-        <button id="closeLib" type="button">
+        <button
+          id="closeLib"
+          type="button"
+        >
           Cerrar
         </button>
 
       </div>
 
+      <!-- FILTROS DE EJERCICIOS -->
       <div class="row">
 
         <input
@@ -305,9 +433,13 @@
           type="search"
           placeholder="Buscar ejercicio"
           autocomplete="off"
+          aria-label="Buscar ejercicio"
         >
 
-        <select id="libCat">
+        <select
+          id="libCat"
+          aria-label="Categoría de ejercicio"
+        >
           <option value="">
             Todas las categorías
           </option>
@@ -315,12 +447,17 @@
 
       </div>
 
-      <div id="library" class="library"></div>
+      <!-- LISTA DINÁMICA DE EJERCICIOS -->
+      <div
+        id="library"
+        class="library"
+      ></div>
 
     </div>
+
   </div>
 
-  <!-- FUNCIONES DE LA APLICACIÓN -->
+  <!-- CONEXIÓN CON APP.JS -->
   <script src="app.js"></script>
 
 </body>
