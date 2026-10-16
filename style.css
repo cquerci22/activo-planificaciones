@@ -1,8 +1,9 @@
 
-/* ACTIVO PLANIFICACIONES 2.0 — OSCURO DEPORTIVO
-   Archivo completo de reemplazo basado en la estructura pública de Activo.
-   Estilos generales, panel docente, alumnos, biblioteca, cronómetro y celular.
-*/
+/* ==========================================
+   ACTIVO PLANIFICACIONES 2.0
+   TEMA OSCURO DEPORTIVO - CSS UNIFICADO
+   ========================================== */
+
 :root {
   --a: #2563eb;
   --b: #1e3a66;
@@ -13,59 +14,145 @@
   --g: #cbd5e1;
   --panel: #1e293b;
   --panel-2: #25344a;
+  --green: #168a4f;
 }
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   background: var(--f);
   color: var(--t);
   color-scheme: dark;
   line-height: 1.5;
 }
+
+h1, h2, h3, h4 {
+  color: #ffffff;
+}
+
+small {
+  color: var(--g);
+}
+
+a {
+  color: #93c5fd;
+}
+
+a:hover {
+  color: #bfdbfe;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ENCABEZADO */
+
 header {
-  background: linear-gradient(135deg, #101827, #203859);
+  background: linear-gradient(
+    125deg,
+    #101827 0%,
+    #172b4d 65%,
+    #203859 100%
+  );
+  color: #ffffff;
   border-bottom: 3px solid var(--r);
-  color: #fff;
-  padding: 14px 16px;
+  box-shadow: 0 5px 24px #00000035;
+  padding: 12px 20px;
 }
-.head, main { max-width: 1100px; margin: auto; }
-.head, .bar, .row {
+
+.head,
+main {
+  max-width: 1100px;
+  margin: auto;
+}
+
+.head,
+.bar,
+.row {
   display: flex;
-  gap: 8px;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   flex-wrap: wrap;
+  gap: 12px;
 }
-.brand { display: flex; align-items: center; gap: 16px; }
+
+.head {
+  min-height: 76px;
+}
+
+.brand {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+}
+
 .logo-activo {
-  width: 130px;
-  height: 70px;
+  width: 110px;
+  height: 65px;
   object-fit: contain;
   display: block;
   border-radius: 10px;
 }
-.brand-text { display: flex; flex-direction: column; }
-.brand-text b { font-size: 18px; letter-spacing: .6px; color: #fff; }
-.head small { display: block; color: #e2e8f0; opacity: .92; margin-top: 4px; }
-#adminTop {
-  background: #1b2940;
-  color: #fff;
-  border: 1px solid var(--bd);
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
 }
-main { padding: 20px 14px; }
+
+.brand-text b {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: .7px;
+  color: #ffffff;
+}
+
+.brand-text small,
+.head small {
+  color: #cbd5e1;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+/* CONTENEDOR PRINCIPAL */
+
+main {
+  padding: 20px 14px;
+}
+
 .card {
   background: var(--panel);
   color: var(--t);
   border: 1px solid var(--bd);
   border-radius: 16px;
-  padding: 16px;
+  padding: 18px;
   margin-bottom: 16px;
   box-shadow: 0 8px 24px #00000030;
 }
-.grid { display: grid; grid-template-columns: 340px 1fr; gap: 16px; }
-.hidden { display: none !important; }
+
+.grid {
+  display: grid;
+  grid-template-columns: 340px minmax(0, 1fr);
+  gap: 16px;
+}
+
+.cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+/* BOTONES GENERALES */
+
 button {
   border: 0;
   border-radius: 10px;
@@ -74,30 +161,72 @@ button {
   font-weight: 700;
   cursor: pointer;
   background: #334155;
-  color: #fff;
-  transition: filter .2s, transform .2s, background .2s;
+  color: #ffffff;
+  transition:
+    filter .2s,
+    transform .2s,
+    background .2s;
 }
-button:hover { filter: brightness(1.13); }
-button:active { transform: scale(.98); }
-button:disabled { opacity: .55; cursor: not-allowed; }
-button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+
+button:hover {
+  filter: brightness(1.12);
+}
+
+button:active {
+  transform: scale(.98);
+}
+
+button:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
   outline: 2px solid #60a5fa;
   outline-offset: 2px;
 }
-.danger { background: var(--r); color: #fff; }
-.success { background: #168a4f; color: #fff; }
-input, select, textarea {
+
+.danger {
+  background: var(--r);
+  color: #ffffff;
+}
+
+.success {
+  background: var(--green);
+  color: #ffffff;
+}
+
+/* CAMPOS Y FORMULARIOS */
+
+input,
+select,
+textarea {
   width: 100%;
   padding: 10px;
   border: 1px solid #53657e;
   border-radius: 10px;
   font: inherit;
   background: #101827;
-  color: #fff;
+  color: #ffffff;
 }
-input::placeholder, textarea::placeholder { color: #b4c1d2; }
-input[type="checkbox"], input[type="radio"] { accent-color: var(--a); }
-textarea { min-height: 70px; }
+
+input::placeholder,
+textarea::placeholder {
+  color: #b4c1d2;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: var(--a);
+}
+
+textarea {
+  min-height: 70px;
+}
+
 label {
   display: block;
   color: var(--t);
@@ -105,72 +234,243 @@ label {
   font-size: 13px;
   margin: 10px 0 6px;
 }
-label input[type="checkbox"] { width: auto; margin-right: 6px; }
-.client, .exercise, .lib, .public-result {
-  border: 1px solid var(--bd);
-  border-radius: 12px;
-  padding: 11px;
-  margin-top: 8px;
-  background: var(--panel-2);
-  color: var(--t);
+
+label input[type="checkbox"] {
+  width: auto;
+  margin-right: 6px;
 }
 
-.client { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
-.days { display: flex; gap: 7px; overflow: auto; margin: 14px 0; }
-.day { white-space: nowrap; background: #334155; color: #fff; }
-.day.active { background: var(--r); color: #fff; }
-.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.modal {
-  position: fixed;
-  inset: 0;
-  background: #000000cc;
+/* PANEL DEL PROFESOR */
+
+#adminTop {
+  background: var(--a);
+  color: #ffffff;
+  border: 1px solid #60a5fa55;
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-weight: 800;
+  box-shadow: 0 4px 14px #00000030;
+}
+
+#adminTop:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+#admin > .bar {
+  background: linear-gradient(
+    135deg, #1e293b, #253a58
+  );
+  border: 1px solid var(--bd);
+  border-left: 4px solid var(--r);
+  padding: 20px;
+  border-radius: 16px;
+  gap: 15px;
+}
+
+#admin > .bar h2 {
+  color: #ffffff;
+  margin: 0 0 5px;
+  font-size: 23px;
+}
+
+#admin > .bar small {
+  color: var(--g);
+}
+
+#libraryBtn {
+  background: var(--a);
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 12px 18px;
+}
+
+#logout {
+  background: #9f2833;
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 12px 18px;
+}
+
+#admin .grid > .card {
+  background: var(--panel);
+  border: 1px solid var(--bd);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 8px 25px #00000025;
+}
+
+#admin .grid > .card h3 {
+  color: #ffffff;
+  margin-top: 0;
+  font-size: 20px;
+}
+
+#admin input:not([type="checkbox"]):not([type="radio"]),
+#admin textarea,
+#admin select {
+  background: var(--f);
+  border: 1px solid #52647e;
+  border-radius: 10px;
+  color: #ffffff;
+  padding: 12px;
+}
+
+#admin input:focus,
+#admin textarea:focus,
+#admin select:focus {
+  border-color: #60a5fa;
+}
+
+#saveClient {
+  background: var(--a);
+  color: #ffffff;
+  padding: 12px 20px;
+  border-radius: 10px;
+}
+
+/* CLIENTES */
+
+.client {
+  background: var(--panel-2);
+  color: var(--t);
+  border: 1px solid var(--bd);
+  border-radius: 12px;
+  padding: 14px;
+  margin-top: 8px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 16px;
-  z-index: 99;
+  justify-content: space-between;
+  gap: 8px;
+  transition: border-color .2s;
 }
-.box {
+
+.client:hover,
+#clients .client:hover {
+  border-color: #60a5fa;
+}
+
+/* ==========================================
+   PARTE 2 - PLANIFICACIONES Y EJERCICIOS
+   ========================================== */
+
+/* PESTAÑAS DEL PROFESOR */
+
+.days {
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  margin: 14px 0;
+}
+
+.day {
+  white-space: nowrap;
+  background: #334155;
+  color: #ffffff;
+  border-radius: 10px;
+}
+
+.day.active {
+  background: var(--r);
+  color: #ffffff;
+}
+
+/* EJERCICIOS EN EDICIÓN */
+
+.exercise {
   background: var(--panel);
   color: var(--t);
   border: 1px solid var(--bd);
-  width: min(440px, 100%);
+  border-left: 4px solid var(--r);
   border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 8px 24px #00000030;
+  padding: 18px;
+  margin-top: 10px;
+  margin-bottom: 14px;
+  box-shadow: 0 6px 20px #00000024;
 }
-.wide { width: min(1000px, 100%); max-height: 92vh; overflow: auto; }
-.error { background: #51232b; color: #ffe4e6; padding: 10px; border-radius: 10px; margin: 10px 0; }
-.ok { background: #173d31; color: #d1fae5; padding: 10px; border-radius: 10px; margin-bottom: 10px; }
-.library { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
-.public-result { width: 100%; text-align: left; }
-.plan-day h3 {
-  background: #254f9a;
-  color: #fff;
-  padding: 9px 12px;
-  border-radius: 9px;
-}
-.public-ex {
-  border-left: 5px solid var(--r);
-  padding: 10px;
-  border-radius: 10px;
-  background: var(--panel-2);
-  border-top: 1px solid var(--bd);
-  border-right: 1px solid var(--bd);
-  border-bottom: 1px solid var(--bd);
-  margin-bottom: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  color: var(--t);
-}
-small { color: var(--g); }
-a { color: #93c5fd; }
-a:hover { color: #bfdbfe; }
 
-/* PESTAÑAS DE DÍAS — ALUMNO */
-.public-plan-header { margin-bottom: 12px; }
-.public-plan-header h2 { margin-bottom: 4px; }
+/* BIBLIOTECA */
+
+.library {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.lib {
+  background: var(--panel-2);
+  color: var(--t);
+  border: 1px solid var(--bd);
+  border-radius: 16px;
+  padding: 15px;
+  margin: 0;
+  transition: border-color .2s;
+}
+
+.lib:hover {
+  border-color: #60a5fa;
+}
+
+.library .lib button {
+  background: var(--a);
+  color: #ffffff;
+  border-radius: 10px;
+  min-height: 40px;
+}
+
+/* IMÁGENES DE LA BIBLIOTECA */
+
+.exercise-thumb {
+  width: 100%;
+  max-width: 200px;
+  max-height: 160px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 12px;
+  border-radius: 12px;
+  background: var(--f);
+}
+
+.lib .exercise-thumb {
+  margin-bottom: 12px;
+}
+
+/* RESULTADOS DEL BUSCADOR */
+
+.public-result {
+  width: 100%;
+  text-align: left;
+  background: var(--panel-2);
+  color: var(--t);
+  border: 1px solid var(--bd);
+  border-radius: 12px;
+  padding: 12px;
+  margin-top: 8px;
+}
+
+.public-result:hover {
+  border-color: #60a5fa;
+}
+
+/* PLANIFICACIÓN DEL ALUMNO */
+
+.public-plan-header {
+  margin-bottom: 12px;
+}
+
+.public-plan-header h2 {
+  margin-bottom: 4px;
+}
+
+#publicPlan {
+  background: var(--panel);
+  border-color: var(--bd);
+}
+
+/* PESTAÑAS PÚBLICAS POR DÍA */
+
 .public-day-tabs {
   display: flex;
   gap: 7px;
@@ -183,29 +483,141 @@ a:hover { color: #bfdbfe; }
   background: var(--f);
   scrollbar-width: none;
 }
-.public-day-tabs::-webkit-scrollbar { display: none; }
+
+.public-day-tabs::-webkit-scrollbar {
+  display: none;
+}
+
 .public-day-tab {
   flex: 0 0 auto;
   white-space: nowrap;
   border: 1px solid var(--bd);
   background: var(--panel-2);
-  color: #fff;
+  color: #ffffff;
   border-radius: 999px;
   padding: 10px 15px;
   font-size: 14px;
   font-weight: 800;
   box-shadow: none;
-  transition: transform .15s, background .15s, color .15s;
+  transition:
+    transform .15s,
+    background .15s,
+    color .15s;
 }
-.public-day-tab:hover { background: #375276; }
-.public-day-tab:active { transform: scale(.97); }
-.public-day-tab.active { background: var(--r); color: #fff; border-color: var(--r); }
-.public-day-tab.empty { opacity: .65; }
-.public-day-tab.empty.active { opacity: 1; }
-.public-days-container { width: 100%; }
-.public-day-panel { display: none; }
-.public-day-panel.active { display: block; }
-.public-day-panel h3 { margin-top: 0; }
+
+.public-day-tab:hover {
+  background: #375276;
+}
+
+.public-day-tab:active {
+  transform: scale(.97);
+}
+
+.public-day-tab.active {
+  background: var(--r);
+  color: #ffffff;
+  border-color: var(--r);
+}
+
+.public-day-tab.empty {
+  opacity: .65;
+}
+
+.public-day-tab.empty.active {
+  opacity: 1;
+}
+
+.public-days-container {
+  width: 100%;
+}
+
+.public-day-panel {
+  display: none;
+}
+
+.public-day-panel.active {
+  display: block;
+}
+
+.public-day-panel h3 {
+  margin-top: 0;
+}
+
+/* TÍTULOS DE RUTINAS */
+
+.plan-day h3,
+.public-day-panel h3 {
+  background: #223f70;
+  color: #ffffff;
+  border-left: 4px solid var(--r);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+/* TARJETAS PREMIUM DE EJERCICIOS */
+
+.public-ex {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--panel);
+  color: var(--t);
+  border: 1px solid var(--bd);
+  border-left: 4px solid var(--r);
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 14px;
+  box-shadow: 0 6px 20px #00000024;
+  transition:
+    border-color .2s,
+    box-shadow .2s;
+}
+
+.public-ex:hover,
+.exercise:hover {
+  border-color: #6681a5;
+  box-shadow: 0 9px 26px #00000030;
+}
+
+.public-ex strong,
+.exercise strong,
+.lib strong {
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.public-ex small,
+.exercise small,
+.lib small {
+  color: var(--g);
+  line-height: 1.6;
+}
+
+.public-ex p,
+.exercise p {
+  color: #e2e8f0;
+  line-height: 1.6;
+}
+
+/* IMAGEN PRINCIPAL DEL EJERCICIO */
+
+.public-ex-image {
+  width: 100%;
+  max-width: 340px;
+  max-height: 250px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 12px auto;
+  border-radius: 14px;
+  background: var(--f);
+  border: 1px solid #334155;
+  padding: 6px;
+  box-shadow: 0 6px 18px #00000040;
+}
+
+/* MENSAJE DE DÍA SIN EJERCICIOS */
+
 .empty-day-message {
   padding: 18px;
   text-align: center;
@@ -215,37 +627,116 @@ a:hover { color: #bfdbfe; }
   color: var(--g);
 }
 
-/* EJERCICIOS Y BOTÓN DE DESCANSO */
-.exercise-timer-btn {
-  margin-top: 4px;
-  background: var(--a);
-  color: #fff;
-  align-self: flex-start;
-  padding: 9px 12px;
-  border-radius: 10px;
-}
-.exercise-timer-btn:hover { background: #1d4ed8; }
+/* BOTÓN DEL CRONÓMETRO POR EJERCICIO */
 
-/* CRONÓMETRO DE DESCANSO */
+.exercise-timer-btn,
+.public-ex .exercise-timer-btn {
+  margin-top: 4px;
+  align-self: flex-start;
+  background: linear-gradient(
+    135deg, #2563eb, #1d4ed8
+  );
+  color: #ffffff;
+  border: 1px solid #60a5fa55;
+  border-radius: 12px;
+  padding: 12px 18px;
+  min-height: 44px;
+  font-weight: 800;
+}
+
+.exercise-timer-btn:hover {
+  background: #1d4ed8;
+}
+
+/* VENTANAS Y MODALES */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: #000000cc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 99;
+}
+
+.box {
+  background: var(--panel);
+  color: var(--t);
+  border: 1px solid var(--bd);
+  width: min(440px, 100%);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 8px 24px #00000030;
+}
+
+.wide {
+  width: min(1000px, 100%);
+  max-height: 92vh;
+  overflow: auto;
+}
+
+.error {
+  background: #51232b;
+  color: #ffe4e6;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+
+.ok {
+  background: #173d31;
+  color: #d1fae5;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+/* ==========================================
+   PARTE 3 - CRONÓMETRO Y RESPONSIVE
+   ========================================== */
+
+/* CRONÓMETRO PRINCIPAL */
+
 .rest-timer {
   margin: 18px 0;
   padding: 18px;
-
   border-radius: 16px;
-  background: linear-gradient(135deg, #172b4d, #2563eb);
-  color: #fff;
+  background: linear-gradient(
+    135deg, #172b4d, #2563eb
+  );
+  color: #ffffff;
   border: 1px solid #456ea8;
   box-shadow: 0 8px 25px #00000030;
 }
+
 #studentTimer {
   position: sticky;
   bottom: 10px;
   z-index: 60;
-  box-shadow: 0 14px 40px rgba(0,0,0,.30);
+  box-shadow: 0 14px 40px #0000004d;
 }
-.timer-header { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-.timer-header h3 { margin: 0; color: #fff; }
-.timer-header small { display: block; margin-top: 4px; color: #fff; opacity: .82; }
+
+.timer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.timer-header h3 {
+  margin: 0;
+  color: #ffffff;
+}
+
+.timer-header small {
+  display: block;
+  margin-top: 4px;
+  color: #ffffff;
+  opacity: .82;
+}
+
 .timer-display {
   text-align: center;
   font-size: 58px;
@@ -253,268 +744,95 @@ a:hover { color: #bfdbfe; }
   font-weight: 800;
   letter-spacing: 3px;
   margin: 22px 0;
-  color: #fff;
+  color: #ffffff;
 }
-.timer-presets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; }
-.timer-preset { background: #ffffff20; color: #fff; border: 1px solid #ffffff55; }
-.timer-preset:hover { background: #ffffff35; }
-.timer-preset.active { background: var(--r); color: #fff; border-color: var(--r); }
-.timer-controls { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 8px; }
-.timer-controls button { min-height: 44px; }
-.timer-start { background: #168a4f; color: #fff; }
+
+.timer-presets {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.timer-preset {
+  background: #ffffff20;
+  color: #ffffff;
+  border: 1px solid #ffffff55;
+}
+
+.timer-preset:hover {
+  background: #ffffff35;
+}
+
+.timer-preset.active {
+  background: var(--r);
+  color: #ffffff;
+  border-color: var(--r);
+}
+
+.timer-controls {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 8px;
+}
+
+.timer-controls button {
+  min-height: 44px;
+}
+
+.timer-start {
+  background: var(--green);
+  color: #ffffff;
+}
+
 .timer-status {
   margin-top: 12px;
   text-align: center;
   font-size: 13px;
   font-weight: 700;
-  color: #fff;
+  color: #ffffff;
   opacity: .9;
 }
-.rest-timer.finished { background: linear-gradient(135deg, #8f1d2b, #e53945); }
-.rest-timer.finished .timer-display { animation: timerPulse .6s ease-in-out 3; }
+
+/* DESCANSO FINALIZADO */
+
+.rest-timer.finished {
+  background: linear-gradient(
+    135deg, #8f1d2b, #e53945
+  );
+}
+
+.rest-timer.finished .timer-display {
+  animation: timerPulse .6s ease-in-out 3;
+}
+
 @keyframes timerPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.08); }
-}
-
-/* IMÁGENES DE EJERCICIOS */
-.exercise-thumb {
-  width: 100%;
-  max-width: 180px;
-  height: auto;
-  display: block;
-  margin: 0 auto 10px;
-  border-radius: 14px;
-  object-fit: cover;
-}
-.public-ex-image {
-  width: 100%;
-  max-width: 260px;
-  height: auto;
-  display: block;
-  margin: 8px auto 10px;
-  border-radius: 16px;
-  object-fit: cover;
-  box-shadow: 0 6px 18px rgba(0,0,0,.25);
-}
-.lib .exercise-thumb { margin-bottom: 12px; }
-
-/* RESPONSIVE — CELULAR Y TABLET */
-@media (max-width: 760px) {
-  body { padding-bottom: 10px; }
-  .grid, .cols { grid-template-columns: 1fr; }
-  .client { align-items: flex-start; flex-direction: column; }
-  header { padding: 12px; }
-  .head { justify-content: center; }
-  .brand {
-    width: 100%;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    gap: 6px;
+  0%, 100% {
+    transform: scale(1);
   }
-  .logo-activo { width: 170px; height: 90px; }
-  .brand-text b { font-size: 16px; }
-  #adminTop { width: 100%; margin-top: 8px; }
-  .public-day-tabs { margin-left: -4px; margin-right: -4px; padding: 6px 4px 10px; top: 0; }
-  .public-day-tab { padding: 9px 13px; font-size: 13px; }
-  .public-ex { padding: 10px; }
-  .public-ex-image { max-width: 220px; }
-  .exercise-timer-btn { width: 100%; text-align: center; padding: 10px; }
-  #studentTimer { position: sticky; bottom: 6px; margin-bottom: 6px; }
-  .rest-timer { padding: 11px 12px; border-radius: 14px; }
-  .timer-header { gap: 6px; }
-  .timer-header h3 { font-size: 15px; }
-  .timer-header small { display: none; }
-  .timer-display { font-size: 36px; letter-spacing: 2px; margin: 8px 0 10px; }
-  .timer-presets { grid-template-columns: repeat(4, 1fr); gap: 5px; margin-bottom: 6px; }
-  .timer-preset { padding: 7px 4px; font-size: 12px; }
-  .timer-controls { grid-template-columns: repeat(3, 1fr); gap: 5px; }
-  .timer-controls button { width: 100%; min-height: 36px; padding: 6px 4px; font-size: 12px; }
-  .timer-status { margin-top: 6px; font-size: 11px; }
-}
-@media (max-width: 420px) {
-  .card { padding: 14px; border-radius: 14px; }
-  .box { padding: 14px; }
-  .public-day-tab { padding: 10px 12px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+
+  50% {
+    transform: scale(1.08);
+  }
 }
 
-/* ========================================
-   ACTIVO 2.0 - RETOQUE VISUAL PREMIUM
-   ENCABEZADO + PANEL DEL PROFESOR
-======================================== */
-
-/* ENCABEZADO PRINCIPAL */
-
-header {
-  background: linear-gradient(
-    125deg,
-    #101827 0%,
-    #172B4D 65%,
-    #203859 100%
-  );
-  border-bottom: 3px solid #E53945;
-  box-shadow: 0 5px 24px #00000035;
-  padding: 12px 20px;
-}
-
-.head {
-  gap: 16px;
-  min-height: 76px;
-}
-
-.brand {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 14px;
-}
-
-/* LOGO ACTIVO */
-
-.logo-activo {
-  width: 110px;
-  height: 65px;
-  object-fit: contain;
-  border-radius: 10px;
-}
-
-/* NOMBRE DEL GIMNASIO */
-
-.brand-text b {
-  font-size: 19px;
-  font-weight: 800;
-  letter-spacing: .7px;
-  color: #FFFFFF;
-}
-
-.brand-text small {
-  color: #CBD5E1;
-  font-size: 12px;
-  margin-top: 5px;
-}
-
-/* BOTÓN PANEL DEL PROFESOR */
-
-#adminTop {
-  background: #2563EB;
-  color: #FFFFFF;
-  border: 1px solid #60A5FA55;
-  border-radius: 12px;
-  padding: 12px 20px;
-  font-weight: 800;
-  box-shadow: 0 4px 14px #00000030;
-}
-
-#adminTop:hover {
-  background: #1D4ED8;
-  transform: translateY(-1px);
-}
-
-/* CABECERA DEL PANEL ADMINISTRATIVO */
-
-#admin > .bar {
-  background: linear-gradient(
-    135deg, #1E293B, #253A58
-  );
-  border: 1px solid #40516A;
-  border-left: 4px solid #E53945;
-  padding: 20px;
-  border-radius: 16px;
-  gap: 15px;
-}
-
-#admin > .bar h2 {
-  color: #FFFFFF;
-  margin: 0 0 5px;
-  font-size: 23px;
-}
-
-#admin > .bar small {
-  color: #CBD5E1;
-}
-
-/* BOTONES DEL PANEL */
-
-#libraryBtn {
-  background: #2563EB;
-  color: #FFFFFF;
-  border-radius: 10px;
-  padding: 12px 18px;
-}
-
-#logout {
-  background: #9F2833;
-  color: #FFFFFF;
-  border-radius: 10px;
-  padding: 12px 18px;
-}
-
-/* TARJETAS ADMINISTRATIVAS */
-
-#admin .grid > .card {
-  background: #1E293B;
-  border: 1px solid #40516A;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 8px 25px #00000025;
-}
-
-#admin .grid > .card h3 {
-  color: #FFFFFF;
-  margin-top: 0;
-  font-size: 20px;
-}
-
-/* CAMPOS DE CLIENTES */
-
-#admin input:not([type="checkbox"]):not([type="radio"]),
-#admin textarea,
-#admin select {
-  background: #111827;
-  border: 1px solid #52647E;
-  border-radius: 10px;
-  color: #FFFFFF;
-  padding: 12px;
-}
-
-#admin input:focus,
-#admin textarea:focus,
-#admin select:focus {
-  border-color: #60A5FA;
-  outline: 2px solid #60A5FA55;
-  outline-offset: 1px;
-}
-
-/* BOTÓN GUARDAR CLIENTE */
-
-#saveClient {
-  background: #2563EB;
-  color: #FFFFFF;
-  padding: 12px 20px;
-  border-radius: 10px;
-}
-
-/* CLIENTES DE LA LISTA */
-
-#clients .client {
-  background: #25344A;
-  border: 1px solid #40516A;
-  border-radius: 12px;
-  padding: 14px;
-  transition: border-color .2s;
-}
-
-#clients .client:hover {
-  border-color: #60A5FA;
-}
-
-/* VISTA CELULAR */
+/* VISTA TABLET Y CELULAR */
 
 @media (max-width: 760px) {
+
+  body {
+    padding-bottom: 10px;
+  }
+
+  .grid,
+  .cols {
+    grid-template-columns: 1fr;
+  }
+
+  .client {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 
   header {
     padding: 12px;
@@ -522,6 +840,7 @@ header {
 
   .head {
     flex-direction: column;
+    justify-content: center;
     gap: 12px;
   }
 
@@ -570,147 +889,26 @@ header {
   #admin .grid > .card {
     padding: 15px;
   }
-}
 
-/* =======================================
-   ACTIVO 2.0 - TARJETAS PREMIUM
-   EJERCICIOS Y BIBLIOTECA
-======================================= */
+  .card {
+    padding: 14px;
+    border-radius: 14px;
+  }
 
-/* TARJETAS DE EJERCICIOS */
+  .public-day-tabs {
+    margin-left: -4px;
+    margin-right: -4px;
+    padding: 6px 4px 10px;
+    top: 0;
+  }
 
-.public-ex,
-#exerciseList .exercise {
-  background: #1E293B;
-  border: 1px solid #40516A;
-  border-left: 4px solid #E53945;
-  border-radius: 16px;
-  padding: 18px;
-  margin-bottom: 14px;
-  color: #F8FAFC;
-  box-shadow: 0 6px 20px #00000024;
-  transition: border-color .2s,
-              box-shadow .2s;
-}
-
-.public-ex:hover,
-#exerciseList .exercise:hover {
-  border-color: #6681A5;
-  box-shadow: 0 9px 26px #00000030;
-}
-
-/* IMÁGENES DE LOS EJERCICIOS */
-
-.public-ex-image {
-  width: 100%;
-  max-width: 340px;
-  max-height: 250px;
-  height: auto;
-  object-fit: contain;
-  display: block;
-  margin: 12px auto;
-  border-radius: 14px;
-  background: #111827;
-  border: 1px solid #334155;
-  padding: 6px;
-}
-
-.exercise-thumb {
-  width: 100%;
-  max-width: 200px;
-  max-height: 160px;
-  height: auto;
-  object-fit: contain;
-  display: block;
-  margin: 0 auto 12px;
-  border-radius: 12px;
-  background: #111827;
-}
-
-/* TEXTOS Y DESCRIPCIONES */
-
-.public-ex strong,
-.exercise strong,
-.lib strong {
-  color: #FFFFFF;
-  font-weight: 800;
-}
-
-.public-ex small,
-.exercise small,
-.lib small {
-  color: #CBD5E1;
-  line-height: 1.6;
-}
-
-.public-ex p,
-.exercise p {
-  color: #E2E8F0;
-  line-height: 1.6;
-}
-
-/* BOTÓN DE DESCANSO */
-
-.public-ex .exercise-timer-btn {
-  background: linear-gradient(
-    135deg, #2563EB, #1D4ED8
-  );
-  color: #FFFFFF;
-  border: 1px solid #60A5FA55;
-  border-radius: 12px;
-  padding: 12px 18px;
-  min-height: 44px;
-  font-weight: 800;
-}
-
-.public-ex .exercise-timer-btn:hover {
-  background: #1D4ED8;
-}
-
-/* BIBLIOTECA */
-
-.library .lib {
-  background: #25344A;
-  border: 1px solid #40516A;
-  border-radius: 16px;
-  padding: 15px;
-  margin: 0;
-  transition: border-color .2s;
-}
-
-.library .lib:hover {
-  border-color: #60A5FA;
-}
-
-.library .lib button {
-  background: #2563EB;
-  color: #FFFFFF;
-  border-radius: 10px;
-  min-height: 40px;
-}
-
-/* PLANIFICACIÓN */
-
-#publicPlan {
-  background: #1E293B;
-  border-color: #40516A;
-}
-
-.plan-day h3,
-.public-day-panel h3 {
-  background: #223F70;
-  color: #FFFFFF;
-  border-left: 4px solid #E53945;
-  border-radius: 10px;
-  padding: 12px 14px;
-}
-
-/* CELULARES */
-
-@media (max-width: 760px) {
+  .public-day-tab {
+    padding: 9px 13px;
+    font-size: 13px;
+  }
 
   .public-ex,
-  #exerciseList .exercise {
+  .exercise {
     padding: 13px;
     border-radius: 14px;
   }
@@ -724,15 +922,103 @@ header {
     max-width: 180px;
   }
 
+  .exercise-timer-btn,
   .public-ex .exercise-timer-btn {
     width: 100%;
-    min-height: 46px;
+    text-align: center;
     padding: 12px;
+    min-height: 46px;
   }
 
   .library {
-    grid-template-columns: repeat(
-      auto-fill, minmax(160px, 1fr)
-    );
+    grid-template-columns:
+      repeat(auto-fill, minmax(160px, 1fr));
+  }
+
+  #studentTimer {
+    position: sticky;
+    bottom: 6px;
+    margin-bottom: 6px;
+  }
+
+  .rest-timer {
+    padding: 11px 12px;
+    border-radius: 14px;
+  }
+
+  .timer-header {
+    gap: 6px;
+  }
+
+  .timer-header h3 {
+    font-size: 15px;
+  }
+
+  .timer-header small {
+    display: none;
+  }
+
+  .timer-display {
+    font-size: 36px;
+    letter-spacing: 2px;
+    margin: 8px 0 10px;
+  }
+
+  .timer-presets {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+    margin-bottom: 6px;
+  }
+
+  .timer-preset {
+    padding: 7px 4px;
+    font-size: 12px;
+  }
+
+  .timer-controls {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+  }
+
+  .timer-controls button {
+    width: 100%;
+    min-height: 36px;
+    padding: 6px 4px;
+    font-size: 12px;
+  }
+
+  .timer-status {
+    margin-top: 6px;
+    font-size: 11px;
   }
 }
+
+/* CELULARES PEQUEÑOS */
+
+@media (max-width: 420px) {
+
+  .card,
+  .box {
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .public-day-tab {
+    padding: 10px 12px;
+  }
+}
+
+/* ACCESIBILIDAD */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* FIN - ACTIVO PLANIFICACIONES 2.0 */
