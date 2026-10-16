@@ -1,57 +1,76 @@
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
 
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1"
   >
 
+  <meta name="theme-color" content="#111827">
+
   <meta
-    name="theme-color"
-    content="#111827"
+    name="description"
+    content="ACTIVO Funcional Training -
+    Planificaciones de entrenamiento."
   >
 
   <title>ACTIVO | Planificaciones</title>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- CONEXIÓN CON SUPABASE -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+  ></script>
 
+  <!-- ESTILOS ACTIVO -->
   <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
 
-  <!-- ======================================
-       ENCABEZADO - ACTIVO 3.0
-  ======================================= -->
+  <!-- ===================================
+       ENCABEZADO ACTIVO 3.0
+  ==================================== -->
 
   <header>
+
     <div class="head">
 
-    
-<div class="brand">
-  <img
-    src="Logo deportivo ACTIVO con corredor estilizado.png"
-    alt="ACTIVO Funcional Training"
-    class="logo-activo"
-  >
-</div>
+      <div class="brand">
 
+        <!-- NUEVO LOGO OFICIAL ACTIVO -->
 
-      <button id="adminTop" type="button">
+        <img
+          src="Logo deportivo ACTIVO con corredor estilizado.png"
+          alt="ACTIVO Funcional Training -
+          Entrenamiento Físico Integral"
+          class="logo-activo"
+        >
+
+      </div>
+
+      <!-- ACCESO A PROFESORES -->
+
+      <button
+        id="adminTop"
+        type="button"
+      >
         Panel del profesor
       </button>
 
     </div>
+
   </header>
 
   <main>
 
-    <!-- ======================================
-         VISTA PÚBLICA - ALUMNOS
-    ======================================= -->
+    <!-- ===================================
+         SECCIÓN PÚBLICA DE ALUMNOS
+    ==================================== -->
 
     <section id="public">
 
@@ -64,14 +83,14 @@
           type="search"
           placeholder="Nombre o apellido"
           autocomplete="off"
-          aria-label="Buscar alumno"
+          aria-label="Buscar planificación"
         >
 
         <div id="results"></div>
 
       </div>
 
-      <!-- PLANIFICACIÓN DEL ALUMNO -->
+      <!-- PLANIFICACIÓN PERSONAL -->
 
       <div
         id="publicPlan"
@@ -91,7 +110,9 @@
 
           <div>
 
-            <h3>⏱ Cronómetro de descanso</h3>
+            <h3>
+              ⏱ Cronómetro de descanso
+            </h3>
 
             <small>
               Controlá tu descanso entre series
@@ -101,11 +122,12 @@
 
         </div>
 
+        <!-- VISUALIZACIÓN DEL TIEMPO -->
+
         <div
           id="timerDisplay"
           class="timer-display"
           role="timer"
-          aria-live="off"
         >
           01:30
         </div>
@@ -153,23 +175,23 @@
         <div class="timer-controls">
 
           <button
-            type="button"
             id="timerStart"
+            type="button"
             class="timer-start"
           >
             ▶ Iniciar
           </button>
 
           <button
-            type="button"
             id="timerPause"
+            type="button"
           >
             ⏸ Pausar
           </button>
 
           <button
-            type="button"
             id="timerReset"
+            type="button"
           >
             ↻ Reiniciar
           </button>
@@ -186,13 +208,242 @@
 
       </div>
 
-      <!-- FIN DEL CRONÓMETRO -->
+      <!-- FIN CRONÓMETRO -->
 
     </section>
 
-  <!-- ======================================
+    <!-- FIN VISTA PÚBLICA -->
+
+    <!-- ===================================
+         PANEL PROFESIONAL ACTIVO 3.0
+    ==================================== -->
+
+    <section
+      id="admin"
+      class="hidden"
+    >
+
+      <!-- ENCABEZADO DEL PROFESOR -->
+
+      <div class="card bar">
+
+        <div>
+
+          <h2>Panel del profesor</h2>
+
+          <small id="email"></small>
+
+        </div>
+
+        <div>
+
+          <button
+            id="libraryBtn"
+            type="button"
+          >
+            📚 Biblioteca
+          </button>
+
+          <button
+            id="logout"
+            type="button"
+            class="danger"
+          >
+            Cerrar sesión
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- MENSAJES DEL SISTEMA -->
+
+      <div
+        id="msg"
+        aria-live="polite"
+      ></div>
+
+      <!-- DISTRIBUCIÓN DEL PANEL -->
+
+      <div class="grid">
+
+        <!-- ================================
+             GESTIÓN DE ALUMNOS
+        ================================= -->
+
+        <div class="card">
+
+          <h3>👥 Clientes</h3>
+
+          <!-- NOMBRE DEL ALUMNO -->
+
+          <label for="name">
+            Nombre y apellido
+          </label>
+
+          <input
+            id="name"
+            type="text"
+            placeholder="Nombre del alumno"
+            autocomplete="off"
+          >
+
+          <!-- OBJETIVO -->
+
+          <label for="goal">
+            Objetivo
+          </label>
+
+          <input
+            id="goal"
+            type="text"
+            placeholder="Objetivo del entrenamiento"
+          >
+
+          <!-- OBSERVACIONES -->
+
+          <label for="notes">
+            Observaciones privadas
+          </label>
+
+          <textarea
+            id="notes"
+            rows="3"
+            placeholder="Observaciones del profesor"
+          ></textarea>
+
+          <!-- ESTADO DEL ALUMNO -->
+
+          <label for="active">
+
+            <input
+              id="active"
+              type="checkbox"
+              checked
+            >
+
+            Activo y visible
+
+          </label>
+
+          <!-- BOTONES DE ALUMNOS -->
+
+          <div class="row">
+
+            <button
+              id="saveClient"
+              type="button"
+            >
+              Guardar cliente
+            </button>
+
+            <button
+              id="cancel"
+              type="button"
+              class="hidden"
+            >
+              Cancelar
+            </button>
+
+          </div>
+
+          <!-- IDENTIFICADOR DE EDICIÓN -->
+
+          <input
+            id="editId"
+            type="hidden"
+          >
+
+          <!-- LISTA DINÁMICA DE ALUMNOS -->
+
+          <div id="clients"></div>
+
+        </div>
+
+        <!-- ================================
+             PLANIFICADOR DE ENTRENAMIENTO
+        ================================= -->
+
+        <div class="card">
+
+          <!-- SIN ALUMNO SELECCIONADO -->
+
+          <div id="empty">
+            Seleccioná un cliente para comenzar.
+          </div>
+
+          <!-- PLANIFICADOR -->
+
+          <div
+            id="planner"
+            class="hidden"
+          >
+
+            <!-- DATOS DEL ALUMNO -->
+
+            <h2 id="clientTitle"></h2>
+
+            <small id="clientGoal"></small>
+
+            <!-- PESTAÑAS POR DÍA -->
+
+            <div
+              id="days"
+              class="days"
+            ></div>
+
+            <!-- LISTADO DE EJERCICIOS -->
+
+            <div id="exerciseList"></div>
+
+            <!-- ACCIONES DEL PLANIFICADOR -->
+
+            <div class="row">
+
+              <button
+                id="manual"
+                type="button"
+              >
+                + Agregar manual
+              </button>
+
+              <button
+                id="fromLib"
+                type="button"
+              >
+                Elegir de biblioteca
+              </button>
+
+              <button
+                id="saveDay"
+                type="button"
+                class="success"
+              >
+                Guardar este día
+              </button>
+
+              <button
+                id="preview"
+                type="button"
+              >
+                Ver como cliente
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ===================================
        INICIO DE SESIÓN DE PROFESORES
-  ======================================= -->
+  ==================================== -->
 
   <div
     id="loginModal"
@@ -202,6 +453,8 @@
     <div class="box">
 
       <h2>Panel del profesor</h2>
+
+      <!-- CORREO ELECTRÓNICO -->
 
       <label for="loginEmail">
         Correo electrónico
@@ -214,6 +467,8 @@
         autocomplete="username"
       >
 
+      <!-- CONTRASEÑA -->
+
       <label for="loginPass">
         Contraseña
       </label>
@@ -225,11 +480,15 @@
         autocomplete="current-password"
       >
 
+      <!-- MENSAJE DE ERROR -->
+
       <div
         id="loginErr"
         class="error hidden"
         role="alert"
       ></div>
+
+      <!-- BOTONES DE INGRESO -->
 
       <div class="row">
 
@@ -253,9 +512,9 @@
 
   </div>
 
-  <!-- ======================================
+  <!-- ===================================
        BIBLIOTECA DE EJERCICIOS
-  ======================================= -->
+  ==================================== -->
 
   <div
     id="libraryModal"
@@ -264,9 +523,13 @@
 
     <div class="box wide">
 
+      <!-- ENCABEZADO BIBLIOTECA -->
+
       <div class="bar">
 
-        <h2>Biblioteca de ejercicios</h2>
+        <h2>
+          Biblioteca de ejercicios
+        </h2>
 
         <button
           id="closeLib"
@@ -277,7 +540,7 @@
 
       </div>
 
-      <!-- BUSCADOR DE EJERCICIOS -->
+      <!-- FILTROS DE EJERCICIOS -->
 
       <div class="row">
 
@@ -302,7 +565,7 @@
 
       </div>
 
-      <!-- RESULTADOS DE LA BIBLIOTECA -->
+      <!-- LISTA DINÁMICA DE EJERCICIOS -->
 
       <div
         id="library"
@@ -313,143 +576,12 @@
 
   </div>
 
-  <!-- ======================================
-       CONEXIÓN CON LA APLICACIÓN
-  ======================================= -->
+  <!-- ===================================
+       CONEXIÓN CON APP.JS
+  ==================================== -->
 
   <script src="app.js"></script>
 
 </body>
-</html>
 
-  <!-- ======================================
-       INICIO DE SESIÓN DE PROFESORES
-  ======================================= -->
-
-  <div
-    id="loginModal"
-    class="modal hidden"
-  >
-
-    <div class="box">
-
-      <h2>Panel del profesor</h2>
-
-      <label for="loginEmail">
-        Correo electrónico
-      </label>
-
-      <input
-        id="loginEmail"
-        type="email"
-        placeholder="Correo electrónico"
-        autocomplete="username"
-      >
-
-      <label for="loginPass">
-        Contraseña
-      </label>
-
-      <input
-        id="loginPass"
-        type="password"
-        placeholder="Ingresá tu contraseña"
-        autocomplete="current-password"
-      >
-
-      <div
-        id="loginErr"
-        class="error hidden"
-        role="alert"
-      ></div>
-
-      <div class="row">
-
-        <button
-          id="login"
-          type="button"
-        >
-          Ingresar
-        </button>
-
-        <button
-          id="closeLogin"
-          type="button"
-        >
-          Cancelar
-        </button>
-
-      </div>
-
-    </div>
-
-  </div>
-
-  <!-- ======================================
-       BIBLIOTECA DE EJERCICIOS
-  ======================================= -->
-
-  <div
-    id="libraryModal"
-    class="modal hidden"
-  >
-
-    <div class="box wide">
-
-      <div class="bar">
-
-        <h2>Biblioteca de ejercicios</h2>
-
-        <button
-          id="closeLib"
-          type="button"
-        >
-          Cerrar
-        </button>
-
-      </div>
-
-      <!-- BUSCADOR DE EJERCICIOS -->
-
-      <div class="row">
-
-        <input
-          id="libSearch"
-          type="search"
-          placeholder="Buscar ejercicio"
-          autocomplete="off"
-          aria-label="Buscar ejercicio"
-        >
-
-        <select
-          id="libCat"
-          aria-label="Categoría de ejercicio"
-        >
-
-          <option value="">
-            Todas las categorías
-          </option>
-
-        </select>
-
-      </div>
-
-      <!-- RESULTADOS DE LA BIBLIOTECA -->
-
-      <div
-        id="library"
-        class="library"
-      ></div>
-
-    </div>
-
-  </div>
-
-  <!-- ======================================
-       CONEXIÓN CON LA APLICACIÓN
-  ======================================= -->
-
-  <script src="app.js"></script>
-
-</body>
 </html>
