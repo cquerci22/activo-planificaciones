@@ -1022,3 +1022,55 @@ label input[type="checkbox"] {
 }
 
 /* FIN - ACTIVO PLANIFICACIONES 2.0 */
+
+/* GALERÍA ACTIVO · marca oficial en cada ejercicio */
+.activo-exercise-media {
+  width: 100%;
+  max-width: 260px;
+  height: 178px;
+  margin: 0 auto 12px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid #334155;
+  background: #111827;
+}
+.activo-exercise-media .exercise-thumb {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  object-fit: contain;
+  border-radius: 0;
+  background: #111827;
+}
+.activo-media-logo {
+  position: absolute;
+  right: 7px;
+  bottom: 7px;
+  width: 48px;
+  height: 34px;
+  object-fit: contain;
+  padding: 3px;
+  border-radius: 7px;
+  background: rgba(15,23,42,.8);
+  pointer-events: none;
+}
+.activo-exercise-cover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
+  height: 100%;
+  padding: 16px 20px 34px;
+  text-align: center;
+  color: #f8fafc;
+  background: radial-gradient(circle at top left, #1e40af 0%, #111827 65%);
+}
+.activo-cover-icon {color: #fb3b49; font-size: 24px; line-height: 1;}
+.activo-cover-category {font-size: 10px; color: #93c5fd; text-transform: uppercase; letter-spacing: .11em; font-weight: 700;}
+.activo-exercise-cover strong {font-size: 13px; line-height: 1.25; overflow-wrap: anywhere;}
+.activo-exercise-cover small {font-size: 10px; color: #94a3b8;}
