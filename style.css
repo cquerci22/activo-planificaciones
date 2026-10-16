@@ -1191,3 +1191,29 @@ button,input,select,textarea {font-family:inherit;}
  .activo-search-panel h2 {font-size:17px;}
  .activo-hero-footer {font-size:9px;gap:7px;}
 }
+
+/* ACTIVO · cronómetro compacto: conserva toda la funcionalidad */
+#studentTimer.rest-timer {
+  padding:10px 12px!important;
+  margin:10px 0!important;
+  border-radius:13px!important;
+  box-shadow:0 7px 16px #0005!important;
+}
+#studentTimer .timer-header h3 {font-size:14px!important;line-height:1.15;margin:0!important;}
+#studentTimer .timer-header small {display:none!important;}
+#studentTimer .timer-display {
+  font-size:clamp(27px,5vw,35px)!important;
+  letter-spacing:1px!important;
+  margin:5px 0 8px!important;
+}
+#studentTimer .timer-presets {gap:5px!important;margin-bottom:6px!important;}
+#studentTimer .timer-presets button {min-height:30px!important;padding:5px 3px!important;font-size:12px!important;}
+#studentTimer .timer-controls {gap:5px!important;}
+#studentTimer .timer-controls button {min-height:34px!important;padding:6px 4px!important;font-size:12px!important;}
+#studentTimer .timer-status {font-size:10px!important;margin-top:4px!important;}
+@media(max-width:700px) {
+ #studentTimer.rest-timer {bottom:4px!important;padding:8px 10px!important;}
+ #studentTimer .timer-header h3 {font-size:13px!important;}
+ #studentTimer .timer-display {font-size:29px!important;margin:3px 0 6px!important;}
+ #studentTimer .timer-presets button {min-height:28px!important;}
+}
