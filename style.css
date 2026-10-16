@@ -571,3 +571,168 @@ header {
     padding: 15px;
   }
 }
+
+/* =======================================
+   ACTIVO 2.0 - TARJETAS PREMIUM
+   EJERCICIOS Y BIBLIOTECA
+======================================= */
+
+/* TARJETAS DE EJERCICIOS */
+
+.public-ex,
+#exerciseList .exercise {
+  background: #1E293B;
+  border: 1px solid #40516A;
+  border-left: 4px solid #E53945;
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 14px;
+  color: #F8FAFC;
+  box-shadow: 0 6px 20px #00000024;
+  transition: border-color .2s,
+              box-shadow .2s;
+}
+
+.public-ex:hover,
+#exerciseList .exercise:hover {
+  border-color: #6681A5;
+  box-shadow: 0 9px 26px #00000030;
+}
+
+/* IMÁGENES DE LOS EJERCICIOS */
+
+.public-ex-image {
+  width: 100%;
+  max-width: 340px;
+  max-height: 250px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 12px auto;
+  border-radius: 14px;
+  background: #111827;
+  border: 1px solid #334155;
+  padding: 6px;
+}
+
+.exercise-thumb {
+  width: 100%;
+  max-width: 200px;
+  max-height: 160px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 12px;
+  border-radius: 12px;
+  background: #111827;
+}
+
+/* TEXTOS Y DESCRIPCIONES */
+
+.public-ex strong,
+.exercise strong,
+.lib strong {
+  color: #FFFFFF;
+  font-weight: 800;
+}
+
+.public-ex small,
+.exercise small,
+.lib small {
+  color: #CBD5E1;
+  line-height: 1.6;
+}
+
+.public-ex p,
+.exercise p {
+  color: #E2E8F0;
+  line-height: 1.6;
+}
+
+/* BOTÓN DE DESCANSO */
+
+.public-ex .exercise-timer-btn {
+  background: linear-gradient(
+    135deg, #2563EB, #1D4ED8
+  );
+  color: #FFFFFF;
+  border: 1px solid #60A5FA55;
+  border-radius: 12px;
+  padding: 12px 18px;
+  min-height: 44px;
+  font-weight: 800;
+}
+
+.public-ex .exercise-timer-btn:hover {
+  background: #1D4ED8;
+}
+
+/* BIBLIOTECA */
+
+.library .lib {
+  background: #25344A;
+  border: 1px solid #40516A;
+  border-radius: 16px;
+  padding: 15px;
+  margin: 0;
+  transition: border-color .2s;
+}
+
+.library .lib:hover {
+  border-color: #60A5FA;
+}
+
+.library .lib button {
+  background: #2563EB;
+  color: #FFFFFF;
+  border-radius: 10px;
+  min-height: 40px;
+}
+
+/* PLANIFICACIÓN */
+
+#publicPlan {
+  background: #1E293B;
+  border-color: #40516A;
+}
+
+.plan-day h3,
+.public-day-panel h3 {
+  background: #223F70;
+  color: #FFFFFF;
+  border-left: 4px solid #E53945;
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+/* CELULARES */
+
+@media (max-width: 760px) {
+
+  .public-ex,
+  #exerciseList .exercise {
+    padding: 13px;
+    border-radius: 14px;
+  }
+
+  .public-ex-image {
+    max-width: 100%;
+    max-height: 220px;
+  }
+
+  .exercise-thumb {
+    max-width: 180px;
+  }
+
+  .public-ex .exercise-timer-btn {
+    width: 100%;
+    min-height: 46px;
+    padding: 12px;
+  }
+
+  .library {
+    grid-template-columns: repeat(
+      auto-fill, minmax(160px, 1fr)
+    );
+  }
+}
