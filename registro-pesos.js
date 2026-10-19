@@ -6,6 +6,7 @@
   const save = data => { try { localStorage.setItem(KEY, JSON.stringify(data)); return true; } catch { return false; } };
   const esc = value => String(value || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   let clientId = '';
+  let clientName = '';
   function exportRecords() {
     const records = [];
     const data = read();
@@ -15,9 +16,9 @@
       for (const entry of entries) records.push({day_of_week:day,exercise_name:exercise,set_number:entry.set,weight_kg:entry.kg,reps:entry.reps,performed_at:entry.at});
     }
     if (!records.length) { alert('Todavía no hay pesos registrados.'); return; }
-    const file = new Blob([JSON.stringify({format:'activo-pesos-v1',student_name:clientId,records},null,2)],{type:'application/json'});
+    const file = new Blob([JSON.stringify({format:'activo-pesos-v1',student_name:clientName,client_id:clientId,records},null,2)],{type:'application/json'});
     const url = URL.createObjectURL(file);
-    const a = document.createElement('a'); a.href=url; a.download='activo-pesos-'+clientId.replace(/[^a-z0-9]/gi,'-')+'.json'; a.click();
+    const a = document.createElement('a'); a.href=url; a.download='activo-pesos-'+clientName.replace(/[^a-z0-9]/gi,'-')+'.json'; a.click();
     setTimeout(()=>URL.revokeObjectURL(url),1000);
   }
   const style = document.createElement('style');
@@ -28,7 +29,8 @@
     if (!root || root.classList.contains('hidden')) return;
     const name = root.querySelector('.public-plan-header h2')?.textContent?.trim();
     if (!name) return;
-    clientId = name;
+    clientName = name;
+    clientId = (window.publicClients || []).find(x => x.name === name)?.id || name;
     if (!root.querySelector('.aft-export')) {
       const btn=document.createElement('button'); btn.type='button'; btn.className='aft-export';
       btn.textContent='📤 Exportar mis pesos para el profesor'; btn.addEventListener('click',exportRecords);
