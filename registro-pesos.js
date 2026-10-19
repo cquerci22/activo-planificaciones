@@ -6,6 +6,20 @@
   const save = data => { try { localStorage.setItem(KEY, JSON.stringify(data)); return true; } catch { return false; } };
   const esc = value => String(value || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   let clientId = '';
+  function exportRecords() {
+    const records = [];
+    const data = read();
+    for (const [key, entries] of Object.entries(data)) {
+      const [student,day,exercise] = key.split('|');
+      if (student !== clientId || !Array.isArray(entries)) continue;
+      for (const entry of entries) records.push({day_of_week:day,exercise_name:exercise,set_number:entry.set,weight_kg:entry.kg,reps:entry.reps,performed_at:entry.at});
+    }
+    if (!records.length) { alert('Todavía no hay pesos registrados.'); return; }
+    const file = new Blob([JSON.stringify({format:'activo-pesos-v1',student_name:clientId,records},null,2)],{type:'application/json'});
+    const url = URL.createObjectURL(file);
+    const a = document.createElement('a'); a.href=url; a.download='activo-pesos-'+clientId.replace(/[^a-z0-9]/gi,'-')+'.json'; a.click();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
   const style = document.createElement('style');
   style.textContent = '.aft-weight{margin:12px 0;padding:12px;border:1px solid #52616d;border-radius:12px;background:rgba(80,95,120,.09)}.aft-weight-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:7px 0}.aft-weight input{width:85px;max-width:30%;padding:8px;border-radius:7px}.aft-weight button{padding:8px 12px}.aft-weight small{display:block;opacity:.8}.aft-weight-status{font-size:.85em;margin-top:6px}';
   document.head.appendChild(style);
@@ -15,6 +29,11 @@
     const name = root.querySelector('.public-plan-header h2')?.textContent?.trim();
     if (!name) return;
     clientId = name;
+    if (!root.querySelector('.aft-export')) {
+      const btn=document.createElement('button'); btn.type='button'; btn.className='aft-export';
+      btn.textContent='📤 Exportar mis pesos para el profesor'; btn.addEventListener('click',exportRecords);
+      root.querySelector('.public-plan-header')?.appendChild(btn);
+    }
     root.querySelectorAll('.public-ex').forEach((ex, index) => {
       if (ex.querySelector('.aft-weight')) return;
       const exercise = ex.querySelector('b')?.textContent?.trim();
