@@ -22,7 +22,7 @@
    if(file.size>1000000){msg.textContent='Archivo demasiado grande.';return;}
    try{
     const payload=JSON.parse(await file.text());
-    if(payload.format!=='activo-pesos-v1'||!Array.isArray(payload.records)||payload.records.length>500){throw Error('Archivo inválido o demasiado grande.');}
+    if(payload.format!=='activo-pesos-v1'||payload.client_id!==id||!Array.isArray(payload.records)||payload.records.length>500){throw Error('Archivo inválido o demasiado grande.');}
     const rows=payload.records.map(x=>{
       const set=Number(x.set_number),kg=Number(x.weight_kg),reps=x.reps===''||x.reps==null?null:Number(x.reps),date=new Date(x.performed_at);
       if(!Number.isInteger(set)||set<1||set>30||!Number.isFinite(kg)||kg<0||kg>1500||(reps!==null&&(!Number.isInteger(reps)||reps<0||reps>1000))||isNaN(date.getTime())||String(x.exercise_name).length>200)throw Error('Hay registros con valores incorrectos.');
@@ -30,7 +30,7 @@
     });
     if(!rows.length)throw Error('El archivo no contiene registros.');
     if(!confirm('¿Importar '+rows.length+' registros de '+payload.student_name+' al alumno seleccionado?'))return;
-    const {error}=await sb.from('exercise_weight_logs').insert(rows);
+    const {error}=await sb.from('exercise_weight_logs').upsert(rows,{onConflict:'client_id,exercise_name,performed_at,set_number',ignoreDuplicates:true});
     if(error)throw Error(error.message);
     msg.textContent='✓ '+rows.length+' registros guardados en Supabase.';
    }catch(e){msg.textContent='Error: '+e.message;}
