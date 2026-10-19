@@ -22,7 +22,7 @@
     setTimeout(()=>URL.revokeObjectURL(url),1000);
   }
   const style = document.createElement('style');
-  style.textContent = '.aft-weight{margin:12px 0;padding:12px;border:1px solid #52616d;border-radius:12px;background:rgba(80,95,120,.09)}.aft-weight-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:7px 0}.aft-weight input{width:85px;max-width:30%;padding:8px;border-radius:7px}.aft-weight button{padding:8px 12px}.aft-weight small{display:block;opacity:.8}.aft-weight-status{font-size:.85em;margin-top:6px}';
+  style.textContent = '.aft-weight{margin:8px 0;border:1px solid #52616d;border-radius:12px;background:rgba(80,95,120,.09)}.aft-weight>summary{cursor:pointer;list-style:none;padding:10px 12px;font-weight:700;display:flex;align-items:center;justify-content:space-between;gap:8px}.aft-weight>summary::-webkit-details-marker{display:none}.aft-weight>summary::after{content:"＋";font-size:18px}.aft-weight[open]>summary::after{content:"−"}.aft-weight-content{padding:0 12px 12px}.aft-weight-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:7px 0}.aft-weight input{width:85px;max-width:30%;padding:8px;border-radius:7px}.aft-weight button{padding:8px 12px}.aft-weight small{display:block;opacity:.8}.aft-weight-status{font-size:.85em;margin-top:6px}';
   document.head.appendChild(style);
   function attach() {
     const root = document.getElementById('publicPlan');
@@ -44,9 +44,9 @@
       const key = [clientId,day,exercise,index].join('|');
       const logs = read()[key] || [];
       const last = logs.at(-1);
-      const panel = document.createElement('div');
+      const panel = document.createElement('details');
       panel.className = 'aft-weight';
-      panel.innerHTML = '<strong>🏋️ Mi registro de cargas</strong><small>Guardado solo en este dispositivo, sin sincronización.</small><div class="aft-weight-row"><label>Serie <input class="aft-set" type="number" min="1" max="30" value="1"></label><label>Kg <input class="aft-kg" type="number" min="0" max="1500" step="0.5" placeholder="Kg"></label><label>Reps <input class="aft-reps" type="number" min="0" max="1000" placeholder="Reps"></label></div><button type="button" class="aft-save">Guardar serie</button><div class="aft-weight-status" aria-live="polite"></div><details><summary>Ver historial</summary><div class="aft-history"></div></details>';
+      panel.innerHTML = '<summary>🏋️ Registrar series</summary><div class="aft-weight-content"><small>Guardado solo en este dispositivo, sin sincronización.</small><div class="aft-weight-row"><label>Serie <input class="aft-set" type="number" min="1" max="30" value="1"></label><label>Kg <input class="aft-kg" type="number" min="0" max="1500" step="0.5" placeholder="Kg"></label><label>Reps <input class="aft-reps" type="number" min="0" max="1000" placeholder="Reps"></label></div><button type="button" class="aft-save">Guardar serie</button><div class="aft-weight-status" aria-live="polite"></div><details><summary>Ver historial</summary><div class="aft-history"></div></details></div>';
       const status = panel.querySelector('.aft-weight-status');
       const history = panel.querySelector('.aft-history');
       const render = () => {
