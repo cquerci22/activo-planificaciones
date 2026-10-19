@@ -723,6 +723,7 @@ async function loadSelectedDay() {
   } = await sb
     .from('plan_exercises')
     .select('*')
+    .neq('notes', 'DUPLICADO - NO REALIZAR')
     .eq(
       'plan_id',
       plan.id
