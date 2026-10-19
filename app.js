@@ -1594,6 +1594,7 @@ async function showPublicPlan(client) {
     } = await sb
       .from('plan_exercises')
       .select('*')
+      .neq('notes', 'DUPLICADO - NO REALIZAR')
       .in(
         'plan_id',
         planIds
