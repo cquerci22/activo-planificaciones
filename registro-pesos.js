@@ -72,10 +72,10 @@
       render();
     });
   }
-  const observer = new MutationObserver(() => { if (!document.querySelector('.public-ex:not(:has(.aft-weight))')) return; attach(); });
+  const observer = new MutationObserver(() => { attach(); });
   window.addEventListener('DOMContentLoaded', () => {
     const root = document.getElementById('publicPlan');
-    if (root) observer.observe(root,{childList:true,subtree:true});
+    if (root) observer.observe(root,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
     attach();
   });
 })();
