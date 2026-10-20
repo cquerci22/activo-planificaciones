@@ -39,7 +39,27 @@
    const id=$('aft-import-client').value;if(!id)return;
    const {data,error}=await sb.from('exercise_weight_logs').select('exercise_name,weight_kg,reps,set_number,performed_at').eq('client_id',id).order('performed_at',{ascending:false}).limit(100);
    const target=$('aft-teacher-history');
-   target.innerHTML=error?'<p>'+escape(error.message)+'</p>':(data||[]).length?(data||[]).map(x=>'<div>'+escape(new Date(x.performed_at).toLocaleDateString('es-AR'))+' · '+escape(x.exercise_name)+' · serie '+escape(x.set_number)+' · '+escape(x.weight_kg)+' kg'+(x.reps!==null?' · '+escape(x.reps)+' reps':'')+'</div>').join(''):'<p>Sin registros.</p>';
+   if(error){target.textContent=error.message;return;}
+   const records=data||[];
+   if(!records.length){target.innerHTML='<p>Este alumno todavía no tiene registros importados.</p>';return;}
+   const names=[...new Set(records.map(x=>x.exercise_name))].sort((a,b)=>a.localeCompare(b,'es'));
+   target.innerHTML='<h4>📈 Evolución de fuerza</h4><label>Ejercicio <select id="aft-chart-exercise"></select></label><div id="aft-chart-container" style="margin:14px 0"></div><div id="aft-chart-list"></div>';
+   const selector=target.querySelector('#aft-chart-exercise');
+   names.forEach(name=>{const option=document.createElement('option');option.value=name;option.textContent=name;selector.appendChild(option);});
+   const draw=()=>{
+    const selected=records.filter(x=>x.exercise_name===selector.value).sort((a,b)=>new Date(a.performed_at)-new Date(b.performed_at));
+    const grouped=new Map();
+    selected.forEach(x=>{const day=String(x.performed_at).slice(0,10);grouped.set(day,Math.max(Number(x.weight_kg),grouped.get(day)||0));});
+    const points=[...grouped].map(([date,kg])=>({date,kg}));
+    const chart=target.querySelector('#aft-chart-container'),list=target.querySelector('#aft-chart-list');
+    const min=Math.min(...points.map(p=>p.kg)),max=Math.max(...points.map(p=>p.kg));
+    const low=Math.max(0,min-(max-min||10)*.2),high=max+(max-min||10)*.2;
+    const coords=points.map((p,i)=>({x:55+(points.length===1?310:i*620/(points.length-1)),y:235-(p.kg-low)/(high-low)*185,...p}));
+    const path=coords.map((p,i)=>(i?'L':'M')+p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' ');
+    chart.innerHTML='<svg viewBox="0 0 730 290" role="img" aria-label="Gráfico de evolución del peso máximo registrado por sesión" style="width:100%;max-width:760px;background:rgba(128,128,128,.07);border-radius:12px"><line x1="55" y1="235" x2="680" y2="235" stroke="currentColor" opacity=".3"/><line x1="55" y1="50" x2="55" y2="235" stroke="currentColor" opacity=".3"/><text x="10" y="45" fill="currentColor" font-size="14">'+high.toFixed(1)+' kg</text><text x="10" y="250" fill="currentColor" font-size="14">'+low.toFixed(1)+'</text><path d="'+path+'" fill="none" stroke="#e53935" stroke-width="4" stroke-linejoin="round"/>'+coords.map(p=>'<circle cx="'+p.x+'" cy="'+p.y+'" r="6" fill="#e53935"><title>'+escape(p.date)+' · '+p.kg+' kg</title></circle>').join('')+'<text x="55" y="275" fill="currentColor" font-size="13">'+escape(points[0].date)+'</text><text x="680" y="275" text-anchor="end" fill="currentColor" font-size="13">'+escape(points[points.length-1].date)+'</text></svg><p style="font-size:.85em;opacity:.8">Se muestra el mayor peso registrado en cada fecha (kg).</p>';
+    list.innerHTML='<strong>Historial ('+selected.length+' series registradas)</strong>'+selected.slice().reverse().map(x=>'<div style="padding:5px 0;border-bottom:1px solid rgba(128,128,128,.2)">'+escape(new Date(x.performed_at).toLocaleDateString('es-AR'))+' · '+escape(x.weight_kg)+' kg · serie '+escape(x.set_number)+(x.reps!==null?' · '+escape(x.reps)+' reps':'')+'</div>').join('');
+   };
+   selector.addEventListener('change',draw);draw();
   });
   if(!admin.classList.contains('hidden'))refresh();
  }
