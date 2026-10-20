@@ -1671,22 +1671,35 @@ function enhancePublicWorkout(client, plans, exercises) {
         input.value = weights[weightKey];
       }
       weightLabel.append(weightText, input);
-      input.addEventListener('change', () => {
-        const raw = input.value.trim();
+      const saveButton = document.createElement('button');
+      saveButton.type = 'button';
+      saveButton.className = 'workout-save-weight';
+      saveButton.textContent = '💾 Guardar peso';
+      const feedback = document.createElement('small');
+      feedback.className = 'workout-weight-feedback';
+      feedback.setAttribute('role', 'status');
+      const saveWeight = () => {
+        const raw = input.value.trim().replace(',', '.');
         const value = Number(raw);
         if (raw && (!Number.isFinite(value) || value < 0 || value > 9999)) {
-          alert('Ingresá un peso válido entre 0 y 9999 kg.');
+          feedback.textContent = 'Ingresá un peso válido entre 0 y 9999 kg.';
           return;
         }
-        if (raw === '') {
-          delete weights[weightKey];
-        } else {
-          weights[weightKey] = raw;
+        const updated = { ...weights };
+        if (raw === '') delete updated[weightKey];
+        else updated[weightKey] = String(value);
+        if (!writeWorkoutRecord(weightsKey, updated)) {
+          feedback.textContent = 'No se pudo guardar el peso en este navegador.';
+          return;
         }
-        if (!writeWorkoutRecord(weightsKey, weights)) {
-          alert('No se pudo guardar el peso en este navegador.');
-        }
-      });
+        Object.keys(weights).forEach(key => delete weights[key]);
+        Object.assign(weights, updated);
+        input.value = raw === '' ? '' : String(value);
+        feedback.textContent = raw === '' ? '✓ Peso eliminado' : '✓ Peso guardado: ' + value + ' kg';
+      };
+      saveButton.addEventListener('click', saveWeight);
+      input.addEventListener('input', () => { feedback.textContent = 'Sin guardar'; });
+      weightLabel.append(saveButton, feedback);
 
       tools.append(completeLabel, weightLabel);
       card.appendChild(tools);
@@ -1713,6 +1726,9 @@ function installWorkoutStyles() {
     '.workout-complete-label input{width:19px;height:19px;accent-color:#26a269}',
     '.workout-weight-label{display:flex;align-items:center;gap:8px;font-size:.85rem}',
     '.workout-weight-label input{width:100px;max-width:40vw;padding:9px;border:1px solid #aaa;border-radius:9px;background:var(--card,#fff);color:inherit}',
+    '.workout-save-weight{padding:9px 12px;border:0;border-radius:9px;background:#246b43;color:#fff;font-weight:700;cursor:pointer}',
+    '.workout-weight-feedback{font-size:.78rem;min-width:90px}',
+    '.workout-weight-label{flex-wrap:wrap}',
     '.public-ex.workout-done{outline:2px solid rgba(38,162,105,.35);outline-offset:-2px}',
     '@media(max-width:480px){.workout-exercise-tools{align-items:stretch}.workout-weight-label{justify-content:space-between;width:100%}}'
   ].join('');
