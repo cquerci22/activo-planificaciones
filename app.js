@@ -1147,6 +1147,91 @@ async function saveSelectedDay() {
   );
 }
 
+/* Duplicación segura: prepara un borrador; nunca escribe en Supabase automáticamente. */
+function duplicateSelectedPlan() {
+  if (!selectedClientId || !draftExercises.length) {
+    alert('Seleccioná una planificación con ejercicios para duplicar.');
+    return;
+  }
+  const sourceId = selectedClientId;
+  const sourceDay = selectedDay;
+  const source = draftExercises.map(ex => ({ ...ex }));
+  const existing = document.getElementById('activo-duplicate-dialog');
+  if (existing) existing.remove();
+  const dialog = document.createElement('div');
+  dialog.id = 'activo-duplicate-dialog';
+  dialog.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px';
+  const box = document.createElement('div');
+  box.style.cssText = 'background:#19232d;color:#fff;border-radius:16px;padding:22px;width:min(460px,100%);max-height:90vh;overflow:auto';
+  const title = document.createElement('h3');
+  title.textContent = 'Duplicar planificación';
+  const note = document.createElement('p');
+  note.textContent = 'Se copian todos los ejercicios, incluidos los básicos, con sus series y repeticiones. Podés editar los auxiliares antes de guardar.';
+  const studentLabel = document.createElement('label');
+  studentLabel.textContent = 'Alumno de destino';
+  const student = document.createElement('select');
+  student.style.cssText = 'display:block;width:100%;margin:8px 0 16px;padding:10px';
+  clients.forEach(person => {
+    const option = document.createElement('option');
+    option.value = person.id;
+    option.textContent = person.name;
+    option.selected = person.id === sourceId;
+    student.appendChild(option);
+  });
+  studentLabel.appendChild(student);
+  const dayLabel = document.createElement('label');
+  dayLabel.textContent = 'Día de destino';
+  const daySelect = document.createElement('select');
+  daySelect.style.cssText = 'display:block;width:100%;margin:8px 0 16px;padding:10px';
+  DAYS.forEach(day => {
+    const option = document.createElement('option');
+    option.value = day;
+    option.textContent = day;
+    option.selected = day === sourceDay;
+    daySelect.appendChild(option);
+  });
+  dayLabel.appendChild(daySelect);
+  const actions = document.createElement('div');
+  actions.style.cssText = 'display:flex;gap:10px;flex-wrap:wrap';
+  const cancel = document.createElement('button');
+  cancel.type = 'button';
+  cancel.textContent = 'Cancelar';
+  cancel.onclick = () => dialog.remove();
+  const copy = document.createElement('button');
+  copy.type = 'button';
+  copy.textContent = 'Crear copia editable';
+  copy.className = 'success';
+  copy.onclick = async () => {
+    const targetId = student.value;
+    const targetDay = daySelect.value;
+    if (!targetId || !DAYS.includes(targetDay)) return;
+    copy.disabled = true;
+    const { data: destination, error } = await sb.from('workout_plans')
+      .select('id').eq('client_id', targetId).eq('day_of_week', targetDay).maybeSingle();
+    if (error) {
+      alert('No se pudo verificar el destino: ' + error.message);
+      copy.disabled = false;
+      return;
+    }
+    if (destination && !confirm('El destino ya tiene una rutina. La copia quedará solo en el editor hasta que presiones Guardar este día. Al guardar, reemplazarás los ejercicios de ese día. ¿Continuar?')) {
+      copy.disabled = false;
+      return;
+    }
+    selectedClientId = targetId;
+    selectedDay = targetDay;
+    currentPlanId = destination ? destination.id : null;
+    draftExercises = source.map(ex => ({ ...ex }));
+    dialog.remove();
+    renderPlanner();
+    showMessage('Copia lista para editar. Los ejercicios básicos se conservaron. Revisá los auxiliares y presioná Guardar este día cuando estés conforme.');
+  };
+  actions.append(cancel, copy);
+  box.append(title, note, studentLabel, dayLabel, actions);
+  dialog.appendChild(box);
+  dialog.addEventListener('click', event => { if (event.target === dialog) dialog.remove(); });
+  document.body.appendChild(dialog);
+}
+
 function openLibrary() {
   if (!selectedClientId) {
     alert(
@@ -3161,6 +3246,8 @@ function setupEvents() {
       openLibrary
     );
 
+
+  $('duplicateDay').addEventListener('click', duplicateSelectedPlan);
 
   $('saveDay')
     .addEventListener(
