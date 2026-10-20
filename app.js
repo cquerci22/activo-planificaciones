@@ -90,7 +90,7 @@ const EXERCISE_LIBRARY = [
   ['Pájaros con mancuernas', 'Tren superior', '3', '12-15', '45 s', 'img/ejercicios/pajaros-con-mancuernas.png'],
   ['Pájaros en máquina', 'Tren superior', '3', '12-15', '45 s', 'img/ejercicios/pajaros-en-maquina.png'],
   ['Remo al mentón con barra', 'Tren superior', '3', '10-12', '60 s', 'img/ejercicios/remo-al-menton-con-barra.png'],
-  ['Rotación externa con banda', 'Tren superior', '3', '12-15 por lado', '45 s', 'img/ejercicios/rotacion-externa-con-banda.svg'],
+  ['Rotación externa con banda', 'Tren superior', '3', '12-15 por lado', '45 s', 'img/ejercicios/tanda09-rotacion-externa-con-banda.png'],
 
   ['Curl de bíceps', 'Tren superior', '3', '10-12', '45 s', 'img/ejercicios/curl-de-biceps.png'],
   ['Curl con barra recta', 'Tren superior', '3', '8-12', '60 s', 'img/ejercicios/curl-con-barra-recta.png'],
@@ -114,9 +114,9 @@ const EXERCISE_LIBRARY = [
   ['Patada de tríceps con mancuerna', 'Tren superior', '3', '12-15 por brazo', '45 s', 'img/ejercicios/Patada de tríceps con mancuerna.png'],
   ['Press de banca agarre cerrado', 'Tren superior', '4', '8-10', '90 s', 'img/ejercicios/Press de banca agarre cerrado.png'],
 
-  ['Plancha frontal', 'Core', '3', '30-45 s', '45 s', 'img/ejercicios/plancha-frontal.svg'],
-  ['Plancha lateral', 'Core', '3', '25-40 s', '45 s', 'img/ejercicios/plancha-lateral.svg'],
-  ['Plancha con apoyo de antebrazos', 'Core', '3', '30-60 s', '45 s', 'img/ejercicios/plancha-con-apoyo-de-antebrazos.svg'],
+  ['Plancha frontal', 'Core', '3', '30-45 s', '45 s', 'img/ejercicios/tanda09-plancha-frontal.png'],
+  ['Plancha lateral', 'Core', '3', '25-40 s', '45 s', 'img/ejercicios/tanda09-plancha-lateral.png'],
+  ['Plancha con apoyo de antebrazos', 'Core', '3', '30-60 s', '45 s', 'img/ejercicios/tanda09-plancha-con-apoyo-de-antebrazos.png'],
   ['Plancha con toque de hombros', 'Core', '3', '10-15 por lado', '45 s', 'img/ejercicios/tanda04-plancha-con-toque-de-hombros.png'],
   ['Plancha con desplazamiento lateral', 'Core', '3', '8-10 por lado', '45 s', 'img/ejercicios/tanda04-plancha-con-desplazamiento-lateral.png'],
   ['Plancha Copenhagen', 'Core', '3', '20-30 s por lado', '60 s', 'img/ejercicios/tanda04-plancha-copenhagen.png'],
@@ -176,7 +176,7 @@ const EXERCISE_LIBRARY = [
   ['Remo intervalos largos', 'Cardio', '5', '2 min intenso', '1 min suave', 'img/ejercicios/tanda08-remo-intervalos-largos.png'],
   ['Soga', 'Cardio', '5', '1 min', '30 s', 'img/ejercicios/tanda08-soga.png'],
   ['Soga doble salto', 'Cardio', '5', '30-45 s', '30 s', 'img/ejercicios/tanda08-soga-doble-salto.png'],
-  ['Soga salto alternado', 'Cardio', '5', '1 min', '30 s', 'img/ejercicios/soga-salto-alternado.svg'],
+  ['Soga salto alternado', 'Cardio', '5', '1 min', '30 s', 'img/ejercicios/tanda09-soga-salto-alternado.png'],
   ['Escalador en máquina', 'Cardio', '1', '10-20 min', '', 'img/ejercicios/tanda03-escalador-en-maquina.png'],
   ['Circuito aeróbico continuo', 'Cardio', '1', '20-30 min', '', 'img/ejercicios/tanda02-circuito-aerobico-continuo.png'],
 
