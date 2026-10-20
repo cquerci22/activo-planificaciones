@@ -1543,6 +1543,183 @@ function parseRestSeconds(value) {
 
 
 /* ========================================
+   REGISTRO LOCAL DEL ENTRENAMIENTO
+   No modifica las rutinas en Supabase.
+======================================== */
+
+function workoutLocalDate() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  return year + '-' + month + '-' + day;
+}
+
+function readWorkoutRecord(key) {
+  try {
+    return JSON.parse(localStorage.getItem(key) || '{}') || {};
+  } catch (error) {
+    return {};
+  }
+}
+
+function writeWorkoutRecord(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+function enhancePublicWorkout(client, plans, exercises) {
+  const today = workoutLocalDate();
+  const clientKey = 'activo:workout:v1:' + client.id;
+  const weightsKey = clientKey + ':weights';
+  const weights = readWorkoutRecord(weightsKey);
+
+  DAYS.forEach(dayName => {
+    const panel = Array.from(
+      document.querySelectorAll('.public-day-panel')
+    ).find(item => item.dataset.publicPanel === dayName);
+
+    const plan = (plans || []).find(
+      item => item.day_of_week === dayName
+    );
+
+    if (!panel || !plan) return;
+
+    const dayExercises = exercises.filter(
+      item => item.plan_id === plan.id
+    );
+    const cards = Array.from(panel.querySelectorAll('.public-ex'));
+
+    if (!dayExercises.length || cards.length !== dayExercises.length) {
+      return;
+    }
+
+    const completedKey = clientKey + ':completed:' + plan.id + ':' + today;
+    const completed = readWorkoutRecord(completedKey);
+
+    const progress = document.createElement('div');
+    progress.className = 'workout-progress';
+    const heading = document.createElement('div');
+    heading.className = 'workout-progress-heading';
+    const count = document.createElement('strong');
+    const caption = document.createElement('small');
+    caption.textContent = 'Entrenamiento de hoy';
+    heading.append(caption, count);
+
+    const track = document.createElement('div');
+    track.className = 'workout-progress-track';
+    const fill = document.createElement('div');
+    fill.className = 'workout-progress-fill';
+    track.appendChild(fill);
+    progress.append(heading, track);
+    panel.insertBefore(progress, cards[0]);
+
+    function updateProgress() {
+      const done = dayExercises.filter(
+        (exercise, index) =>
+          completed[String(exercise.id || index)] === true
+      ).length;
+      count.textContent = done + ' de ' + dayExercises.length + ' completados';
+      fill.style.width = (done / dayExercises.length * 100) + '%';
+      progress.classList.toggle('complete', done === dayExercises.length);
+    }
+
+    dayExercises.forEach((exercise, index) => {
+      const card = cards[index];
+      const exerciseKey = String(exercise.id || index);
+      const weightKey = String(plan.id) + ':' + exerciseKey;
+
+      const tools = document.createElement('div');
+      tools.className = 'workout-exercise-tools';
+
+      const completeLabel = document.createElement('label');
+      completeLabel.className = 'workout-complete-label';
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.checked = completed[exerciseKey] === true;
+      const completeText = document.createElement('span');
+      completeText.textContent = 'Ejercicio completado';
+      completeLabel.append(checkbox, completeText);
+      card.classList.toggle('workout-done', checkbox.checked);
+
+      checkbox.addEventListener('change', () => {
+        completed[exerciseKey] = checkbox.checked;
+        if (!writeWorkoutRecord(completedKey, completed)) {
+          alert('No se pudo guardar el avance en este navegador.');
+        }
+        card.classList.toggle('workout-done', checkbox.checked);
+        updateProgress();
+      });
+
+      const weightLabel = document.createElement('label');
+      weightLabel.className = 'workout-weight-label';
+      const weightText = document.createElement('span');
+      weightText.textContent = 'Peso utilizado (kg)';
+      const input = document.createElement('input');
+      input.type = 'number';
+      input.min = '0';
+      input.max = '9999';
+      input.step = '0.5';
+      input.inputMode = 'decimal';
+      input.placeholder = 'Ej.: 40';
+      input.setAttribute('aria-label', 'Peso utilizado en ' + exercise.exercise_name);
+      if (Object.prototype.hasOwnProperty.call(weights, weightKey)) {
+        input.value = weights[weightKey];
+      }
+      weightLabel.append(weightText, input);
+      input.addEventListener('change', () => {
+        const raw = input.value.trim();
+        const value = Number(raw);
+        if (raw && (!Number.isFinite(value) || value < 0 || value > 9999)) {
+          alert('Ingresá un peso válido entre 0 y 9999 kg.');
+          return;
+        }
+        if (raw === '') {
+          delete weights[weightKey];
+        } else {
+          weights[weightKey] = raw;
+        }
+        if (!writeWorkoutRecord(weightsKey, weights)) {
+          alert('No se pudo guardar el peso en este navegador.');
+        }
+      });
+
+      tools.append(completeLabel, weightLabel);
+      card.appendChild(tools);
+    });
+
+    updateProgress();
+  });
+}
+
+/* Registro local ACTIVO: estilos aislados de la vista alumno */
+function installWorkoutStyles() {
+  if (document.getElementById('activo-workout-styles')) return;
+  const style = document.createElement('style');
+  style.id = 'activo-workout-styles';
+  style.textContent = [
+    '.workout-progress{margin:12px 0 18px;padding:14px;border:1px solid rgba(128,128,128,.25);border-radius:14px;background:rgba(128,128,128,.08)}',
+    '.workout-progress-heading{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:10px}',
+    '.workout-progress-heading small{opacity:.75}',
+    '.workout-progress-track{height:9px;border-radius:99px;overflow:hidden;background:rgba(128,128,128,.22)}',
+    '.workout-progress-fill{height:100%;width:0;background:#e53935;border-radius:99px;transition:width .2s}',
+    '.workout-progress.complete .workout-progress-fill{background:#26a269}',
+    '.workout-exercise-tools{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;padding-top:12px;border-top:1px solid rgba(128,128,128,.2)}',
+    '.workout-complete-label{display:flex;align-items:center;gap:9px;font-size:.9rem;font-weight:600;cursor:pointer}',
+    '.workout-complete-label input{width:19px;height:19px;accent-color:#26a269}',
+    '.workout-weight-label{display:flex;align-items:center;gap:8px;font-size:.85rem}',
+    '.workout-weight-label input{width:100px;max-width:40vw;padding:9px;border:1px solid #aaa;border-radius:9px;background:var(--card,#fff);color:inherit}',
+    '.public-ex.workout-done{outline:2px solid rgba(38,162,105,.35);outline-offset:-2px}',
+    '@media(max-width:480px){.workout-exercise-tools{align-items:stretch}.workout-weight-label{justify-content:space-between;width:100%}}'
+  ].join('');
+  document.head.appendChild(style);
+}
+
+/* ========================================
    MOSTRAR PLANIFICACIÓN DEL ALUMNO
    NUEVO: DÍAS POR PESTAÑAS
 ======================================== */
@@ -1948,6 +2125,9 @@ async function showPublicPlan(client) {
 
   $('publicPlan').innerHTML =
     html;
+
+  installWorkoutStyles();
+  enhancePublicWorkout(client, plans || [], exercises);
 
   $('publicPlan')
     .classList
