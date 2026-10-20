@@ -14,6 +14,35 @@
    if(error){$('aft-import-message').textContent=error.message;return;}
    $('aft-import-client').innerHTML='<option value="">Seleccioná un alumno</option>'+(data||[]).map(x=>'<option value="'+escape(x.id)+'">'+escape(x.name)+'</option>').join('');
   }
+  const syncButton=document.createElement('button');
+  syncButton.type='button';syncButton.textContent='📈 Seguimiento automático';
+  box.appendChild(syncButton);
+  const syncOutput=document.createElement('div');box.appendChild(syncOutput);
+  syncButton.addEventListener('click',async()=>{
+    const id=$('aft-import-client').value;
+    if(!id){syncOutput.textContent='Seleccioná un alumno.';return;}
+    const {data,error}=await sb.from('aft_weight_sync').select('exercise_name,weight_kg,performed_at').eq('client_id',id).order('performed_at',{ascending:true}).limit(1000);
+    if(error){syncOutput.textContent=error.message;return;}
+    const records=data||[];
+    if(!records.length){syncOutput.textContent='Todavía no hay pesos sincronizados.';return;}
+    syncOutput.innerHTML='<h4>Evolución automática</h4><label>Ejercicio <select id="aft-sync-exercise"></select></label><div id="aft-sync-chart"></div>';
+    const select=syncOutput.querySelector('#aft-sync-exercise');
+    [...new Set(records.map(x=>x.exercise_name))].sort().forEach(name=>{
+      const opt=document.createElement('option');opt.value=name;opt.textContent=name;select.appendChild(opt);
+    });
+    const draw=()=>{
+      const rows=records.filter(x=>x.exercise_name===select.value);
+      const dates=new Map();
+      rows.forEach(x=>{const day=x.performed_at.slice(0,10);dates.set(day,Math.max(Number(x.weight_kg),dates.get(day)||0));});
+      const points=[...dates].map(([date,kg])=>({date,kg}));
+      const min=Math.min(...points.map(x=>x.kg)),max=Math.max(...points.map(x=>x.kg));
+      const low=Math.max(0,min-5),high=max+5;
+      const coords=points.map((p,i)=>({x:55+(points.length===1?300:600*i/(points.length-1)),y:210-170*(p.kg-low)/(high-low),...p}));
+      const path=coords.map((p,i)=>(i?'L':'M')+p.x+','+p.y).join(' ');
+      syncOutput.querySelector('#aft-sync-chart').innerHTML='<svg viewBox="0 0 720 265" role="img" aria-label="Evolución de peso máximo por día" style="width:100%;max-width:740px;background:rgba(128,128,128,.08);border-radius:12px"><line x1="55" y1="210" x2="660" y2="210" stroke="currentColor" opacity=".3"/><path d="'+path+'" fill="none" stroke="#e53935" stroke-width="4"/>'+coords.map(p=>'<circle cx="'+p.x+'" cy="'+p.y+'" r="6" fill="#e53935"><title>'+escape(p.date)+' · '+p.kg+' kg</title></circle>').join('')+'<text x="55" y="245" fill="currentColor" font-size="13">'+escape(points[0].date)+'</text><text x="660" y="245" text-anchor="end" fill="currentColor" font-size="13">'+escape(points[points.length-1].date)+'</text></svg><p>Último registro: '+points[points.length-1].kg+' kg · '+escape(points[points.length-1].date)+'</p>';
+    };
+    select.addEventListener('change',draw);draw();
+  });
   const obs=new MutationObserver(()=>{if(!admin.classList.contains('hidden'))refresh();});
   obs.observe(admin,{attributes:true,attributeFilter:['class']});
   $('aft-import-btn').addEventListener('click',async()=>{
