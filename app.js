@@ -219,42 +219,6 @@ function normalizeExerciseName(name) {
     .replace(/[\u0300-\u036f]/g, '');
 }
 
-/* Auditoría de imágenes: incluye los ejercicios guardados en Supabase. */
-async function auditExerciseImages() {
-  const button = document.getElementById('auditImages');
-  if (button) button.disabled = true;
-  try {
-    const { data, error } = await sb.from('plan_exercises')
-      .select('exercise_name,notes').range(0, 9999);
-    if (error) throw error;
-    const totals = new Map();
-    (data || []).forEach(item => {
-      if (item.notes === 'DUPLICADO - NO REALIZAR') return;
-      const name = String(item.exercise_name || '').trim();
-      if (!name || getExerciseImage(name)) return;
-      totals.set(name, (totals.get(name) || 0) + 1);
-    });
-    const missing = [...totals.entries()].sort((a,b) => b[1]-a[1] || a[0].localeCompare(b[0], 'es'));
-    const report = missing.length
-      ? missing.map(([name, count]) => name + ' — ' + count + ' usos').join('\\n')
-      : 'No se detectaron ejercicios sin imagen.';
-    const blob = new Blob(['AUDITORÍA DE IMÁGENES ACTIVO\\n' + new Date().toLocaleString('es-AR') + '\\n' + missing.length + ' ejercicios distintos sin imagen\\n\\n' + report], {type:'text/plain;charset=utf-8'});
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'activo-auditoria-imagenes.txt';
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 2000);
-    showMessage('Auditoría lista: ' + missing.length + ' nombres sin imagen. Se descargó el informe; ninguna rutina fue modificada.');
-  } catch (error) {
-    showMessage('No se pudo auditar las imágenes: ' + error.message, 'error');
-  } finally {
-    if (button) button.disabled = false;
-  }
-}
-
 function getExerciseImage(name) {
   const match = EXERCISE_LIBRARY.find(exercise =>
     normalizeExerciseName(exercise[0]) === normalizeExerciseName(name)
@@ -3284,7 +3248,6 @@ function setupEvents() {
 
 
   $('duplicateDay').addEventListener('click', duplicateSelectedPlan);
-  $('auditImages').addEventListener('click', auditExerciseImages);
 
   $('saveDay')
     .addEventListener(
