@@ -214,16 +214,28 @@ const $ = id => document.getElementById(id);
 function normalizeExerciseName(name) {
   return String(name || '')
     .toLowerCase()
-    .trim()
     .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '');
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+    .replace(/\s+/g, ' ');
 }
 
-function getExerciseImage(name) {
-  const match = EXERCISE_LIBRARY.find(exercise =>
-    normalizeExerciseName(exercise[0]) === normalizeExerciseName(name)
-  );
+// Equivalencias confirmadas para nombres alternativos usados en las rutinas.
+// No asignar una imagen de otro ejercicio cuando la demostracion no coincida.
+const EXERCISE_IMAGE_ALIASES = {
+  'remo con agarre neutro': 'Remo sentado en polea',
+  'remo polea agarre neutro': 'Remo sentado en polea',
+  'remo sentado agarre neutro': 'Remo sentado en polea',
+  'remo en polea agarre neutro': 'Remo sentado en polea'
+};
 
+function getExerciseImage(name) {
+  const normalized = normalizeExerciseName(name);
+  const alias = EXERCISE_IMAGE_ALIASES[normalized];
+  const match = EXERCISE_LIBRARY.find(exercise =>
+    normalizeExerciseName(exercise[0]) === normalizeExerciseName(alias || name)
+  );
   return match?.[5] || '';
 }
 
