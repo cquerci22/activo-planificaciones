@@ -886,6 +886,10 @@ function renderExercises() {
             Ejercicio ${index + 1}
           </b>
 
+          <button class="change-exercise" type="button">
+            Modificar ejercicio
+          </button>
+
           <button class="rm danger">
             Quitar
           </button>
@@ -1020,6 +1024,61 @@ function renderExercises() {
 
         }
       );
+
+      // Cambiar el ejercicio sin borrar el bloque ni perder su configuración.
+      item.querySelector('.change-exercise').addEventListener('click', () => {
+        const existingPicker = item.querySelector('.exercise-replacement');
+        if (existingPicker) {
+          existingPicker.remove();
+          return;
+        }
+
+        const picker = document.createElement('div');
+        picker.className = 'exercise-replacement';
+        picker.style.cssText = 'padding:12px;margin:8px 0;border:1px solid #7775;border-radius:10px;';
+        const label = document.createElement('label');
+        label.textContent = 'Elegí el ejercicio que lo reemplaza';
+        label.style.display = 'block';
+        const search = document.createElement('input');
+        search.type = 'search';
+        search.placeholder = 'Buscar ejercicio...';
+        search.style.cssText = 'width:100%;margin:8px 0;';
+        const select = document.createElement('select');
+        select.style.cssText = 'width:100%;margin:4px 0 10px;';
+        const options = EXERCISE_LIBRARY.map(entry => entry[0])
+          .sort((a, b) => a.localeCompare(b, 'es'));
+        const populate = () => {
+          const term = normalizeExerciseName(search.value);
+          select.replaceChildren();
+          options.filter(name => normalizeExerciseName(name).includes(term)).forEach(name => {
+            const option = document.createElement('option');
+            option.value = name;
+            option.textContent = name;
+            select.appendChild(option);
+          });
+        };
+        populate();
+        search.addEventListener('input', populate);
+        const confirm = document.createElement('button');
+        confirm.type = 'button';
+        confirm.textContent = 'Confirmar cambio';
+        confirm.addEventListener('click', () => {
+          if (!select.value) {
+            alert('Seleccioná un ejercicio de la lista.');
+            return;
+          }
+          exercise.name = select.value;
+          renderExercises();
+        });
+        const cancel = document.createElement('button');
+        cancel.type = 'button';
+        cancel.textContent = 'Cancelar';
+        cancel.style.marginLeft = '8px';
+        cancel.addEventListener('click', () => picker.remove());
+        picker.append(label, search, select, confirm, cancel);
+        item.querySelector('.row').insertAdjacentElement('afterend', picker);
+        search.focus();
+      });
 
       item
         .querySelector('.rm')
