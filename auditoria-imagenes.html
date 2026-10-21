@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ACTIVO — Auditoría de imágenes</title><style>
+body{font:16px system-ui;background:#101827;color:#f3f4f6;max-width:850px;margin:auto;padding:24px}h1{color:#fff}p{color:#cbd5e1}.card{background:#1f2937;border-radius:14px;padding:18px;margin:16px 0}button{padding:10px 15px;border:0;border-radius:8px;background:#d32f46;color:white;font-weight:bold;cursor:pointer}li{padding:8px 0;border-bottom:1px solid #374151}code{overflow-wrap:anywhere;color:#93c5fd}small{color:#94a3b8}.ok{color:#86efac}.bad{color:#fca5a5}</style></head><body><h1>ACTIVO · Auditoría de imágenes</h1><p>Esta página solo revisa la biblioteca. No modifica ejercicios, alumnos ni planificaciones.</p><div class="card"><button id="start">Volver a revisar</button> <button id="copy" disabled>Copiar faltantes</button><p id="status">Comprobando imágenes…</p><p id="summary"></p></div><div class="card"><h2>Imágenes que faltan o no cargan</h2><ol id="missing"></ol></div><script>
+let faltantes=[];
+async function checkImage(url){try{const response=await fetch(url,{cache:'no-store'});if(!response.ok)return false;const type=response.headers.get('content-type')||'';return type.startsWith('image/');}catch{return false;}}
+async function run(){
+document.getElementById('start').disabled=true;document.getElementById('copy').disabled=true;document.getElementById('missing').innerHTML='';document.getElementById('summary').textContent='';faltantes=[];
+const status=document.getElementById('status');status.textContent='Leyendo biblioteca…';
+try {
+const response=await fetch('app.js?auditoria='+Date.now(),{cache:'no-store'});if(!response.ok)throw Error('No se pudo leer app.js');
+const js=await response.text();
+const section=js.match(/const EXERCISE_LIBRARY\s*=\s*\[([\s\S]*?)\n\];/);
+if(!section)throw Error('No encontré la biblioteca de ejercicios');
+const rows=[...section[1].matchAll(/\[\s*'((?:\\'|[^'])*)'\s*,\s*'[^']*'\s*,\s*'[^']*'\s*,\s*'[^']*'\s*,\s*'[^']*'\s*,\s*'((?:\\'|[^'])*)'/g)].map(m=>({name:m[1],path:m[2]}));
+if(!rows.length)throw Error('No se encontraron ejercicios');
+let done=0, cursor=0;const results=new Array(rows.length);
+async function worker(){while(cursor<rows.length){const i=cursor++;const item=rows[i];results[i]=await checkImage(new URL(item.path,location.href));done++;status.textContent='Revisando '+done+' de '+rows.length+' imágenes…';}}
+await Promise.all(Array.from({length:Math.min(8,rows.length)},()=>worker()));
+faltantes=rows.filter((_,i)=>!results[i]);status.textContent='Revisión terminada';
+document.getElementById('summary').innerHTML='<span class="ok">'+(rows.length-faltantes.length)+' cargan correctamente</span> · <span class="'+(faltantes.length?'bad':'ok')+'">'+faltantes.length+' faltan o fallan</span> · '+rows.length+' ejercicios revisados.';
+for(const x of faltantes){const li=document.createElement('li');const title=document.createElement('strong');title.textContent=x.name;li.append(title,document.createElement('br'));const path=document.createElement('code');path.textContent=x.path;li.append(path);document.getElementById('missing').append(li);}
+document.getElementById('copy').disabled=!faltantes.length;
+}catch(e){status.textContent='Error: '+e.message}finally{document.getElementById('start').disabled=false}
+}
+document.getElementById('start').onclick=run;
+document.getElementById('copy').onclick=()=>navigator.clipboard.writeText(faltantes.map(x=>x.name+' | '+x.path).join('\n'));
+run();
+</script></body></html>
