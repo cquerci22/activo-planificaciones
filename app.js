@@ -230,8 +230,31 @@ const EXERCISE_IMAGE_ALIASES = {
   'remo en polea agarre neutro': 'Remo sentado en polea'
 };
 
+const ACTIVO_NEW_EXERCISE_IMAGES = {
+  'aperturas inclinadas': 'img/ejercicios/aperturas-inclinadas-01.png',
+  'aperturas inclinadas con mancuernas': 'img/ejercicios/aperturas-inclinadas-01.png',
+  'aperturas en banco inclinado': 'img/ejercicios/aperturas-inclinadas-01.png',
+  'remo con agarre neutro': 'img/ejercicios/remo-agarre-neutro-01.png',
+  'remo polea agarre neutro': 'img/ejercicios/remo-agarre-neutro-01.png',
+  'remo sentado agarre neutro': 'img/ejercicios/remo-agarre-neutro-01.png',
+  'remo en polea agarre neutro': 'img/ejercicios/remo-agarre-neutro-01.png',
+  'extension de triceps': 'img/ejercicios/triceps-extension-01.png',
+  'fondos de triceps': 'img/ejercicios/triceps-fondos-01.png',
+  'fondos para triceps': 'img/ejercicios/triceps-fondos-01.png',
+  'triceps fondos': 'img/ejercicios/triceps-fondos-01.png',
+  'triceps frances con barra z': 'img/ejercicios/triceps-frances-barra-z.png',
+  'press frances con barra z': 'img/ejercicios/triceps-frances-barra-z.png',
+  'triceps frances barra z': 'img/ejercicios/triceps-frances-barra-z.png',
+  'patada de triceps con mancuerna': 'img/ejercicios/triceps-patada-02.png',
+  'patada de triceps': 'img/ejercicios/triceps-patada-02.png',
+  'extension de triceps con cuerda': 'img/ejercicios/triceps-polea-02.png',
+  'triceps en polea con cuerda': 'img/ejercicios/triceps-polea-02.png',
+  'triceps en polea': 'img/ejercicios/triceps-polea-02.png'
+};
+
 function getExerciseImage(name) {
   const normalized = normalizeExerciseName(name);
+  if (ACTIVO_NEW_EXERCISE_IMAGES[normalized]) return ACTIVO_NEW_EXERCISE_IMAGES[normalized];
   const alias = EXERCISE_IMAGE_ALIASES[normalized];
   const match = EXERCISE_LIBRARY.find(exercise =>
     normalizeExerciseName(exercise[0]) === normalizeExerciseName(alias || name)
