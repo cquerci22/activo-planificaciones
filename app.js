@@ -1823,6 +1823,12 @@ function enhancePublicWorkout(client, plans, exercises) {
       input.inputMode = 'decimal';
       input.placeholder = 'Ej.: 40';
       input.setAttribute('aria-label', 'Peso utilizado en ' + exercise.exercise_name);
+      // Contraste forzado para teclados y navegadores móviles.
+      input.style.setProperty('color', '#17202b', 'important');
+      input.style.setProperty('background-color', '#ffffff', 'important');
+      input.style.setProperty('font-weight', '900', 'important');
+      input.style.setProperty('-webkit-text-fill-color', '#17202b', 'important');
+      input.style.setProperty('opacity', '1', 'important');
       if (Object.prototype.hasOwnProperty.call(weights, weightKey)) {
         input.value = weights[weightKey];
       }
