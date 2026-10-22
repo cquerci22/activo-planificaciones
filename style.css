@@ -1217,3 +1217,20 @@ button,input,select,textarea {font-family:inherit;}
  #studentTimer .timer-display {font-size:29px!important;margin:3px 0 6px!important;}
  #studentTimer .timer-presets button {min-height:28px!important;}
 }
+
+/* ACTIVO · contraste de pesos ingresados por alumnos */
+.workout-weight-label input[type="number"],
+.aft-weight input[type="number"],
+.aft-kg {
+  color: #18202b !important;
+  background: #ffffff !important;
+  font-weight: 800 !important;
+  font-size: 1.05rem !important;
+  -webkit-text-fill-color: #18202b;
+}
+.workout-weight-label input[type="number"]::placeholder,
+.aft-weight input[type="number"]::placeholder {
+  color: #626c78 !important;
+  font-weight: 500 !important;
+  -webkit-text-fill-color: #626c78;
+}
