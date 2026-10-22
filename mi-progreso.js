@@ -39,19 +39,33 @@
     const line=coords.map((p,i)=>(i?'L':'M')+p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' ');
     return '<svg viewBox="0 0 325 173" role="img" aria-label="Evolución del peso máximo registrado en cada fecha"><line x1="35" y1="132" x2="290" y2="132" stroke="#ffffff40"/><text x="4" y="31" font-size="10" fill="#b9c3ce">'+fmt(hi)+'</text><text x="4" y="133" font-size="10" fill="#b9c3ce">'+fmt(lo)+'</text><path d="'+line+'" fill="none" stroke="#ff4d55" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>'+coords.map(p=>'<circle cx="'+p.x+'" cy="'+p.y+'" r="4.2" fill="#ff6670"><title>'+fmt(p.v)+' kg</title></circle>').join('')+'<text x="35" y="159" font-size="10" fill="#b9c3ce">'+safe(points[0][0].slice(5))+'</text><text x="290" y="159" text-anchor="end" font-size="10" fill="#b9c3ce">'+safe(points.at(-1)[0].slice(5))+'</text></svg>';
   }
+  // Sólo los ejercicios principales aparecen en el tablero de progreso.
+  // El registro de cargas para los demás ejercicios permanece intacto.
+  function basicGroup(name){
+    const n=String(name||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+    if(/press (de )?banca|banca (plano|plana)|bench press/.test(n) && !/inclinado|declinado|mancuerna|smith|multipower/.test(n))return 'Press banca';
+    if(/sentadilla/.test(n)&& /libre|barra|trasera|back squat/.test(n)&&!/smith|multipower|hack|bulgara|frontal/.test(n))return 'Sentadilla libre';
+    if(/peso muerto/.test(n)&&/trap bar|barra hexagonal|hexagonal/.test(n))return 'Peso muerto trap bar';
+    if(/peso muerto/.test(n)&&/sumo/.test(n))return 'Peso muerto sumo';
+    if(/peso muerto/.test(n)&&/convencional|clasico|tradicional/.test(n))return 'Peso muerto convencional';
+    if(/jalon al pecho|lat pulldown/.test(n))return 'Jalón al pecho';
+    return null;
+  }
+  const BASIC_ORDER=['Press banca','Sentadilla libre','Peso muerto convencional','Peso muerto trap bar','Peso muerto sumo','Jalón al pecho'];
   function updatePanel(id,exercise){
     const box=document.getElementById('aft-progress-board');
     if(!box)return;
-    const all=read(id),names=[...new Set(all.map(x=>x.exercise))].sort((a,b)=>a.localeCompare(b,'es'));
-    const choice=exercise&&names.includes(exercise)?exercise:names.at(-1);
-    const items=all.filter(x=>x.exercise===choice).sort((a,b)=>a.at.localeCompare(b.at));
+    const all=read(id),names=BASIC_ORDER.filter(group=>all.some(x=>basicGroup(x.exercise)===group));
+    const requested=basicGroup(exercise);
+    const choice=requested&&names.includes(requested)?requested:(names[0]||BASIC_ORDER[0]);
+    const items=all.filter(x=>basicGroup(x.exercise)===choice).sort((a,b)=>a.at.localeCompare(b.at));
     const best=items.length?Math.max(...items.map(x=>x.kg)):0,latest=items.at(-1);
     box.innerHTML='<div class="aft-prog-head"><div><div class="aft-prog-eyebrow">ACTIVO · TU ENTRENAMIENTO</div><h3>📈 Mi progreso</h3><p>Tus cargas, siempre a mano.</p></div><button class="aft-prog-close" type="button" aria-label="Cerrar progreso">✕</button></div>'
      +'<div class="aft-prog-stats"><div class="aft-prog-stat"><small>Última carga</small><strong>'+(latest?fmt(latest.kg)+' kg':'—')+'</strong></div><div class="aft-prog-stat"><small>Mejor marca</small><strong>'+(latest?fmt(best)+' kg':'—')+'</strong></div><div class="aft-prog-stat"><small>Registros</small><strong>'+items.length+'</strong></div></div>'
      +(names.length?'<label for="aft-prog-ex">Elegí el ejercicio</label><select class="aft-prog-select" id="aft-prog-ex">'+names.map(n=>'<option value="'+safe(n)+'"'+(n===choice?' selected':'')+'>'+safe(n)+'</option>').join('')+'</select>':'')
-     +'<div class="aft-prog-chart">'+chart(items)+'</div><p class="aft-prog-tiny">Gráfico: mayor peso guardado por fecha. Los datos anteriores pueden no estar disponibles en este celular.</p>'
+     +'<div class="aft-prog-chart">'+chart(items)+'</div><p class="aft-prog-tiny">Sólo ejercicios básicos. Gráfico del mayor peso guardado por fecha en este celular.</p>'
      +'<h4 style="margin:20px 0 7px;color:white">Últimas cargas</h4>'
-     +(items.length?items.slice(-10).reverse().map(r=>'<div class="aft-prog-row"><span>'+safe(new Date(r.at).toLocaleDateString('es-AR'))+'</span><strong>'+fmt(r.kg)+' kg</strong></div>').join(''):'<div class="aft-prog-empty">Guardá una carga en tu rutina y la vas a ver acá.</div>')
+     +(items.length?items.slice(-10).reverse().map(r=>'<div class="aft-prog-row"><span>'+safe(new Date(r.at).toLocaleDateString('es-AR'))+'</span><strong>'+fmt(r.kg)+' kg</strong></div>').join(''):'<div class="aft-prog-empty">Registrá uno de los seis ejercicios básicos para ver su evolución acá.</div>')
      +'<p class="aft-prog-tiny">Historial personal guardado en este dispositivo. Las cargas nuevas también usan la sincronización existente de ACTIVO.</p>';
     $('.aft-prog-close',box).onclick=()=>{box.hidden=true};
     const selector=$ (box,'#aft-prog-ex');if(selector)selector.onchange=()=>updatePanel(id,selector.value);
@@ -93,7 +107,7 @@
           // Evita duplicados causados por doble toque inmediato.
           if(logs.at(-1)?.exercise===exercise&&logs.at(-1)?.kg===kg&&Date.now()-new Date(logs.at(-1).at).getTime()<1500)return;
           logs.push({exercise,kg,at:new Date().toISOString()});
-          if(save(id,logs)){active=exercise;render();const b=document.getElementById('aft-progress-board');if(b&&!b.hidden)updatePanel(id,exercise);}
+          if(save(id,logs)){active=basicGroup(exercise)||'';render();const b=document.getElementById('aft-progress-board');if(b&&!b.hidden)updatePanel(id,exercise);}
         });
       });
     });
