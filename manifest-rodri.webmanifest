@@ -1,0 +1,25 @@
+{
+  "name": "ACTIVO | Rodrigo",
+  "short_name": "ACTIVO",
+  "description": "Planificaciones de entrenamiento de ACTIVO Funcional Training",
+  "start_url": "/activo-planificaciones/?profe=rodri",
+  "scope": "/activo-planificaciones/",
+  "display": "standalone",
+  "background_color": "#111827",
+  "theme_color": "#111827",
+  "icons": [
+    {
+      "src": "img/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "img/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "id": "/activo-planificaciones/?profe=rodri"
+}
