@@ -2,7 +2,7 @@
   "name": "ACTIVO | Planificaciones",
   "short_name": "ACTIVO",
   "description": "Planificaciones de entrenamiento de ACTIVO Funcional Training",
-  "start_url": "/activo-planificaciones/",
+  "start_url": "/activo-planificaciones/?profe=cristian",
   "scope": "/activo-planificaciones/",
   "display": "standalone",
   "background_color": "#111827",
