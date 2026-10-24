@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#111827">
+  <link rel="manifest" href="/activo-planificaciones/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/activo-planificaciones/img/logo-activo-nuevo.png">
   <meta name="description" content="ACTIVO Funcional Training - Planificaciones de entrenamiento.">
   <title>ACTIVO | Planificaciones</title>
 
@@ -471,5 +473,12 @@
 
   <script src="sincronizacion-pesos.js?v=20261020"></script>
   <script src="mi-progreso.js?v=20261022-basicos"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/activo-planificaciones/sw.js").catch(() => {});
+      });
+    }
+  </script>
 </body>
 </html>
