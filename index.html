@@ -5,7 +5,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#111827">
-  <link rel="manifest" href="/activo-planificaciones/manifest.webmanifest">
+  <script>
+    (function () {
+      const allowed = ['cristian', 'nico', 'rodri', 'jero'];
+      const requested = new URLSearchParams(location.search).get('profe');
+      const saved = localStorage.getItem('activo_profesor_enlace');
+      const profe = allowed.includes(requested) ? requested : (allowed.includes(saved) ? saved : 'cristian');
+      if (allowed.includes(requested)) localStorage.setItem('activo_profesor_enlace', requested);
+      const manifest = document.createElement('link');
+      manifest.rel = 'manifest';
+      manifest.href = '/activo-planificaciones/' + (profe === 'cristian' ? 'manifest.webmanifest' : 'manifest-' + profe + '.webmanifest');
+      document.head.appendChild(manifest);
+    })();
+  </script>
   <link rel="apple-touch-icon" sizes="180x180" href="/activo-planificaciones/img/icons/icon-180.png?v=20261024b">
   <meta name="description" content="ACTIVO Funcional Training - Planificaciones de entrenamiento.">
   <title>ACTIVO | Planificaciones</title>
