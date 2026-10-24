@@ -1,0 +1,31 @@
+name: Generar iconos PWA ACTIVO
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/generar-iconos-pwa.yml'
+      - 'img/logo-activo-nuevo.png'
+permissions:
+  contents: write
+jobs:
+  icons:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generar iconos cuadrados desde el logo original
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y imagemagick
+          mkdir -p img/icons
+          for size in 180 192 512; do
+            convert img/logo-activo-nuevo.png -thumbnail "$((size-28))x$((size-28))" -background '#111827' -gravity center -extent "${size}x${size}" "img/icons/icon-${size}.png"
+          done
+      - name: Guardar iconos
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add img/icons/
+          if ! git diff --cached --quiet; then
+            git commit -m "Generate ACTIVO PWA icons"
+            git push
+          fi
