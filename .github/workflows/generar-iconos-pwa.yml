@@ -12,14 +12,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Generar iconos cuadrados desde el logo original
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Instalar Pillow
+        run: python -m pip install pillow
+      - name: Generar iconos para iPhone y Android
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y imagemagick
-          mkdir -p img/icons
-          for size in 180 192 512; do
-            convert img/logo-activo-nuevo.png -thumbnail "$((size-28))x$((size-28))" -background '#111827' -gravity center -extent "${size}x${size}" "img/icons/icon-${size}.png"
-          done
+          python - <<'PY'
+          from PIL import Image
+          from pathlib import Path
+          source = Image.open("img/logo-activo-nuevo.png").convert("RGBA")
+          source.thumbnail((460, 460), Image.Resampling.LANCZOS)
+          Path("img/icons").mkdir(parents=True, exist_ok=True)
+          for size in (180, 192, 512):
+              icon = Image.new("RGBA", (size, size), "#111827")
+              art = Image.open("img/logo-activo-nuevo.png").convert("RGBA")
+              art.thumbnail((round(size*.90), round(size*.90)), Image.Resampling.LANCZOS)
+              icon.alpha_composite(art, ((size-art.width)//2, (size-art.height)//2))
+              icon.convert("RGB").save(f"img/icons/icon-{size}.png")
+          PY
       - name: Guardar iconos
         run: |
           git config user.name 'github-actions[bot]'
