@@ -1500,7 +1500,7 @@ async function loadPublicClients() {
     );
 
   const profe =
-    (params.get('profe') || ((window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) ? 'cristian' : ''))
+    (params.get('profe') || localStorage.getItem('activo_profesor_enlace') || 'cristian')
       .toLowerCase()
       .trim();
 
@@ -1519,6 +1519,10 @@ async function loadPublicClients() {
       '1f51bcf5-8092-436f-bbd2-09c35b1990b1'
 
   };
+
+  if (params.get('profe') && PROFESSORS[profe]) {
+    localStorage.setItem('activo_profesor_enlace', profe);
+  }
 
   const professorId =
     PROFESSORS[profe];
