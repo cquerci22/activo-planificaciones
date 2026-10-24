@@ -1500,7 +1500,7 @@ async function loadPublicClients() {
     );
 
   const profe =
-    (params.get('profe') || '')
+    (params.get('profe') || ((window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) ? 'cristian' : ''))
       .toLowerCase()
       .trim();
 
