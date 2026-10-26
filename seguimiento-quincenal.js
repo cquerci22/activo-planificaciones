@@ -14,6 +14,37 @@
     Math.max(0, Math.floor((Date.now() - Date.parse(r.ultima_actualizacion)) / 86400000)) : null;
   const late = r => !r.tiene_plan || age(r) === null || age(r) >= 14;
   let rows = [], userId = '';
+  const style = document.createElement('style');
+  style.textContent = `
+  #controlQuincenal{margin:16px 0;padding:14px;background:#152239;border:1px solid #344968;border-radius:16px;color:#f8fafc}
+  #controlQuincenal *{box-sizing:border-box}
+  #controlQuincenal .control-toggle{width:100%;padding:15px;border:1px solid #5378aa;border-radius:12px;background:linear-gradient(120deg,#163b70,#245ba1);color:white;font-weight:800;font-size:16px;cursor:pointer;text-align:center}
+  #controlQuincenal .control-body{padding-top:16px}
+  #controlQuincenal .control-body[hidden],#controlQuincenal [hidden]{display:none!important}
+  #controlQuincenal .control-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:14px}
+  #controlQuincenal .control-metric{padding:12px 5px;border-radius:11px;text-align:center;background:#24354c;border:1px solid #415675}
+  #controlQuincenal .control-metric strong{display:block;font-size:25px;line-height:1.1}
+  #controlQuincenal .control-metric small{display:block;font-size:11px;color:#d4deec;margin-top:5px}
+  #controlQuincenal .control-metric.good{border-color:#198a5a;color:#8af0b3}
+  #controlQuincenal .control-metric.bad{border-color:#c44752;color:#ffadb5}
+  #controlQuincenal #controlPorProfesor{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}
+  #controlQuincenal .control-pill{display:inline-block;border-radius:18px;padding:7px 10px;background:#253b58;font-size:12px;border:1px solid #415b7d}
+  #controlQuincenal #controlFiltroWrap{display:block;margin:12px 0;font-weight:700}
+  #controlQuincenal #controlFiltro{display:block;width:100%;margin-top:7px;padding:11px;border-radius:10px;background:#101b2d;color:#fff;border:1px solid #607693;font-size:15px}
+  #controlQuincenal .control-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px;margin:9px 0;background:#1d2e47;border:1px solid #40516b;border-left:5px solid #20a269;border-radius:12px;min-width:0}
+  #controlQuincenal .control-row.warning{border-left-color:#eab308}
+  #controlQuincenal .control-row.late{border-left-color:#ef4444}
+  #controlQuincenal .control-info{min-width:0;flex:1}
+  #controlQuincenal .control-info strong{display:block;font-size:15px;overflow-wrap:anywhere;line-height:1.3}
+  #controlQuincenal .control-info small{display:block;color:#b9c9df;margin-top:5px;font-size:12px;line-height:1.35}
+  #controlQuincenal .control-days{min-width:72px;max-width:105px;flex-shrink:0;text-align:center;background:#153f30;border:1px solid #247e56;border-radius:10px;padding:7px 5px;color:#9ef0bd}
+  #controlQuincenal .control-days.warning{background:#463914;border-color:#b68a20;color:#ffe08b}
+  #controlQuincenal .control-days.late{background:#4d232d;border-color:#c44752;color:#ffb1b9}
+  #controlQuincenal .control-days strong{display:block;font-size:23px;line-height:1.1}
+  #controlQuincenal .control-days small{display:block;font-size:10px;line-height:1.3}
+  #controlQuincenal #controlActualizar{width:100%;margin-top:12px}
+  `;
+  document.head.appendChild(style);
   function draw() {
     const root = document.getElementById('controlQuincenal');
     if (!root) return;
@@ -21,8 +52,13 @@
     const selected = root.querySelector('#controlFiltro')?.value || 'todos';
     const visible = rows.filter(r => !admin || selected === 'todos' || r.profesor_id === selected)
       .sort((a, b) => (age(b) ?? 99999) - (age(a) ?? 99999));
-    root.querySelector('#controlResumen').textContent =
-      'Total de alumnos: ' + rows.length + ' · Pendientes: ' + rows.filter(late).length;
+    const pending = rows.filter(late).length;
+    const ok = rows.filter(r => !late(r)).length;
+    root.querySelector('#controlResumen').innerHTML =
+      '<div class="control-metrics"><div class="control-metric"><strong>' + rows.length +
+      '</strong><small>Alumnos</small></div><div class="control-metric good"><strong>' + ok +
+      '</strong><small>Al día</small></div><div class="control-metric bad"><strong>' + pending +
+      '</strong><small>Pendientes</small></div></div>';
     root.querySelector('#controlFiltroWrap').hidden = !admin;
     root.querySelector('#controlPorProfesor').innerHTML = admin ?
       Object.entries(names).map(([id, name]) => '<span class="control-pill">' +
@@ -30,15 +66,18 @@
         ' alumnos · ' + rows.filter(r => r.profesor_id === id && late(r)).length +
         ' pendientes</span>').join('') : '';
     root.querySelector('#controlListado').innerHTML = visible.map(r => {
-      const d = age(r), pending = late(r);
-      const state = !r.tiene_plan ? 'Sin planificación' :
-        d === null ? 'Sin fecha' : d >= 14 ? 'Actualizar planificación' :
-        d >= 11 ? 'Próxima actualización' : 'Al día';
-      return '<div class="control-row"><div><strong>' + escape(r.alumno) +
-        '</strong><small>' + (admin ? escape(names[r.profesor_id] || 'Profesor') + ' · ' : '') +
-        (d === null ? 'Sin fecha registrada' : d + ' días desde la última actualización') +
-        '</small></div><span class="' + (pending ? 'control-late' : 'control-ok') +
-        '">' + escape(state) + '</span></div>';
+      const d = age(r);
+      const status = !r.tiene_plan || d === null || d >= 14 ? 'late' : d >= 11 ? 'warning' : 'good';
+      const label = !r.tiene_plan ? 'Sin planificación' : d === null ? 'Sin fecha registrada' :
+        status === 'late' ? 'Actualizar planificación' :
+        status === 'warning' ? 'Próxima actualización' : 'Al día';
+      const number = d === null ? '—' : String(d);
+      return '<article class="control-row ' + status + '"><div class="control-info"><strong>' +
+        escape(r.alumno) + '</strong><small>' +
+        (admin ? 'Profesor: ' + escape(names[r.profesor_id] || 'Profesor') + '<br>' : '') +
+        escape(label) + '</small></div><div class="control-days ' + status +
+        '"><strong>' + number + '</strong><small>' +
+        (d === null ? 'sin fecha' : 'días sin actualizar') + '</small></div></article>';
     }).join('') || '<p>No hay alumnos registrados.</p>';
   }
   async function refresh() {
@@ -61,16 +100,24 @@
     const root = document.createElement('section');
     root.id = 'controlQuincenal';
     root.className = 'card';
-    root.innerHTML = '<h3>📅 Control de planificaciones · 14 días</h3>' +
-      '<p id="controlResumen">Cargando seguimiento…</p>' +
+    root.innerHTML = '<button class="control-toggle" id="controlToggle" type="button" aria-expanded="false">📊 CONTROL DE PLANIFICACIONES ▾</button>' +
+      '<div class="control-body" id="controlBody" hidden><p id="controlResumen">Cargando seguimiento…</p>' +
       '<div id="controlPorProfesor"></div>' +
-      '<label id="controlFiltroWrap">Profesor <select id="controlFiltro">' +
+      '<label id="controlFiltroWrap">Filtrar por profesor <select id="controlFiltro">' +
       '<option value="todos">Todos los profesores</option>' +
       Object.entries(names).map(([id, name]) =>
         '<option value="' + id + '">' + escape(name) + '</option>').join('') +
       '</select></label><div id="controlListado"></div>' +
       '<button id="controlActualizar" type="button">↻ Actualizar seguimiento</button>' +
-      '<p><small>Recordatorios informativos. No bloquean el uso de la aplicación.</small></p>';
+      '<p><small>Recordatorios informativos: no bloquean el uso de la aplicación.</small></p></div>';
+    root.querySelector('#controlToggle').addEventListener('click', () => {
+      const body = root.querySelector('#controlBody');
+      body.hidden = !body.hidden;
+      root.querySelector('#controlToggle').setAttribute('aria-expanded', String(!body.hidden));
+      root.querySelector('#controlToggle').textContent = body.hidden ?
+        '📊 CONTROL DE PLANIFICACIONES ▾' : '📊 OCULTAR CONTROL DE PLANIFICACIONES ▴';
+      if (!body.hidden) refresh();
+    });
     admin.insertBefore(root, admin.children[1] || null);
     root.querySelector('#controlFiltro').addEventListener('change', draw);
     root.querySelector('#controlActualizar').addEventListener('click', refresh);
