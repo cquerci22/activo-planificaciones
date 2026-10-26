@@ -1236,6 +1236,16 @@ async function saveSelectedDay() {
     }
   }
 
+  // Registrar la fecha real del guardado de la rutina, incluso si el día queda sin ejercicios.
+  const { error: fechaError } = await sb
+    .from('workout_plans')
+    .update({ updated_at: new Date().toISOString() })
+    .eq('id', currentPlanId);
+  if (fechaError) {
+    showMessage('La rutina se guardó, pero no se pudo registrar la fecha: ' + fechaError.message, 'error');
+    return;
+  }
+
   showMessage(
     `${selectedDay} guardado correctamente.`
   );
